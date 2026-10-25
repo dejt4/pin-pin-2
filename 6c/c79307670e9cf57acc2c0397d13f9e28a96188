@@ -1,0 +1,50 @@
+openspec/specs/game-flow/spec.md
+  s_8305d21c167246::t_9dda9984420e99 1-56
+openspec/changes/ps4-verification/design.md
+  s_8305d21c167246::t_ffd9e3264d0345 1-23
+openspec/specs/camera-view/spec.md
+  s_8305d21c167246::t_9dda9984420e99 1-49
+openspec/specs/game-controls/spec.md
+  s_8305d21c167246::t_9dda9984420e99 1-80
+openspec/specs/room-map/spec.md
+  s_8305d21c167246::t_9dda9984420e99 1-21,27,29-31,33-37,42,44-45,47,52-98
+  s_8305d21c167246::t_3231ed80db6f0f 22-26,28,32,38-41,43,46,48-51
+openspec/specs/animals/spec.md
+  s_8305d21c167246::t_3231ed80db6f0f 1-78
+openspec/specs/snowballs/spec.md
+  s_8305d21c167246::t_3231ed80db6f0f 1-69
+openspec/specs/player-movement/spec.md
+  s_8305d21c167246::t_9dda9984420e99 1-99
+openspec/changes/archive/2026-10-25-snowballs-and-animals/tasks.md
+  s_8305d21c167246::t_3231ed80db6f0f 5,37
+openspec/specs/player-energy/spec.md
+  s_8305d21c167246::t_3231ed80db6f0f 34,38-41
+  s_8305d21c167246::t_9dda9984420e99 1-33,35-37,42-53
+openspec/changes/ps4-verification/.openspec.yaml
+  s_8305d21c167246::t_ffd9e3264d0345 3
+  s_8305d21c167246::t_47cc6aeb673b1f 1-2
+openspec/changes/ps4-verification/tasks.md
+  s_8305d21c167246::t_ffd9e3264d0345 1-8
+openspec/changes/ps4-verification/proposal.md
+  s_8305d21c167246::t_ffd9e3264d0345 1-25
+openspec/specs/score/spec.md
+  s_8305d21c167246::t_3231ed80db6f0f 1-32
+openspec/changes/archive/2026-10-25-first-room/tasks.md
+  s_8305d21c167246::t_841f07d999e5da 51-53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6cc79307670e9cf57acc2c0397d13f9e28a96188",
+  "prompts": {},
+  "sessions": {
+    "s_8305d21c167246": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58e6f587-c1fd-49c2-b41b-69ce379b9044",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Tadej Zel <326005104+dejt4@users.noreply.github.com>"
+    }
+  }
+}
