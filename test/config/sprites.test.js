@@ -22,9 +22,18 @@ test('vse sličice animacij so na seznamu sličic', function () {
   });
 });
 
-test('za vsako barvo ribe je sličica', function () {
-  assert.strictEqual(sprites.fish.length, 4);
-  sprites.fish.forEach(function (name) {
+test('za vsako vrsto hrane je sličica', function () {
+  assert.deepStrictEqual(sprites.food, ['apple', 'carrot', 'banana']);
+  sprites.food.forEach(function (name) {
     assert.ok(sprites.images[name]);
   });
+});
+
+test('za vse živali in ovire so sličice hoje, udarca in stopenj', function () {
+  ['bear', 'polar', 'wolf'].forEach(function (animal) {
+    [1, 2, 3].forEach(function (n) { assert.ok(sprites.images[animal + '-walk-' + n], animal + ' hoja ' + n); });
+    [1, 2].forEach(function (n) { assert.ok(sprites.images[animal + '-push-' + n], animal + ' udarec ' + n); });
+  });
+  [1, 2, 3, 4, 5].forEach(function (n) { assert.ok(sprites.images['ice-wall-' + n]); });
+  [1, 2, 3, 4, 5, 6, 7].forEach(function (n) { assert.ok(sprites.images['icicle-' + n]); });
 });

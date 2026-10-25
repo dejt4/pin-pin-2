@@ -19,72 +19,93 @@ test('prva soba se naloži brez napake', function () {
   assert.ok(r.cols >= 5 * screenCols, 'vsaj 5 zaslonov');
 });
 
-test('prva soba ima prepad, lestev, konice, ledene plošče, vsaj 8 rib in cilj na desnem koncu', function () {
-  var counts = { ladder: 0, spikes: 0, floe: 0, pit: 0 };
-  for (var c = 0; c < r.cols; c++) {
-    if (isPitColumn(c)) {
-      counts.pit++;
-    }
-    for (var row = 0; row < r.rows; row++) {
-      var t = room.tileAt(r, c, row);
-      if (room.isLadder(t)) { counts.ladder++; }
-      if (room.isSpikes(t)) { counts.spikes++; }
-      if (room.isOneWay(t)) { counts.floe++; }
-    }
-  }
-  assert.ok(counts.pit > 0);
-  assert.ok(counts.ladder > 0);
-  assert.ok(counts.spikes > 0);
-  assert.ok(counts.floe > 0);
-  assert.ok(r.fish.length >= 8);
-  assert.ok(r.goals[0].col >= r.cols - screenCols, 'cilj je na zadnjem zaslonu');
-});
-
-test('prva soba ima kupe snega, medveda, volka, muho in komarje na poti ter živali na stranskem nivoju', function () {
-  var ground = (r.rows - 2) * T;
-  var piles = [];
+function count(predicate) {
+  var n = 0;
   for (var c = 0; c < r.cols; c++) {
     for (var row = 0; row < r.rows; row++) {
-      if (room.isPile(room.tileAt(r, c, row))) {
-        piles.push({ col: c, row: row });
+      if (predicate(room.tileAt(r, c, row), c, row)) {
+        n++;
       }
     }
   }
-  assert.ok(piles.length >= 2);
-  var types = r.animals.map(function (a) { return a.type; });
-  ['bear', 'wolf', 'fly', 'mosquitoes'].forEach(function (type) {
-    assert.ok(types.indexOf(type) !== -1, 'manjka ' + type);
-  });
-  var side = 0;
-  r.animals.forEach(function (a) {
-    if (a.type !== 'fly' && a.type !== 'mosquitoes') {
-      return;
+  return n;
+}
+
+// skupine zaporednih stolpcev, ki ustrezajo pogoju
+function groups(predicate) {
+  var n = 0;
+  var inside = false;
+  for (var c = 0; c < r.cols; c++) {
+    var now = predicate(c);
+    if (now && !inside) {
+      n++;
     }
-    var floor = room.surfaceBelow(r, a.col, a.row);
-    if (floor < ground) {
-      side++;
+    inside = now;
+  }
+  return n;
+}
+
+test('prva soba: vsaj 600 stolpcev, prepadi, lestve, konice, plošče, hrana, cilj na koncu', function () {
+  assert.ok(r.cols >= 600);
+  assert.ok(groups(isPitColumn) >= 3, 'prepadi');
+  assert.ok(count(function (t, c, row) { return room.isLadderTop(r, c, row); }) >= 3, 'lestve');
+  assert.ok(groups(function (c) {
+    for (var row = 0; row < r.rows; row++) {
+      if (room.isSpikes(room.tileAt(r, c, row))) { return true; }
     }
-    // kup na isti višini največ 6 ploščic pred živaljo
-    var pile = piles.filter(function (p) {
-      return p.row === a.row && p.col < a.col && a.col - p.col <= 6;
-    });
-    assert.ok(pile.length > 0, 'pred živaljo v stolpcu ' + a.col + ' ni kupa snega');
-  });
-  assert.ok(side > 0, 'na stranskem nivoju ni muhe ali komarjev');
+    return false;
+  }) >= 3, 'skupine konic');
+  assert.ok(count(room.isOneWay) > 0, 'ledene plošče');
+  assert.ok(r.food.length >= 30, 'hrana');
+  assert.ok(r.goals[0].col >= r.cols - screenCols, 'cilj je na zadnjem zaslonu');
 });
 
-test('prvo sobo je mogoče prehoditi do cilja, preden zmanjka energije, in pregnati vse muhe in komarje', function () {
+test('prva soba: kupi snega, medveda, volk in ledene ovire s kupom pred vsako', function () {
+  var ground = (r.rows - 2) * T;
+  var piles = [];
+  count(function (t, c, row) {
+    if (room.isPile(t)) {
+      piles.push({ col: c, row: row });
+    }
+    return false;
+  });
+  assert.ok(piles.length >= 6, 'kupi snega');
+  var types = r.animals.map(function (a) { return a.type; });
+  ['bear', 'polar', 'wolf'].forEach(function (type) {
+    assert.ok(types.indexOf(type) !== -1, 'manjka ' + type);
+  });
+  var main = { wall: 0, icicle: 0 };
+  var side = 0;
+  r.obstacles.forEach(function (o) {
+    // vrstica, v kateri stoji pingvin, ko meče v oviro
+    var standRow = o.type === 'icicle' ? o.row + 1 : o.row;
+    var floor = (standRow + 1) * T;
+    if (floor < ground) {
+      side++;
+    } else {
+      main[o.type]++;
+    }
+    var pile = piles.filter(function (p) {
+      return p.row === standRow && p.col < o.col && o.col - p.col <= 6;
+    });
+    assert.ok(pile.length > 0, 'pred oviro v stolpcu ' + o.col + ' ni kupa snega');
+  });
+  assert.ok(main.wall >= 3, 'ledeni zidovi na glavni poti');
+  assert.ok(main.icicle >= 3, 'ledene sveče na glavni poti');
+  assert.ok(side > 0, 'na stranskem nivoju ni ovire');
+});
+
+test('prvo sobo je mogoče prehoditi do cilja, preden zmanjka energije, in razbiti vse ovire', function () {
   var game = require('../../src/js/core/game.js');
-  var animals = require('../../src/js/core/animals.js');
   var bot = require('../bot.js');
   var g = game.create(room1);
-  var result = bot.play(g, 60 * 120);
+  var result = bot.play(g, 60 * 600);
   assert.strictEqual(g.state, 'goal');
-  assert.ok(result.climbed > 1, 'pot vodi po lestvi in na stranski nivo');
-  var cleared = g.animals.filter(function (a) { return a.type === 'fly' || a.type === 'mosquitoes'; })
-    .every(function (a) { return !animals.isBlocking(a); });
-  assert.ok(cleared, 'vse muhe in komarji so pregnani');
-  assert.strictEqual(g.score, 3 + 3 + 3);
+  assert.ok(result.climbed >= 3, 'pot vodi po lestvah in na stranski nivo');
+  assert.ok(g.obstacles.every(function (o) { return o.broken; }), 'vse ovire so razbite');
+  var expected = 0;
+  g.obstacles.forEach(function (o) { expected += settings.score[o.type]; });
+  assert.strictEqual(g.score, expected);
 });
 
 test('za vsak prepad obstaja varno mesto na tleh, ne v prepadu in ne ob konicah', function () {

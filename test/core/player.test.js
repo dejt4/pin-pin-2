@@ -286,13 +286,13 @@ test('spust z vrha lestve do tal', function () {
   assert.strictEqual(feet(p), 6 * T);
 });
 
-test('izhod z lestve s skokom in s stranjo', function () {
+test('izhod z lestve s stranjo; ponoven pritisk gor med plezanjem ne skoči', function () {
   var s = atLadder();
   var p = s.p;
   run(p, ladderRoom, s.input, ['up'], 30);
-  player.step(p, ladderRoom, s.input(['jump']), DT);
-  assert.strictEqual(p.mode, 'air');
-  assert.ok(p.vy < 0);
+  run(p, ladderRoom, s.input, [], 1);
+  player.step(p, ladderRoom, s.input(['up']), DT);
+  assert.strictEqual(p.mode, 'climb');
 
   var t = atLadder();
   run(t.p, ladderRoom, t.input, ['up'], 30);
@@ -300,13 +300,31 @@ test('izhod z lestve s skokom in s stranjo', function () {
   assert.strictEqual(t.p.mode, 'air');
 });
 
-test('gor brez lestve: nič se ne zgodi', function () {
+test('gor brez lestve: pingvin skoči', function () {
   var p = spawn(flat);
   var input = h.createInput();
   var y = p.y;
-  run(p, flat, input, ['up'], 20);
+  player.step(p, flat, input(['up']), DT);
+  assert.strictEqual(p.mode, 'air');
+  assert.ok(p.y < y);
+});
+
+test('gor pred lestvijo: pingvin pleza, ne skoči', function () {
+  var s = atLadder();
+  player.step(s.p, ladderRoom, s.input(['up']), DT);
+  assert.strictEqual(s.p.mode, 'climb');
+  assert.ok(s.p.vy >= 0);
+});
+
+test('držanje gor na vrhu lestve ne skoči', function () {
+  var s = atLadder();
+  var p = s.p;
+  run(p, ladderRoom, s.input, ['up'], 200);
   assert.strictEqual(p.mode, 'ground');
-  assert.strictEqual(p.y, y);
+  assert.strictEqual(feet(p), 2 * T);
+  run(p, ladderRoom, s.input, ['up'], 30);
+  assert.strictEqual(p.mode, 'ground');
+  assert.strictEqual(feet(p), 2 * T);
 });
 
 // Animacije

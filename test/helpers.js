@@ -7,7 +7,8 @@ var controls = require('../src/js/config/controls.js');
 var settings = require('../src/js/config/settings.js');
 var room = require('../src/js/core/room.js');
 
-var KEYS = { left: 37, up: 38, right: 39, down: 40, jump: 89, throw: 88 };
+// 'jump' je v testih samo bolj berljivo ime za puščico gor
+var KEYS = { left: 37, up: 38, right: 39, down: 40, jump: 38, throw: 32 };
 
 // Ustvari bralnik akcij: input(['right', 'jump']) vrne stanje akcij za en korak.
 function createInput() {

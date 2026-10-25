@@ -2,7 +2,7 @@
 
 ## Context
 
-Igra je napisana v ES5 brez gradbenega koraka, tipke se berejo po `keyCode`, kontroler prek Gamepad API s standardno razporeditvijo (× skok, □ kepa). Vse to je bilo izbrano zaradi brskalnika PS4, a na PS4 še ni preizkušeno. Glej proposal.md.
+Igra je napisana v ES5 brez gradbenega koraka, tipke se berejo po `keyCode`, kontroler prek Gamepad API s standardno razporeditvijo (gor skok, □ kepa). Vse to je bilo izbrano zaradi brskalnika PS4, a na PS4 še ni preizkušeno. Glej proposal.md.
 
 ## Goals / Non-Goals
 

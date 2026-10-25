@@ -4,19 +4,18 @@
 
   var controls = {
     // keyCode → akcija
+    // gor je skok ali plezanje (glej core/player.js)
     keyboard: {
       37: 'left',
       38: 'up',
       39: 'right',
       40: 'down',
-      89: 'jump',   // Y
-      88: 'throw'   // X
+      32: 'throw'   // presledek
     },
 
     // standardna razporeditev kontrolerja (PS4)
     gamepad: {
       buttons: {
-        0: 'jump',    // ×
         2: 'throw',   // □
         12: 'up',     // križec
         13: 'down',

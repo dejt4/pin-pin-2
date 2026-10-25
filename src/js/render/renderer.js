@@ -7,6 +7,7 @@
   var sprites = PinPin.get('render.sprites', 'render/sprites.js');
   var snowballs = PinPin.get('render.snowballs', 'render/snowballs.js');
   var animals = PinPin.get('render.animals', 'render/animals.js');
+  var obstacles = PinPin.get('render.obstacles', 'render/obstacles.js');
   var hud = PinPin.get('render.hud', 'render/hud.js');
   var overlay = PinPin.get('render.overlay', 'render/overlay.js');
 
@@ -19,7 +20,8 @@
         background.draw(ctx, game.cameraX);
         tiles.draw(ctx, game, cache, scale);
         snowballs.drawPiles(ctx, game);
-        animals.draw(ctx, game);
+        obstacles.draw(ctx, game, cache, scale);
+        animals.draw(ctx, game, cache, scale);
         sprites.drawPlayer(ctx, game, cache, scale);
         snowballs.drawBalls(ctx, game);
         if (game.state !== 'start') {

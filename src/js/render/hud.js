@@ -26,7 +26,7 @@
 
   function draw(ctx, game, cache, scale) {
     var ratio = energy.ratio(game.energy);
-    var icon = spriteConfig.fish[1];
+    var icon = spriteConfig.food[0];
     var info = cache.info(icon);
     ctx.drawImage(cache.get(icon, scale), X, Y + (BAR_H - info.height) / 2, info.width, info.height);
 

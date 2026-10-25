@@ -6,7 +6,8 @@
 (function (root) {
   'use strict';
 
-  var NAMES = ['left', 'right', 'up', 'down', 'jump', 'throw'];
+  // skok nima svoje akcije: sproži ga 'up' (glej core/player.js)
+  var NAMES = ['left', 'right', 'up', 'down', 'throw'];
 
   function emptyFlags() {
     var flags = {};

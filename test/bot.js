@@ -1,13 +1,13 @@
 'use strict';
 
-// Samodejni igralec za teste prve sobe: hodi desno, skoči pred prepadom, zidom,
-// konicami ali živaljo, pleza po vsaki lestvi enkrat, ob zaprti poti pa gre po kepo
-// do kupa snega in meče, dokler pot ni prosta.
+// Samodejni igralec za teste prve sobe: hodi desno, skoči (gor) pred prepadom, zidom,
+// konicami ali živaljo, pleza po vsaki lestvi enkrat, ob ledeni oviri pa gre po kepo
+// do kupa snega in meče, dokler ovira ni razbita.
 
 var room = require('../src/js/core/room.js');
 var game = require('../src/js/core/game.js');
 var player = require('../src/js/core/player.js');
-var animals = require('../src/js/core/animals.js');
+var obstacles = require('../src/js/core/obstacles.js');
 var h = require('./helpers.js');
 
 var T = h.T;
@@ -33,7 +33,7 @@ function play(g, maxSteps, onStep) {
     var feetRow = Math.round((p.y + p.height) / T);
 
     var blockedWithin = function (distance) {
-      return animals.blockers(g.animals).some(function (b) {
+      return obstacles.blockers(g.obstacles).some(function (b) {
         var gap = b.x - (p.x + p.width);
         return gap > -1 && gap < distance && p.y < b.y + b.height && p.y + p.height > b.y;
       });
@@ -47,7 +47,7 @@ function play(g, maxSteps, onStep) {
     }
     var walkerAhead = g.animals.some(function (a) {
       var gap = a.x - (p.x + p.width);
-      return animals.isWalker(a) && gap > 0 && gap < 50 && Math.abs(a.y + a.height - (p.y + p.height)) < 1;
+      return gap > 0 && gap < 50 && Math.abs(a.y + a.height - (p.y + p.height)) < 1;
     });
     var ladderHere = room.isLadder(room.tileAt(r, col, feetRow - 1));
 
@@ -72,7 +72,7 @@ function play(g, maxSteps, onStep) {
       var wall = room.isSolid(room.tileAt(r, ahead, feetRow - 1));
       var spikes = room.isSpikes(room.tileAt(r, ahead, feetRow - 1));
       if (gap || wall || spikes || walkerAhead) {
-        names.push('jump');
+        names.push('up');
         why = 'jump';
       }
     }

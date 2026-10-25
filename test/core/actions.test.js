@@ -13,13 +13,18 @@ function pad(buttons, axes) {
   return { buttons: b, axes: axes || [0, 0] };
 }
 
-test('akcije so natanko left, right, up, down, jump, throw', function () {
-  assert.deepStrictEqual(actions.NAMES, ['left', 'right', 'up', 'down', 'jump', 'throw']);
+test('akcije so natanko left, right, up, down, throw (skok je gor)', function () {
+  assert.deepStrictEqual(actions.NAMES, ['left', 'right', 'up', 'down', 'throw']);
 });
 
-test('tipkovnica: puščice, Y in X', function () {
-  var s = actions.read(controls, { 37: true, 38: true, 39: true, 40: true, 89: true, 88: true }, [], null);
-  assert.deepStrictEqual(s.down, { left: true, right: true, up: true, down: true, jump: true, throw: true });
+test('tipkovnica: puščice in presledek', function () {
+  var s = actions.read(controls, { 37: true, 38: true, 39: true, 40: true, 32: true }, [], null);
+  assert.deepStrictEqual(s.down, { left: true, right: true, up: true, down: true, throw: true });
+});
+
+test('tipkovnica: Y in X nista več tipki igre', function () {
+  var s = actions.read(controls, { 89: true, 88: true }, [], null);
+  assert.strictEqual(actions.anyPressed(s), false);
 });
 
 test('tipkovnica: neznana tipka ne sproži akcije', function () {
@@ -36,10 +41,12 @@ test('hoja s puščico: right je aktiven, dokler se drži', function () {
   assert.strictEqual(s3.down.right, false);
 });
 
-test('kontroler: × je skok, □ je kepa, križec so smeri', function () {
-  var s = actions.read(controls, {}, [pad([0, 2, 14])], null);
-  assert.strictEqual(s.down.jump, true);
+test('kontroler: × ni več skok, □ je kepa, križec so smeri (gor je skok)', function () {
+  var s = actions.read(controls, {}, [pad([0, 2, 14, 12])], null);
+  assert.strictEqual(s.down.up, true);
   assert.strictEqual(s.down.throw, true);
+  var none = actions.read(controls, {}, [pad([0])], null);
+  assert.strictEqual(actions.anyPressed(none), false);
   assert.strictEqual(s.down.left, true);
   assert.strictEqual(s.down.right, false);
 });
@@ -65,26 +72,26 @@ test('ni kontrolerja: prazen ali null seznam ne povzroči napake', function () {
 });
 
 test('tipkovnica in kontroler hkrati', function () {
-  var s = actions.read(controls, { 39: true }, [pad([0])], null);
+  var s = actions.read(controls, { 39: true }, [pad([2])], null);
   assert.strictEqual(s.down.right, true);
-  assert.strictEqual(s.down.jump, true);
+  assert.strictEqual(s.down.throw, true);
 });
 
 test('držanje: pressed samo v prvem koraku, nov pritisk po spustu', function () {
-  var s1 = actions.read(controls, { 89: true }, [], null);
-  var s2 = actions.read(controls, { 89: true }, [], s1);
+  var s1 = actions.read(controls, { 38: true }, [], null);
+  var s2 = actions.read(controls, { 38: true }, [], s1);
   var s3 = actions.read(controls, {}, [], s2);
-  var s4 = actions.read(controls, { 89: true }, [], s3);
-  assert.strictEqual(s1.pressed.jump, true);
-  assert.strictEqual(s2.pressed.jump, false);
-  assert.strictEqual(s3.pressed.jump, false);
-  assert.strictEqual(s4.pressed.jump, true);
+  var s4 = actions.read(controls, { 38: true }, [], s3);
+  assert.strictEqual(s1.pressed.up, true);
+  assert.strictEqual(s2.pressed.up, false);
+  assert.strictEqual(s3.pressed.up, false);
+  assert.strictEqual(s4.pressed.up, true);
 });
 
 test('dotik: gumbi na zaslonu sprožijo akcije', function () {
-  var s = actions.read(controls, {}, [], null, { right: true, jump: true });
+  var s = actions.read(controls, {}, [], null, { right: true, throw: true });
   assert.strictEqual(s.down.right, true);
-  assert.strictEqual(s.down.jump, true);
+  assert.strictEqual(s.down.throw, true);
   assert.strictEqual(s.down.left, false);
 });
 
@@ -94,18 +101,18 @@ test('dotik: neznana akcija se prezre', function () {
 });
 
 test('dotik skupaj s tipkovnico', function () {
-  var s = actions.read(controls, { 37: true }, [], null, { jump: true });
+  var s = actions.read(controls, { 37: true }, [], null, { up: true });
   assert.strictEqual(s.down.left, true);
-  assert.strictEqual(s.down.jump, true);
+  assert.strictEqual(s.down.up, true);
 });
 
 test('dotik: držanje gumba Skok ne skače ponovno, nov dotik pa', function () {
-  var s1 = actions.read(controls, {}, [], null, { jump: true });
-  var s2 = actions.read(controls, {}, [], s1, { jump: true });
+  var s1 = actions.read(controls, {}, [], null, { up: true });
+  var s2 = actions.read(controls, {}, [], s1, { up: true });
   var s3 = actions.read(controls, {}, [], s2, {});
-  var s4 = actions.read(controls, {}, [], s3, { jump: true });
-  assert.strictEqual(s1.pressed.jump, true);
-  assert.strictEqual(s2.pressed.jump, false);
-  assert.strictEqual(s3.down.jump, false);
-  assert.strictEqual(s4.pressed.jump, true);
+  var s4 = actions.read(controls, {}, [], s3, { up: true });
+  assert.strictEqual(s1.pressed.up, true);
+  assert.strictEqual(s2.pressed.up, false);
+  assert.strictEqual(s3.down.up, false);
+  assert.strictEqual(s4.pressed.up, true);
 });

@@ -15,7 +15,7 @@ function room(rows) {
   return { name: 'test', rows: rows };
 }
 
-// 30 stolpcev: riba, konice, prepad 3 ploščic in cilj
+// 30 stolpcev: hrana, konice, prepad 3 ploščic in cilj
 var source = room([
   '..............................',
   '..............................',
@@ -72,7 +72,7 @@ test('energija ne upada na začetnem zaslonu', function () {
 
 // Ribe
 
-test('pobiranje ribe: izgine in doda energijo', function () {
+test('pobiranje hrane: izgine in doda energijo', function () {
   var s = playing();
   s.g.energy.value = 50;
   run(s, ['right'], 60);
@@ -114,7 +114,7 @@ test('neranljivost: ponoven dotik konic med utripanjem ne vzame energije', funct
 
 test('konice vzamejo zadnjo energijo: pingvin se utrudi', function () {
   var s = playing();
-  // mimo ribe, nato malo energije
+  // mimo hrane, nato malo energije
   run(s, ['right'], 80);
   s.g.energy.value = 5;
   for (var i = 0; i < 300 && s.g.state === 'playing'; i++) {
@@ -151,7 +151,7 @@ test('padec v prepad: varno mesto en zaslon nazaj in manj energije', function ()
   assert.ok(Math.abs(lost - settings.energy.pitPenalty) < 1);
 });
 
-test('pobrana riba ostane pobrana po padcu v prepad', function () {
+test('pobrana hrana ostane pobrana po padcu v prepad', function () {
   var s = playing();
   run(s, ['right'], 60);
   assert.strictEqual(s.g.collected[0], true);
@@ -178,7 +178,7 @@ test('prezgodnji pritisk po utrujenosti ne začne znova', function () {
   s.g.energy.value = 0.001;
   run(s, [], 2);
   run(s, [], 10);
-  game.step(s.g, s.input(['jump']), DT);
+  game.step(s.g, s.input(['up']), DT);
   assert.strictEqual(s.g.state, 'tired');
   assert.strictEqual(game.restartReady(s.g), false);
 });
@@ -190,7 +190,7 @@ test('ponoven začetek po utrujenosti: soba od začetka', function () {
   run(s, [], 2);
   run(s, [], Math.ceil(settings.flow.restartDelay / DT) + 1);
   assert.strictEqual(game.restartReady(s.g), true);
-  game.step(s.g, s.input(['jump']), DT);
+  game.step(s.g, s.input(['up']), DT);
   assert.strictEqual(s.g.state, 'playing');
   assert.strictEqual(energy.ratio(s.g.energy), 1);
   assert.strictEqual(Object.keys(s.g.collected).length, 0);
@@ -243,17 +243,17 @@ test('kamera sledi pingvinu in ostane v sobi', function () {
   assert.strictEqual(s.g.cameraX, s.g.room.width - settings.screen.width);
 });
 
-// Kepe, živali in točke
+// Kepe, ovire, živali in točke
 
-// 40 stolpcev: kup, komarji, muha, prepad, volk
+// 40 stolpcev: kup, ledeni zid, strop z ledeno svečo, prepad, volk
 var zoo = room([
   '........................................',
   '........................................',
   '........................................',
   '........................................',
-  '........................................',
-  '........................................',
-  '.S.*...k..u.............V.............G.',
+  '..........####..........................',
+  '...........i............................',
+  '.S.*...W...........*....V.............G.',
   '##################...###################',
   '##################...###################'
 ]);
@@ -266,7 +266,7 @@ function standAtPile(s) {
   assert.strictEqual(s.g.snow.atPile, true);
 }
 
-// meče kepe, dokler ni n zadetkov dogodkov ali poteče čas
+// vrže n kep z dovolj časa, da priletijo do cilja
 function throwMany(s, n) {
   for (var i = 0; i < n; i++) {
     game.step(s.g, s.input(['throw']), DT);
@@ -274,48 +274,67 @@ function throwMany(s, n) {
   }
 }
 
-test('komarji in muha s kupa: točke 1 + 1 + 1 in 3', function () {
+test('ledeni zid s kupa: pet kep, razpad in 3 točke', function () {
   var s = playing(zoo);
   standAtPile(s);
-  throwMany(s, 3);
-  assert.strictEqual(s.g.animals[0].stuck, 3);
-  assert.strictEqual(s.g.score, 3);
-  throwMany(s, 5);
-  assert.strictEqual(s.g.animals[1].gone, true);
-  assert.strictEqual(s.g.score, 6);
+  throwMany(s, 4);
+  assert.strictEqual(s.g.obstacles[1].hits, 4);
+  assert.strictEqual(s.g.score, 0);
+  throwMany(s, 1);
+  assert.strictEqual(s.g.obstacles[1].broken, true);
+  assert.strictEqual(s.g.score, settings.score.wall);
 });
 
-test('točke in pregnane živali ostanejo po padcu v prepad, nošena kepa tudi', function () {
+test('pingvin se ustavi pred celim zidom', function () {
   var s = playing(zoo);
+  run(s, ['right'], 200);
+  var wall = s.g.obstacles[1];
+  assert.ok(s.g.player.x + s.g.player.width <= wall.x + 1e-6);
+});
+
+test('ledena sveča: tri kepe in 1 točka', function () {
+  var s = playing(zoo);
+  var icicle = s.g.obstacles[0];
+  s.g.obstacles[1].broken = true;
+  // k kupu za zidom (stolpec 19) ne gre, sveča je pred njim: pingvin vzame kepo s prvega kupa
   standAtPile(s);
   throwMany(s, 3);
-  run(s, ['right'], 40);
+  assert.strictEqual(icicle.broken, true);
+  assert.strictEqual(s.g.score, settings.score.icicle);
+});
+
+test('točke in razbite ovire ostanejo po padcu v prepad, nošena kepa tudi', function () {
+  var s = playing(zoo);
+  standAtPile(s);
+  throwMany(s, 5);
+  run(s, ['right'], 30);
   assert.strictEqual(s.g.snow.carrying, true);
   fallIntoPit(s);
-  assert.strictEqual(s.g.score, 3);
-  assert.strictEqual(s.g.animals[0].stuck, 3);
+  assert.strictEqual(s.g.score, settings.score.wall);
+  assert.strictEqual(s.g.obstacles[1].broken, true);
   assert.strictEqual(s.g.snow.carrying, true);
 });
 
-test('ponovni začetek: točke nič, živali na mestu, brez kepe', function () {
+test('ponovni začetek: točke nič, ovire cele, živali na mestu, brez kepe', function () {
   var s = playing(zoo);
   standAtPile(s);
-  throwMany(s, 3);
-  run(s, ['right'], 40);
+  throwMany(s, 5);
+  run(s, ['right'], 30);
   s.g.energy.value = 0.001;
   run(s, [], 2);
   run(s, [], Math.ceil(settings.flow.restartDelay / DT) + 1);
-  game.step(s.g, s.input(['jump']), DT);
+  game.step(s.g, s.input(['up']), DT);
   assert.strictEqual(s.g.state, 'playing');
   assert.strictEqual(s.g.score, 0);
-  assert.strictEqual(s.g.animals[0].stuck, 0);
+  assert.strictEqual(s.g.obstacles[1].broken, false);
+  assert.strictEqual(s.g.obstacles[1].hits, 0);
   assert.strictEqual(s.g.snow.carrying, false);
+  assert.strictEqual(s.g.animals[0].x, s.g.animals[0].startX);
 });
 
-test('ulov volka: nazaj en zaslon, približno 15 % energije manj, neranljivost', function () {
+test('ulov volka: udarec, nazaj en zaslon, približno 15 % energije manj, neranljivost', function () {
   var s = playing(zoo);
-  // pingvin tik pred volkom
-  var wolf = s.g.animals[2];
+  var wolf = s.g.animals[0];
   player.placeAt(s.g.player, { x: wolf.x + wolf.width / 2, y: 7 * T });
   var before = s.g.energy.value;
   run(s, [], 1);
@@ -323,10 +342,5 @@ test('ulov volka: nazaj en zaslon, približno 15 % energije manj, neranljivost',
   assert.ok(player.centerX(p) <= wolf.x + wolf.width - 16 * T + T, 'vsaj en zaslon nazaj');
   assert.ok(Math.abs(before - s.g.energy.value - settings.energy.caughtPenalty) < 0.1);
   assert.ok(p.invulnerable > 0);
-});
-
-test('pingvin se ustavi pred komarji, dokler niso vsi prilepljeni', function () {
-  var s = playing(zoo);
-  run(s, ['right'], 200);
-  assert.ok(s.g.player.x + s.g.player.width <= 7 * T + 1e-6);
+  assert.ok(wolf.pushTime > 0, 'volk pokaže udarec');
 });

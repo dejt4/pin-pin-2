@@ -1,4 +1,4 @@
-// Energija pingvina: upad s časom, ribe, kazni. Vrednost je med 0 in max.
+// Energija pingvina: upad s časom, hrana, kazni. Vrednost je med 0 in max.
 (function (root) {
   'use strict';
 
@@ -20,8 +20,8 @@
     change(e, -cfg.drainPerSecond * dt);
   }
 
-  function eatFish(e) {
-    change(e, cfg.fish);
+  function eatFood(e) {
+    change(e, cfg.food);
   }
 
   function pitPenalty(e) {
@@ -48,7 +48,7 @@
   var energy = {
     create: create,
     drain: drain,
-    eatFish: eatFish,
+    eatFood: eatFood,
     pitPenalty: pitPenalty,
     spikesPenalty: spikesPenalty,
     caughtPenalty: caughtPenalty,

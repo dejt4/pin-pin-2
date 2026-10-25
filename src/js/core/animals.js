@@ -1,9 +1,8 @@
-// Živali: medved in volk hodita sem in tja, muha in komarji zapirajo pot.
+// Živali: rjavi medved, beli medved in volk hodijo sem in tja po svojem delu tal.
 //
-// Medved, volk: { type, x, y, width, height, dir, startX, speed, range, hitTime }
-// Muha:         { type: 'fly', x, y, width, height, hits, gone, leaveTime, floorY }
-// Komarji:      { type: 'mosquitoes', x, y, width, height, stuck, floorY }
-// floorY je zgornji rob prve podlage pod muho ali komarji (do tja sega zapora).
+// Žival: { type, x, y, width, height, dir, startX, speed, range, walkTime, pushTime }
+//   walkTime  čas hoje (za menjavo sličic)
+//   pushTime  preostanek udarca po ulovu pingvina (med tem žival stoji)
 (function (root) {
   'use strict';
 
@@ -16,56 +15,24 @@
   var cfg = settings.animals;
   var EPS = 1e-6;
 
-  function isWalker(a) {
-    return a.type === 'bear' || a.type === 'wolf';
-  }
-
-  // Ali žival še zapira pot (muha ni pregnana, niso vsi komarji prilepljeni).
-  function isBlocking(a) {
-    if (a.type === 'fly') {
-      return !a.gone;
-    }
-    if (a.type === 'mosquitoes') {
-      return a.stuck < cfg.mosquitoes;
-    }
-    return false;
-  }
-
   function createOne(r, info) {
     var T = r.tileSize;
-    if (isWalker(info)) {
-      var size = cfg[info.type];
-      var x = info.col * T + T / 2 - size.width / 2;
-      return {
-        type: info.type,
-        x: x,
-        y: (info.row + 1) * T - size.height,
-        width: size.width,
-        height: size.height,
-        // na začetku gleda levo, proti pingvinu, ki pride z leve
-        dir: -1,
-        startX: x,
-        speed: size.speed,
-        range: size.range * T,
-        hitTime: 0
-      };
-    }
-    var a = {
+    var size = cfg[info.type];
+    var x = info.col * T + T / 2 - size.width / 2;
+    return {
       type: info.type,
-      x: info.col * T,
-      y: info.row * T,
-      width: T,
-      height: T,
-      floorY: room.surfaceBelow(r, info.col, info.row)
+      x: x,
+      y: (info.row + 1) * T - size.height,
+      width: size.width,
+      height: size.height,
+      // na začetku gleda levo, proti pingvinu, ki pride z leve
+      dir: -1,
+      startX: x,
+      speed: size.speed,
+      range: size.range * T,
+      walkTime: 0,
+      pushTime: 0
     };
-    if (info.type === 'fly') {
-      a.hits = 0;
-      a.gone = false;
-      a.leaveTime = 0;
-    } else {
-      a.stuck = 0;
-    }
-    return a;
   }
 
   // Živali na začetnih mestih iz sobe.
@@ -77,8 +44,8 @@
     return list;
   }
 
-  // Ali sme hodeča žival na položaj nextX (tla pod sprednjim robom, brez zidu in konic).
-  function canWalkTo(r, a, nextX) {
+  // Ali sme žival na položaj nextX: tla pod sprednjim robom, brez zidu, konic in zapor ovir.
+  function canWalkTo(r, a, nextX, blockers) {
     var T = r.tileSize;
     var frontX = a.dir > 0 ? nextX + a.width - EPS : nextX;
     var col = Math.floor(frontX / T);
@@ -96,101 +63,67 @@
     if (nextX < 0 || nextX + a.width > r.width) {
       return false;
     }
+    var body = { x: nextX, y: a.y, width: a.width, height: a.height };
+    for (var i = 0; blockers && i < blockers.length; i++) {
+      if (math.overlaps(body, blockers[i])) {
+        return false;
+      }
+    }
     return Math.abs(nextX - a.startX) <= a.range;
   }
 
-  function stepWalker(r, a, dt) {
-    if (a.hitTime > 0) {
-      a.hitTime = Math.max(0, a.hitTime - dt);
-    }
-    var nextX = a.x + a.dir * a.speed * dt;
-    if (canWalkTo(r, a, nextX)) {
-      a.x = nextX;
-    } else {
-      a.dir = -a.dir;
-    }
-  }
-
-  function step(list, r, dt) {
+  // blockers: zapore ledenih ovir (glej core/obstacles.js)
+  function step(list, r, dt, blockers) {
     for (var i = 0; i < list.length; i++) {
       var a = list[i];
-      if (isWalker(a)) {
-        stepWalker(r, a, dt);
-      } else if (a.type === 'fly' && a.gone) {
-        a.leaveTime += dt;
+      if (a.pushTime > 0) {
+        a.pushTime = Math.max(0, a.pushTime - dt);
+        continue;
+      }
+      var nextX = a.x + a.dir * a.speed * dt;
+      if (canWalkTo(r, a, nextX, blockers)) {
+        a.x = nextX;
+        a.walkTime += dt;
+      } else {
+        a.dir = -a.dir;
       }
     }
   }
 
-  // Zadetek kepe v žival. Vrne dogodek za točke ali null.
-  function hit(a) {
-    if (isWalker(a)) {
-      a.dir = -a.dir;
-      a.hitTime = cfg.hitTime;
-      return null;
-    }
-    if (a.type === 'fly') {
-      a.hits++;
-      if (a.hits >= cfg.flyHits) {
-        a.gone = true;
-        return 'fly';
-      }
-      return null;
-    }
-    a.stuck++;
-    return 'mosquito';
-  }
-
-  // Kepe, ki zadenejo žival, izginejo (dead). Vrne seznam dogodkov ('fly', 'mosquito').
+  // Kepe, ki zadenejo žival, izginejo (dead), žival se obrne.
   function hitBy(list, balls) {
-    var events = [];
     for (var b = 0; b < balls.length; b++) {
       var ball = balls[b];
       for (var i = 0; i < list.length && !ball.dead; i++) {
-        var a = list[i];
-        if ((isWalker(a) || isBlocking(a)) && math.overlaps(ball, a)) {
+        if (math.overlaps(ball, list[i])) {
           ball.dead = true;
-          var event = hit(a);
-          if (event) {
-            events.push(event);
-          }
+          list[i].dir = -list[i].dir;
         }
       }
     }
-    return events;
   }
 
-  // Zapore poti za pingvina: stolpec muhe ali komarjev nad prvo podlago pod njimi
-  // (in nad vrhom sobe, da je ni mogoče preskočiti).
-  function blockers(list) {
-    var result = [];
+  // Žival, ki se dotika pingvina, ali null.
+  function catcher(list, p) {
     for (var i = 0; i < list.length; i++) {
-      var a = list[i];
-      if (isBlocking(a)) {
-        result.push({ x: a.x, y: -a.floorY, width: a.width, height: 2 * a.floorY });
+      if (math.overlaps(list[i], p)) {
+        return list[i];
       }
     }
-    return result;
+    return null;
   }
 
-  // Ali se medved ali volk dotika pingvina.
-  function catches(list, p) {
-    for (var i = 0; i < list.length; i++) {
-      if (isWalker(list[i]) && math.overlaps(list[i], p)) {
-        return true;
-      }
-    }
-    return false;
+  // Ob ulovu žival za kratek čas obstane in pokaže udarec.
+  function push(a) {
+    a.pushTime = cfg.pushTime;
   }
 
   var animals = {
     create: create,
     step: step,
     hitBy: hitBy,
-    blockers: blockers,
-    catches: catches,
-    isWalker: isWalker,
-    isBlocking: isBlocking
+    catcher: catcher,
+    push: push
   };
 
   if (isNode) {

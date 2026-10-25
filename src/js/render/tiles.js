@@ -1,4 +1,4 @@
-// Ploščice sobe, ribe in cilj. Tla in lestve so barvni pravokotniki, dokler ni grafike.
+// Ploščice sobe, hrana in cilj. Tla in lestve so barvni pravokotniki, dokler ni grafike.
 (function (PinPin) {
   'use strict';
 
@@ -104,13 +104,13 @@
       }
     }
 
-    var fish = r.fish;
-    for (var i = 0; i < fish.length; i++) {
-      var f = fish[i];
+    var food = r.food;
+    for (var i = 0; i < food.length; i++) {
+      var f = food[i];
       if (game.collected[f.id] || f.x + f.width < camX || f.x > camX + W) {
         continue;
       }
-      var name = spriteConfig.fish[f.color];
+      var name = spriteConfig.food[f.kind];
       var info = cache.info(name);
       // rahlo pozibavanje
       var bob = Math.sin(game.stateTime * 3 + f.id) * 2;

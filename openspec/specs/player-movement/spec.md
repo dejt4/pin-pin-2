@@ -28,10 +28,10 @@ Pingvina SHALL vleči gravitacija, ko ne stoji na podlagi in ne pleza. Hitrost p
 - **THEN** začne padati in pristane na prvi podlagi pod sabo
 
 ### Requirement: Skok
-Pingvin SHALL ob novem pritisku `jump` skočiti, če stoji na podlagi. Med skokom MUST ga igralec lahko usmerja levo in desno. Skok MUST biti dovolj dolg, da pingvin preskoči prepad, širok 3 ploščice, in dovolj visok, da doseže ploščad 2 ploščici višje. Pingvin MUST NOT skočiti v zraku.
+Pingvin SHALL ob novem pritisku `up` skočiti, če stoji na podlagi in ni pri lestvi (pri lestvi `up` pomeni plezanje, glej Plezanje po lestvi). Med skokom MUST ga igralec lahko usmerja levo in desno. Skok MUST biti dovolj dolg, da pingvin preskoči prepad, širok 3 ploščice, in dovolj visok, da doseže ploščad 2 ploščici višje. Pingvin MUST NOT skočiti v zraku.
 
 #### Scenario: Skok s tal
-- **WHEN** pingvin stoji na tleh in igralec pritisne `jump`
+- **WHEN** pingvin stoji na tleh daleč od lestve in igralec pritisne `up`
 - **THEN** pingvin poskoči, se dvigne, doseže vrh in pade nazaj
 
 #### Scenario: Preskok prepada
@@ -39,7 +39,7 @@ Pingvin SHALL ob novem pritisku `jump` skočiti, če stoji na podlagi. Med skoko
 - **THEN** pristane na drugi strani
 
 #### Scenario: Ni dvojnega skoka
-- **WHEN** je pingvin v zraku in igralec pritisne `jump`
+- **WHEN** je pingvin v zraku in igralec pritisne `up`
 - **THEN** se skok ne ponovi
 
 #### Scenario: Udarec z glavo
@@ -62,15 +62,15 @@ Pingvin MUST NOT iti skozi trdne ploščice (tla, ledena kocka) z nobene strani.
 - **THEN** se ustavi na robu
 
 ### Requirement: Plezanje po lestvi
-Ko pingvin stoji pred lestvijo ali na njenem vrhu, SHALL ob akciji `up` oziroma `down` začeti plezati. Med plezanjem gravitacija MUST NOT delovati, pingvin se poravna na sredino lestve in se premika gor ali dol s stalno hitrostjo; brez akcije obvisi na mestu. Vrh lestve SHALL delovati kot podlaga, na kateri lahko stoji. Lestev SHALL zapustiti, ko spleza na vrh, ko na dnu doseže tla, s skokom ali z akcijo `left`/`right`.
+Ko pingvin stoji pred lestvijo, SHALL ob akciji `up` začeti plezati namesto skočiti; ko stoji na vrhu lestve, SHALL ob akciji `down` začeti plezati navzdol. Med plezanjem gravitacija MUST NOT delovati, pingvin se poravna na sredino lestve in se premika gor ali dol s stalno hitrostjo; brez akcije obvisi na mestu. Vrh lestve SHALL delovati kot podlaga, na kateri lahko stoji. Lestev SHALL zapustiti, ko spleza na vrh, ko na dnu doseže tla, ali z akcijo `left`/`right`.
 
 #### Scenario: Plezanje gor
 - **WHEN** pingvin stoji pred lestvijo in igralec drži `up`
-- **THEN** pingvin pleza gor in kaže animacijo plezanja (pogled od zadaj)
+- **THEN** pingvin ne skoči, ampak pleza gor in kaže animacijo plezanja (pogled od zadaj)
 
 #### Scenario: Prihod na vrh
 - **WHEN** pingvin spleza do vrha lestve
-- **THEN** stopi na ploščad nad lestvijo in lahko hodi naprej
+- **THEN** stopi na ploščad nad lestvijo in lahko hodi naprej, in ker `up` še drži, ne skoči
 
 #### Scenario: Spust z vrha
 - **WHEN** pingvin stoji na vrhu lestve in igralec drži `down`
@@ -81,8 +81,12 @@ Ko pingvin stoji pred lestvijo ali na njenem vrhu, SHALL ob akciji `up` oziroma 
 - **THEN** pingvin obvisi na mestu in ne pade
 
 #### Scenario: Gor brez lestve
-- **WHEN** pingvin ni pri lestvi in igralec pritisne `up`
-- **THEN** se nič ne zgodi
+- **WHEN** pingvin stoji na tleh, ni pri lestvi in igralec pritisne `up`
+- **THEN** pingvin skoči
+
+#### Scenario: Stran z lestve
+- **WHEN** pingvin pleza in igralec pritisne `left`
+- **THEN** pingvin zapusti lestev in pade na podlago pod sabo
 
 ### Requirement: Animacije
 Igra SHALL za vsako stanje pingvina pokazati ustrezne obstoječe sličice: stoja levo/desno, hoja levo/desno (3 sličice v zanki), skok (odriv, dviganje, vrh, pristanek), plezanje (hoja od zadaj), odboj ob poškodbi, jok ob utrujenosti. Sličice, ki obstajajo samo za desno, MUST biti za levo zrcaljene.

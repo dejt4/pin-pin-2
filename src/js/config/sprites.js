@@ -1,6 +1,10 @@
 // Sličice: datoteke, velikost izrisa v logičnih točkah in izrez (crop) iz izvirnika.
+// Sličice živali, ovir in hrane pripravi `npm run sprites` (glej config/sprite-info.js).
 (function (root) {
   'use strict';
+
+  var isNode = typeof module !== 'undefined' && module.exports;
+  var spriteInfo = isNode ? require('./sprite-info.js') : root.PinPin.get('config.spriteInfo', 'config/sprite-info.js');
 
   var PENGUIN = [
     'stand-right', 'stand-left', 'stand-down',
@@ -12,7 +16,8 @@
     'cry-1', 'cry-2', 'cry-3'
   ];
 
-  var FISH = ['fish-green', 'fish-red', 'fish-yellow', 'fish-steel'];
+  // vrsta hrane po indeksu iz sobe
+  var FOOD = ['apple', 'carrot', 'banana'];
 
   var images = {};
   var i;
@@ -23,8 +28,8 @@
     images[PENGUIN[i]] = { file: 'graphic/penguin/' + PENGUIN[i] + '.png', width: 56, height: 62 };
   }
 
-  for (i = 0; i < FISH.length; i++) {
-    images[FISH[i]] = { file: 'graphic/fish/' + FISH[i] + '.png', width: 34, height: 18 };
+  for (var name in spriteInfo) {
+    images[name] = spriteInfo[name];
   }
 
   images['ice-cube'] = { file: 'graphic/ice/ice-cube.png', width: 40, height: 40, crop: { x: 40, y: 0, width: 256, height: 208 } };
@@ -33,15 +38,14 @@
 
   var sprites = {
     images: images,
-    // barve rib po indeksu barve iz sobe
-    fish: FISH,
+    food: FOOD,
     penguin: {
       // koliko točk pod stopali se konča sličica
       footOffset: 8
     }
   };
 
-  if (typeof module !== 'undefined' && module.exports) {
+  if (isNode) {
     module.exports = sprites;
   } else {
     root.PinPin.register('config.sprites', sprites);

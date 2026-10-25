@@ -8,7 +8,7 @@
   var FLOE = '=';
   var LADDER = 'H';
   var SPIKES = '^';
-  var FISH = 'f';
+  var FOOD = 'f';
   var START = 'S';
   var GOAL = 'G';
   var PILE = '*';
@@ -16,57 +16,96 @@
   // znak → vrsta živali
   var ANIMALS = {
     M: 'bear',
-    V: 'wolf',
-    u: 'fly',
-    k: 'mosquitoes'
+    P: 'polar',
+    V: 'wolf'
   };
 
-  var KNOWN = EMPTY + GROUND + CUBE + FLOE + LADDER + SPIKES + FISH + START + GOAL + PILE + 'MVuk';
-  var FISH_COLORS = 4;
+  // znak → vrsta ledene ovire
+  var OBSTACLES = {
+    W: 'wall',
+    i: 'icicle'
+  };
+
+  var KNOWN = EMPTY + GROUND + CUBE + FLOE + LADDER + SPIKES + FOOD + START + GOAL + PILE + 'MPVWi';
+  var FOOD_KINDS = 3;
 
   function fail(message) {
     throw new Error('Soba: ' + message);
   }
 
-  // source: { name, rows: [niz, ...] }
-  function parse(source, tileSize) {
-    var rows = source.rows;
-    if (!rows || rows.length === 0) {
+  // Vrstice sobe iz odsekov (zloženi od leve proti desni) in položaj za sporočila o napakah.
+  // source: { name, sections: [[niz, ...], ...] } ali { name, rows: [niz, ...] } (en odsek)
+  function joinSections(source) {
+    var sections = source.sections || (source.rows ? [source.rows] : null);
+    if (!sections || sections.length === 0 || !sections[0].length) {
       fail('ni vrstic.');
     }
+    var height = sections[0].length;
+    var rows = [];
+    // za vsak stolpec sobe: [odsek, stolpec v odseku]
+    var where = [];
+    for (var r = 0; r < height; r++) {
+      rows.push('');
+    }
+    for (var s = 0; s < sections.length; s++) {
+      var section = sections[s];
+      if (section.length !== height) {
+        fail('odsek ' + (s + 1) + ' ima ' + section.length + ' vrstic, prvi pa ' + height + '.');
+      }
+      var width = section[0].length;
+      for (r = 0; r < height; r++) {
+        if (section[r].length !== width) {
+          fail('odsek ' + (s + 1) + ', vrstica ' + (r + 1) + ' ima ' + section[r].length +
+            ' znakov, prva vrstica odseka pa ' + width + '.');
+        }
+        rows[r] += section[r];
+      }
+      for (var c = 0; c < width; c++) {
+        where.push([s + 1, c + 1]);
+      }
+    }
+    return { rows: rows, where: where };
+  }
+
+  function parse(source, tileSize) {
+    var joined = joinSections(source);
+    var rows = joined.rows;
     var cols = rows[0].length;
     var tiles = [];
-    var fish = [];
+    var food = [];
     var start = null;
     var goals = [];
     var animals = [];
+    var obstacles = [];
+
+    function at(c, r) {
+      var w = joined.where[c];
+      return 'odsek ' + w[0] + ', vrstica ' + (r + 1) + ', stolpec ' + w[1];
+    }
 
     for (var r = 0; r < rows.length; r++) {
       var line = rows[r];
-      if (line.length !== cols) {
-        fail('vrstica ' + (r + 1) + ' ima ' + line.length + ' znakov, prva pa ' + cols + '.');
-      }
       var row = [];
       for (var c = 0; c < cols; c++) {
         var ch = line.charAt(c);
         if (KNOWN.indexOf(ch) === -1) {
-          fail('neznan znak "' + ch + '" v vrstici ' + (r + 1) + ', stolpec ' + (c + 1) + '.');
+          fail('neznan znak "' + ch + '" (' + at(c, r) + ').');
         }
-        if (ch === FISH) {
-          fish.push({
-            id: fish.length,
+        if (ch === FOOD) {
+          food.push({
+            id: food.length,
             col: c,
             row: r,
             x: c * tileSize,
             y: r * tileSize,
             width: tileSize,
             height: tileSize,
-            color: (c + r) % FISH_COLORS
+            kind: (c + r) % FOOD_KINDS
           });
           ch = EMPTY;
         } else if (ch === START) {
           if (start) {
-            fail('več kot en začetek (S): vrstica ' + (r + 1) + ', stolpec ' + (c + 1) + '.');
+            fail('več kot en začetek S (' + at(c, r) + ').');
           }
           start = { col: c, row: r };
           ch = EMPTY;
@@ -75,6 +114,9 @@
           ch = EMPTY;
         } else if (Object.prototype.hasOwnProperty.call(ANIMALS, ch)) {
           animals.push({ type: ANIMALS[ch], col: c, row: r });
+          ch = EMPTY;
+        } else if (Object.prototype.hasOwnProperty.call(OBSTACLES, ch)) {
+          obstacles.push({ type: OBSTACLES[ch], col: c, row: r });
           ch = EMPTY;
         }
         row.push(ch);
@@ -88,12 +130,28 @@
     if (goals.length === 0) {
       fail('ni cilja (G).');
     }
-    for (var a = 0; a < animals.length; a++) {
-      var animal = animals[a];
-      var walker = animal.type === 'bear' || animal.type === 'wolf';
-      var below = animal.row + 1 < tiles.length ? tiles[animal.row + 1][animal.col] : EMPTY;
-      if (walker && !isSolid(below)) {
-        fail('pod živaljo v vrstici ' + (animal.row + 1) + ', stolpec ' + (animal.col + 1) + ' ni trdnih tal.');
+
+    function tile(c, r) {
+      return r >= 0 && r < tiles.length ? tiles[r][c] : EMPTY;
+    }
+    var i;
+    for (i = 0; i < animals.length; i++) {
+      if (!isSolid(tile(animals[i].col, animals[i].row + 1))) {
+        fail('pod živaljo ni trdnih tal (' + at(animals[i].col, animals[i].row) + ').');
+      }
+    }
+    for (i = 0; i < obstacles.length; i++) {
+      var o = obstacles[i];
+      if (o.type === 'wall' && !isSolid(tile(o.col, o.row + 1))) {
+        fail('pod ledenim zidom ni trdnih tal (' + at(o.col, o.row) + ').');
+      }
+      if (o.type === 'icicle') {
+        if (!isSolid(tile(o.col, o.row - 1))) {
+          fail('nad ledeno svečo ni trdne ploščice (' + at(o.col, o.row) + ').');
+        }
+        if (isSolid(tile(o.col, o.row + 1)) || !isSolid(tile(o.col, o.row + 2))) {
+          fail('pod ledeno svečo mora biti ena prazna vrstica in nato tla (' + at(o.col, o.row) + ').');
+        }
       }
     }
 
@@ -105,10 +163,11 @@
       width: cols * tileSize,
       height: rows.length * tileSize,
       tiles: tiles,
-      fish: fish,
+      food: food,
       start: start,
       goals: goals,
-      animals: animals
+      animals: animals,
+      obstacles: obstacles
     };
   }
 
@@ -175,7 +234,21 @@
   // Ali je stolpec col varen: na najnižji pohodni površini stoji na trdnih tleh,
   // nad njim ni trdne ploščice, sosedje levo in desno imajo tla in ni konic.
   // Vrne vrstico, v kateri pingvin stoji, ali -1.
+  // Ali je v stolpcu col ali sosednjih stolpcih ledena ovira (ta stolpec ni varen, tudi ko je ovira razbita).
+  function nearObstacle(room, col) {
+    var list = room.obstacles || [];
+    for (var i = 0; i < list.length; i++) {
+      if (Math.abs(list[i].col - col) <= 1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function safeRowInColumn(room, col) {
+    if (nearObstacle(room, col)) {
+      return -1;
+    }
     for (var r = room.rows - 1; r >= 1; r--) {
       var floor = tileAt(room, col, r);
       var space = tileAt(room, col, r - 1);
@@ -218,7 +291,7 @@
       SPIKES: SPIKES,
       PILE: PILE
     },
-    FISH_COLORS: FISH_COLORS,
+    FOOD_KINDS: FOOD_KINDS,
     parse: parse,
     tileAt: tileAt,
     isSolid: isSolid,

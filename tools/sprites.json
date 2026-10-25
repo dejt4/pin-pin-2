@@ -1,0 +1,100 @@
+{
+  "scale": 2,
+  "threshold": 30,
+  "groups": [
+    {
+      "source": "Pixel Bear and Wolf Animation Sheet.png",
+      "out": "animals",
+      "align": "bottom",
+      "height": 52,
+      "frames": [
+        { "name": "bear-walk-1", "rect": [10, 70, 340, 289] },
+        { "name": "bear-walk-2", "rect": [350, 70, 340, 289] },
+        { "name": "bear-walk-3", "rect": [690, 70, 362, 289] },
+        { "name": "bear-push-1", "rect": [1060, 70, 430, 289] },
+        { "name": "bear-push-2", "rect": [1490, 70, 385, 289], "dropEdges": ["left"] }
+      ]
+    },
+    {
+      "source": "Pixel Bear and Wolf Animation Sheet.png",
+      "out": "animals",
+      "align": "bottom",
+      "height": 42,
+      "frames": [
+        { "name": "wolf-walk-1", "rect": [0, 477, 360, 272] },
+        { "name": "wolf-walk-2", "rect": [360, 477, 340, 272] },
+        { "name": "wolf-walk-3", "rect": [700, 477, 355, 272], "dropEdges": ["left"] },
+        { "name": "wolf-push-1", "rect": [1060, 477, 402, 272] },
+        { "name": "wolf-push-2", "rect": [1462, 477, 413, 272], "dropEdges": ["left"] }
+      ]
+    },
+    {
+      "source": "Polar Bear and Ice Obstacle Sprite Sheet.png",
+      "out": "animals",
+      "align": "bottom",
+      "height": 50,
+      "frames": [
+        { "name": "polar-walk-1", "rect": [15, 58, 295, 224] },
+        { "name": "polar-walk-2", "rect": [310, 58, 274, 224] },
+        { "name": "polar-walk-3", "rect": [584, 58, 331, 224] },
+        { "name": "polar-push-1", "rect": [915, 58, 323, 224] },
+        { "name": "polar-push-2", "rect": [1238, 58, 292, 224], "dropEdges": ["left"] }
+      ]
+    },
+    {
+      "source": "Polar Bear and Ice Obstacle Sprite Sheet.png",
+      "out": "obstacles",
+      "align": "bottom",
+      "height": 72,
+      "frames": [
+        { "name": "ice-wall-1", "rect": [15, 662, 307, 285] },
+        { "name": "ice-wall-2", "rect": [322, 662, 300, 285] },
+        { "name": "ice-wall-3", "rect": [622, 662, 286, 285] },
+        { "name": "ice-wall-4", "rect": [908, 662, 318, 285] },
+        { "name": "ice-wall-5", "rect": [1226, 662, 302, 285] }
+      ]
+    },
+    {
+      "source": "Polar Bear and Ice Obstacle Sprite Sheet.png",
+      "out": "obstacles",
+      "align": "cell",
+      "height": 80,
+      "frames": [
+        { "name": "icicle-1", "rect": [11, 380, 160, 186] },
+        { "name": "icicle-2", "rect": [149, 380, 160, 186] },
+        { "name": "icicle-3", "rect": [289, 380, 160, 186] },
+        { "name": "icicle-4", "rect": [431, 380, 160, 186] },
+        { "name": "icicle-5", "rect": [570, 380, 160, 186] },
+        { "name": "icicle-6", "rect": [704, 380, 160, 186], "clear": [[845, 380, 19, 186]] },
+        { "name": "icicle-7", "rect": [844, 380, 160, 186] }
+      ]
+    },
+    {
+      "source": "Pixel Art Pantry and Wild Companions.png",
+      "out": "food",
+      "align": "bottom",
+      "height": 28,
+      "frames": [
+        { "name": "carrot", "rect": [110, 40, 300, 360] }
+      ]
+    },
+    {
+      "source": "Pixel Art Pantry and Wild Companions.png",
+      "out": "food",
+      "align": "bottom",
+      "height": 24,
+      "frames": [
+        { "name": "apple", "rect": [450, 40, 290, 360] }
+      ]
+    },
+    {
+      "source": "Pixel Art Pantry and Wild Companions.png",
+      "out": "food",
+      "align": "bottom",
+      "height": 22,
+      "frames": [
+        { "name": "banana", "rect": [760, 40, 330, 360] }
+      ]
+    }
+  ]
+}

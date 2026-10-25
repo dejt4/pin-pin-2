@@ -10,7 +10,7 @@ function parse(rows) {
   return room.parse({ name: 'test', rows: rows }, T);
 }
 
-test('razčlenitev: vrste ploščic, ribe, začetek in cilj', function () {
+test('razčlenitev: vrste ploščic, hrana, začetek in cilj', function () {
   var r = parse([
     '......',
     '.S.fG.',
@@ -23,9 +23,9 @@ test('razčlenitev: vrste ploščic, ribe, začetek in cilj', function () {
   assert.deepStrictEqual(r.start, { col: 1, row: 1 });
   assert.strictEqual(r.goals.length, 1);
   assert.strictEqual(r.goals[0].col, 4);
-  assert.strictEqual(r.fish.length, 1);
-  assert.strictEqual(r.fish[0].col, 3);
-  assert.strictEqual(r.fish[0].x, 120);
+  assert.strictEqual(r.food.length, 1);
+  assert.strictEqual(r.food[0].col, 3);
+  assert.strictEqual(r.food[0].x, 120);
   // S, f in G niso ploščice
   assert.strictEqual(room.tileAt(r, 1, 1), '.');
   assert.strictEqual(room.tileAt(r, 3, 1), '.');
@@ -42,11 +42,11 @@ test('izven sobe je prazno', function () {
   assert.strictEqual(room.tileAt(r, 0, 5), '.');
 });
 
-test('barva ribe je določena s položajem', function () {
+test('vrsta hrane je določena s položajem', function () {
   var r = parse(['ffffS', 'G....']);
-  var colors = r.fish.map(function (f) { return f.color; });
-  assert.deepStrictEqual(colors, [0, 1, 2, 3]);
-  assert.deepStrictEqual(parse(['ffffS', 'G....']).fish[2].color, 2);
+  var kinds = r.food.map(function (f) { return f.kind; });
+  assert.deepStrictEqual(kinds, [0, 1, 2, 0]);
+  assert.deepStrictEqual(parse(['ffffS', 'G....']).food[2].kind, 2);
 });
 
 test('napaka: neenake dolžine vrstic', function () {
@@ -54,7 +54,7 @@ test('napaka: neenake dolžine vrstic', function () {
 });
 
 test('napaka: neznan znak z vrstico in stolpcem', function () {
-  assert.throws(function () { parse(['S..', 'G.x']); }, /"x".*vrstici 2, stolpec 3/);
+  assert.throws(function () { parse(['S..', 'G.x']); }, /"x".*odsek 1, vrstica 2, stolpec 3/);
 });
 
 test('napaka: brez začetka, brez cilja, dva začetka', function () {
@@ -137,24 +137,62 @@ test('varno mesto: blizu začetka je začetek', function () {
   assert.strictEqual(p.row, 0);
 });
 
-test('kupi snega in živali', function () {
+test('kupi snega, živali in ledene ovire', function () {
   var r = parse([
-    '...u..k..',
-    '.S*.M.V.G',
-    '#########'
+    '....##....',
+    '....i.....',
+    '.S*M..PVWG',
+    '##########'
   ]);
-  assert.strictEqual(room.isPile(room.tileAt(r, 2, 1)), true);
-  assert.strictEqual(room.isSolid(room.tileAt(r, 2, 1)), false);
-  assert.deepStrictEqual(r.animals.map(function (a) { return a.type; }), ['fly', 'mosquitoes', 'bear', 'wolf']);
-  assert.deepStrictEqual({ col: r.animals[2].col, row: r.animals[2].row }, { col: 4, row: 1 });
-  // živali niso ploščice
+  assert.strictEqual(room.isPile(room.tileAt(r, 2, 2)), true);
+  assert.strictEqual(room.isSolid(room.tileAt(r, 2, 2)), false);
+  assert.deepStrictEqual(r.animals.map(function (a) { return a.type; }), ['bear', 'polar', 'wolf']);
+  assert.deepStrictEqual({ col: r.animals[0].col, row: r.animals[0].row }, { col: 3, row: 2 });
+  assert.deepStrictEqual(r.obstacles, [
+    { type: 'icicle', col: 4, row: 1 },
+    { type: 'wall', col: 8, row: 2 }
+  ]);
+  // živali in ovire niso ploščice
+  assert.strictEqual(room.tileAt(r, 3, 2), '.');
   assert.strictEqual(room.tileAt(r, 4, 1), '.');
-  assert.strictEqual(room.tileAt(r, 3, 0), '.');
+  assert.strictEqual(room.tileAt(r, 8, 2), '.');
 });
 
-test('napaka: medved ali volk brez tal', function () {
-  assert.throws(function () { parse(['SM.G', '#.##']); }, /vrstici 1, stolpec 2 ni trdnih tal/);
-  assert.throws(function () { parse(['V..G', '.S..', '####']); }, /ni trdnih tal/);
+test('napaka: žival ali ledeni zid brez tal', function () {
+  assert.throws(function () { parse(['SM.G', '#.##']); }, /ni trdnih tal.*odsek 1, vrstica 1, stolpec 2/);
+  assert.throws(function () { parse(['P..G', '.S..', '####']); }, /ni trdnih tal/);
+  assert.throws(function () { parse(['S.W.G', '##.##']); }, /ledenim zidom ni trdnih tal/);
+});
+
+test('napaka: ledena sveča brez stropa ali brez prostora do tal', function () {
+  assert.throws(function () { parse(['S.i.G', '.....', '#####']); }, /nad ledeno svečo ni trdne ploščice.*odsek 1, vrstica 1, stolpec 3/);
+  assert.throws(function () { parse(['..#..', 'S.i.G', '#####']); }, /ena prazna vrstica in nato tla/);
+  assert.throws(function () { parse(['..#..', 'S.i.G', '.....', '.....']); }, /ena prazna vrstica in nato tla/);
+});
+
+test('soba iz odsekov: odseki se zložijo brez vrzeli', function () {
+  var r = room.parse({ name: 'o', sections: [
+    ['S..', '###'],
+    ['.f.', '#.#'],
+    ['..G', '###']
+  ] }, T);
+  assert.strictEqual(r.cols, 9);
+  assert.strictEqual(r.food[0].col, 4);
+  assert.strictEqual(room.tileAt(r, 4, 1), '.');
+  assert.strictEqual(room.tileAt(r, 5, 1), '#');
+  assert.strictEqual(r.goals[0].col, 8);
+});
+
+test('napaka v odseku pove odsek, vrstico in stolpec', function () {
+  assert.throws(function () {
+    room.parse({ name: 'o', sections: [['S..', '###'], ['.x.', '###'], ['..G', '###']] }, T);
+  }, /"x".*odsek 2, vrstica 1, stolpec 2/);
+  assert.throws(function () {
+    room.parse({ name: 'o', sections: [['S..', '###'], ['..G', '###', '###']] }, T);
+  }, /odsek 2 ima 3 vrstic/);
+  assert.throws(function () {
+    room.parse({ name: 'o', sections: [['S..', '###'], ['..G', '####']] }, T);
+  }, /odsek 2, vrstica 2 ima 4 znakov/);
 });
 
 test('prva podlaga pod vrstico', function () {
@@ -166,4 +204,16 @@ test('prva podlaga pod vrstico', function () {
   ]);
   assert.strictEqual(room.surfaceBelow(r, 1, 0), 2 * T);
   assert.strictEqual(room.surfaceBelow(r, 0, 0), 3 * T);
+});
+
+test('varno mesto: ne ob ledeni oviri', function () {
+  var r = parse([
+    'S.............G',
+    '.....W.........',
+    '###############'
+  ]);
+  // od stolpca 8 levo: 6, 5, 4 so ob zidu
+  var p = room.safePoint(r, 10 * T, SCREEN);
+  assert.ok(p.col !== 4 && p.col !== 5 && p.col !== 6);
+  assert.strictEqual(p.col, 6 - 3);
 });

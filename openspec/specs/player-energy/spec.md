@@ -19,17 +19,6 @@ Energija SHALL med igranjem enakomerno upadati, od polne do nič v približno dv
 - **WHEN** pingvin minuto stoji pri miru s polno energijo
 - **THEN** ima približno pol energije
 
-### Requirement: Energija iz rib
-Vsaka riba SHALL dati enako energije, približno četrtino polne. Energija MUST NOT preseči največje vrednosti.
-
-#### Scenario: Riba pri polovični energiji
-- **WHEN** ima pingvin pol energije in pobere ribo
-- **THEN** ima približno tri četrtine energije
-
-#### Scenario: Riba pri polni energiji
-- **WHEN** ima pingvin polno energijo in pobere ribo
-- **THEN** ostane polna energija
-
 ### Requirement: Izguba energije
 Padec v prepad SHALL vzeti približno 15 % polne energije, dotik konic približno 10 %, ulov medveda ali volka približno 15 %. Vrednosti MUST biti zapisane v nastavitvah.
 
@@ -51,3 +40,14 @@ Ko energija pade na nič, SHALL se pingvin utruditi: obstane, se ne odziva na sm
 #### Scenario: Konice vzamejo zadnjo energijo
 - **WHEN** ima pingvin manj energije, kot jo vzamejo konice, in se jih dotakne
 - **THEN** energija je nič in pingvin se utrudi
+
+### Requirement: Energija iz hrane
+Vsak kos hrane (jabolko, korenček, banana) SHALL dati enako energije, približno četrtino polne. Energija MUST NOT preseči največje vrednosti.
+
+#### Scenario: Hrana pri polovični energiji
+- **WHEN** ima pingvin pol energije in pobere banano
+- **THEN** ima približno tri četrtine energije
+
+#### Scenario: Hrana pri polni energiji
+- **WHEN** ima pingvin polno energijo in pobere jabolko
+- **THEN** ostane polna energija

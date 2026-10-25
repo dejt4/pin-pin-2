@@ -144,6 +144,7 @@
         p.facing = dir;
       }
       if (p.mode === 'ground') {
+        // gor pri lestvi pomeni plezanje, drugje skok (samo ob novem pritisku)
         if (act.down.up && ladderAtBody(p, r)) {
           startClimb(p, r);
           return;
@@ -153,7 +154,7 @@
           stepClimb(p, r, act, dt, blockers);
           return;
         }
-        if (act.pressed.jump) {
+        if (act.pressed.up) {
           jump(p);
         }
       }
@@ -167,16 +168,6 @@
     var T = r.tileSize;
     var dir = direction(act);
 
-    if (act.pressed.jump) {
-      p.vx = dir * cfg.walkSpeed;
-      if (dir !== 0) {
-        p.facing = dir;
-      }
-      jump(p);
-      p.climbing = false;
-      stepBody(p, r, dt, blockers);
-      return;
-    }
     if (dir !== 0) {
       // stran z lestve
       p.facing = dir;

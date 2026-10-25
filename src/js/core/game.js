@@ -20,6 +20,7 @@
   var camera = isNode ? require('./camera.js') : PinPin.get('core.camera', 'core/camera.js');
   var snowballs = isNode ? require('./snowballs.js') : PinPin.get('core.snowballs', 'core/snowballs.js');
   var animals = isNode ? require('./animals.js') : PinPin.get('core.animals', 'core/animals.js');
+  var obstacles = isNode ? require('./obstacles.js') : PinPin.get('core.obstacles', 'core/obstacles.js');
 
   var SCREEN_COLS = settings.screen.width / settings.tileSize;
   // del ploščice s konicami, ki rani (spodnji del, malo ožji)
@@ -37,6 +38,7 @@
       collected: {},
       snow: snowballs.createState(),
       animals: animals.create(r),
+      obstacles: obstacles.create(r),
       score: 0,
       cameraX: 0
     };
@@ -49,18 +51,19 @@
     game.stateTime = 0;
   }
 
-  // Soba od začetka: pingvin na začetku, polna energija, vse ribe in živali na mestu, brez kep in točk.
+  // Soba od začetka: pingvin na začetku, polna energija, vsa hrana, živali in ovire na mestu, brez kep in točk.
   function reset(game) {
     game.player = player.create(room.startPoint(game.room));
     game.energy = energy.create();
     game.collected = {};
     game.snow = snowballs.createState();
     game.animals = animals.create(game.room);
+    game.obstacles = obstacles.create(game.room);
     game.score = 0;
     updateCamera(game);
   }
 
-  // Vrnitev na varno mesto en zaslon nazaj. Živali, točke in nošena kepa ostanejo.
+  // Vrnitev na varno mesto en zaslon nazaj. Živali, ovire, točke in nošena kepa ostanejo.
   function sendBack(game) {
     var p = game.player;
     var point = room.safePoint(game.room, player.centerX(p), SCREEN_COLS);
@@ -72,13 +75,13 @@
     game.cameraX = camera.follow(game.room.width, player.centerX(game.player));
   }
 
-  function collectFish(game) {
-    var fish = game.room.fish;
-    for (var i = 0; i < fish.length; i++) {
-      var f = fish[i];
+  function collectFood(game) {
+    var food = game.room.food;
+    for (var i = 0; i < food.length; i++) {
+      var f = food[i];
       if (!game.collected[f.id] && math.overlaps(game.player, f)) {
         game.collected[f.id] = true;
-        energy.eatFish(game.energy);
+        energy.eatFood(game.energy);
       }
     }
   }
@@ -133,12 +136,14 @@
     }
   }
 
-  // Medved ali volk ujame pingvina: nazaj na varno mesto, kazen, kratka neranljivost.
+  // Medved ali volk ujame pingvina: žival udari, pingvin nazaj na varno mesto, kazen, kratka neranljivost.
   function checkCaught(game) {
     var p = game.player;
-    if (p.invulnerable > 0 || !animals.catches(game.animals, p)) {
+    var animal = p.invulnerable > 0 ? null : animals.catcher(game.animals, p);
+    if (!animal) {
       return;
     }
+    animals.push(animal);
     sendBack(game);
     energy.caughtPenalty(game.energy);
     p.invulnerable = settings.player.invulnerableTime;
@@ -146,13 +151,16 @@
 
   function stepPlaying(game, act, dt) {
     energy.drain(game.energy, dt);
-    player.step(game.player, game.room, act, dt, animals.blockers(game.animals));
+    var blockers = obstacles.blockers(game.obstacles);
+    player.step(game.player, game.room, act, dt, blockers);
     snowballs.update(game.snow, game.player, game.room, act, dt, game.cameraX);
-    animals.step(game.animals, game.room, dt);
-    addScore(game, animals.hitBy(game.animals, game.snow.balls));
+    animals.step(game.animals, game.room, dt, blockers);
+    obstacles.step(game.obstacles, dt);
+    addScore(game, obstacles.hitBy(game.obstacles, game.snow.balls));
+    animals.hitBy(game.animals, game.snow.balls);
     snowballs.removeDead(game.snow);
     checkCaught(game);
-    collectFish(game);
+    collectFood(game);
     touchSpikes(game);
     if (checkPit(game)) {
       energy.pitPenalty(game.energy);
@@ -193,8 +201,10 @@
       break;
     case 'tired':
       // pingvin brez nadzora pade na tla in joka
-      player.step(game.player, game.room, IDLE, dt, animals.blockers(game.animals));
-      animals.step(game.animals, game.room, dt);
+      var tiredBlockers = obstacles.blockers(game.obstacles);
+      player.step(game.player, game.room, IDLE, dt, tiredBlockers);
+      animals.step(game.animals, game.room, dt, tiredBlockers);
+      obstacles.step(game.obstacles, dt);
       checkPit(game);
       if (canRestart(game, act)) {
         startPlaying(game);

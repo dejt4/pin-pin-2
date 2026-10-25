@@ -68,28 +68,19 @@ body.touch #touch-controls {
   border-color: #f2a516;
 }
 
-/* Skok in Kepa: okrogla gumba drug nad drugim, skok večji in spodaj */
+/* Kepa: velik okrogel gumb na levi (skok je gor na križcu) */
 
 .touch-round {
   border-radius: 50%;
 }
 
-.touch-jump {
-  width: 26vw;
-  height: 26vw;
-  line-height: 26vw;
-  font-size: 6vw;
-  left: 0;
-  top: 2vw;
-}
-
 .touch-throw {
-  width: 18vw;
-  height: 18vw;
-  line-height: 18vw;
-  font-size: 4.5vw;
-  left: 18vw;
-  top: -22vw;
+  width: 28vw;
+  height: 28vw;
+  line-height: 28vw;
+  font-size: 6.5vw;
+  left: 0;
+  top: -14vw;
 }
 
 /* Križec: 3 × 3 celice, sredina in koti prazni */
@@ -138,21 +129,12 @@ body.touch #touch-controls {
     right: 4%;
   }
 
-  .touch-jump {
-    width: 22vh;
-    height: 22vh;
-    line-height: 22vh;
-    font-size: 5vh;
-    top: 0;
-  }
-
   .touch-throw {
-    width: 15vh;
-    height: 15vh;
-    line-height: 15vh;
-    font-size: 3.6vh;
-    left: 20vh;
-    top: -14vh;
+    width: 24vh;
+    height: 24vh;
+    line-height: 24vh;
+    font-size: 5.5vh;
+    top: -6vh;
   }
 
   .touch-dpad {

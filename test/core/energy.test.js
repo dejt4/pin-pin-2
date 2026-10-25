@@ -31,16 +31,16 @@ test('upad: po minuti približno pol energije, po dveh minutah nič', function (
   assert.strictEqual(energy.isEmpty(e), true);
 });
 
-test('riba pri polovični energiji da približno tri četrtine', function () {
+test('hrana pri polovični energiji da približno tri četrtine', function () {
   var e = energy.create();
   e.value = e.max / 2;
-  energy.eatFish(e);
+  energy.eatFood(e);
   near(energy.ratio(e), 0.75, 0.001);
 });
 
-test('riba pri polni energiji: energija ostane polna', function () {
+test('hrana pri polni energiji: energija ostane polna', function () {
   var e = energy.create();
-  energy.eatFish(e);
+  energy.eatFood(e);
   assert.strictEqual(energy.ratio(e), 1);
 });
 
