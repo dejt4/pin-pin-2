@@ -1,0 +1,163 @@
+src/js/render/hud.js
+  s_8305d21c167246::t_30aa40958c1404 29
+openspec/specs/sprite-pipeline/spec.md
+  s_8305d21c167246::t_9b865312e72848 1-31
+openspec/specs/snowballs/spec.md
+  s_8305d21c167246::t_9b865312e72848 46,56-58
+  s_8305d21c167246::t_9c5607048c1d68 59
+openspec/changes/ps4-verification/tasks.md
+  s_8305d21c167246::t_38d550fe73072b 6-7
+test/core/room.test.js
+  s_8305d21c167246::t_827dec0a2fad59 208-219
+  s_8305d21c167246::t_8d407bc3b039ce 162,168
+  s_8305d21c167246::t_d765f423157094 13,26-28,45,47-49,57,140,142-145,147-161,163-167,169-180,182-183,186-195
+openspec/specs/ice-obstacles/spec.md
+  s_8305d21c167246::t_9b865312e72848 1-53
+test/bot.js
+  s_8305d21c167246::t_80273bdcc1f165 3-5,10,36,50,75
+test/core/animals.test.js
+  s_8305d21c167246::t_9efabe4af56394 8,15-16,19,22,28,31,35-40,82-95,97,110,133,137,143,151-158,161,164,168-173
+src/js/core/room.js
+  s_8305d21c167246::t_827dec0a2fad59 237-247,249-251
+  s_8305d21c167246::t_f5be179296084d 11,19-20,23-30,36-40,43-72,75,79-84,92,94-96,103,108,118-120,133-154,166,169-170,294
+README.md
+  s_8305d21c167246::t_6c391801cefa7c 3,12-14,18,27,31,38-41,44,54,58-59,61-62,64
+test/core/player.test.js
+  s_8305d21c167246::t_ce1d60bec24e92 289,293-295,303,307-322,324-327
+openspec/specs/player-energy/spec.md
+  s_8305d21c167246::t_9b865312e72848 43-53
+src/js/config/sprite-info.js
+  s_8305d21c167246::t_0c3af4d372ddae 1-45
+src/js/config/sprites.js
+  s_8305d21c167246::t_0d401a78c8fda3 2,6-8,19-20,31-32,41,48
+test/core/actions.test.js
+  s_8305d21c167246::t_3080bbe3f7db6e 16-17,20-27,44-46,48-49,75,77,81-82,84-88,92,104,106,110-111,113-117
+  s_8305d21c167246::t_5ba0b016bb2e76 94
+tools/sprite-lib.js
+  s_8305d21c167246::t_37b5d917f3221a 1-276,278,280-291,293-301,303-317
+  s_8305d21c167246::t_6cf2a3eb78fc09 277,279,292,302
+src/js/core/player.js
+  s_8305d21c167246::t_6069d557b4e63c 147,157
+test/config/room-1.test.js
+  s_8305d21c167246::t_80273bdcc1f165 22-23,26-28,31-59,63,66-68,70-72,74,77,79-82,85-86,89,91,93-95,98,102,104-108
+openspec/specs/game-controls/spec.md
+  s_8305d21c167246::t_9b865312e72848 9,16,22-25,28,31,35,39-43,54,58,62,65-70,84-85,91-92
+src/style.css
+  s_8305d21c167246::t_9cc8df74942111 71,78-83,133-137
+src/js/config/controls.js
+  s_8305d21c167246::t_122ac7f9572d0f 7,13
+src/js/config/settings.js
+  s_8305d21c167246::t_30aa40958c1404 34
+  s_8305d21c167246::t_21ceeaa3d475c8 52,54-67,71-72
+AGENTS.md
+  s_8305d21c167246::t_6bfe6c96c8383b 97
+  s_8305d21c167246::t_6c391801cefa7c 27-28,30-31,33,54-57,59-62,69-71,98,100-102
+openspec/specs/animals/spec.md
+  s_8305d21c167246::t_9b865312e72848 9,19-22,24,31,35,38,45,49-52,54-56,58-60
+tools/sprites.json
+  s_8305d21c167246::t_c83ddb510b25fa 1-25,27-100
+  s_8305d21c167246::t_9d5c06f479e5c3 26
+openspec/specs/score/spec.md
+  s_8305d21c167246::t_9b865312e72848 18-32
+test/core/obstacles.test.js
+  s_8305d21c167246::t_01d484c82dae07 1-136
+openspec/specs/room-map/spec.md
+  s_8305d21c167246::t_9b865312e72848 9,19,23-24,26-27,29,32-33,37,41-45,48,51-52,56,66,76-78
+  s_8305d21c167246::t_82619e32a36106 79
+src/js/config/rooms/room-1.js
+  s_8305d21c167246::t_d6b1a2e937f414 1-2,4-9,15-159
+openspec/specs/food/spec.md
+  s_8305d21c167246::t_9b865312e72848 1-21
+src/index.html
+  s_8305d21c167246::t_a34b7a646207cc 62
+  s_8305d21c167246::t_0d401a78c8fda3 33
+  s_8305d21c167246::t_40d8dfb7e56b3f 47
+src/js/core/actions.js
+  s_8305d21c167246::t_122ac7f9572d0f 9-10
+test/config/sprites.test.js
+  s_8305d21c167246::t_8e17716a91a047 25-27,31-38
+  s_8305d21c167246::t_e28543667e473b 39
+src/js/render/animals.js
+  s_8305d21c167246::t_bc0105675d73d4 1-3,10,12-15,17-18,21,26-29,32-39,41
+src/js/render/tiles.js
+  s_8305d21c167246::t_3b832709c682ba 1
+  s_8305d21c167246::t_30aa40958c1404 107-109,113
+test/core/game.test.js
+  s_8305d21c167246::t_3b832709c682ba 18,75,117,154
+  s_8305d21c167246::t_e5c6b26a546bff 181,193,246,248,254-256,269,277,280-285,288,290-299,302-310,313-314,318,321-322,326,329-330,332,335,337,345
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/tasks.md
+  s_8305d21c167246::t_9b865312e72848 1-44
+package.json
+  s_8305d21c167246::t_10e9025c1adc43 9-10,14-15
+openspec/changes/ps4-verification/design.md
+  s_8305d21c167246::t_38d550fe73072b 5
+src/js/core/energy.js
+  s_8305d21c167246::t_30aa40958c1404 1,23-24,51
+tools/sprites.js
+  s_8305d21c167246::t_cbe3958c72e85c 1-83
+test/tools/sprite-lib.test.js
+  s_8305d21c167246::t_af1dfdf3595edf 1-106
+src/js/core/game.js
+  s_8305d21c167246::t_66bfa89ff9b221 66
+  s_8305d21c167246::t_3b832709c682ba 54
+  s_8305d21c167246::t_30aa40958c1404 78-81,84,163
+  s_8305d21c167246::t_2e59389f0bd169 23,41,61,139,142-143,146,154-155,157-160,204-207
+openspec/specs/player-movement/spec.md
+  s_8305d21c167246::t_9b865312e72848 31,34,42,65,69,73,84-89
+test/core/energy.test.js
+  s_8305d21c167246::t_30aa40958c1404 34,37,41,43
+src/js/core/obstacles.js
+  s_8305d21c167246::t_20bfb52c9a7fb9 1-102
+src/js/core/animals.js
+  s_8305d21c167246::t_8e265a4abd8b7d 1,3-5,20-22,24-34,47-48,66-70,72,75-76,79-81,83-88,93,98,100,106-107,109-110,113,116-118,125-126
+src/js/render/obstacles.js
+  s_8305d21c167246::t_8ec51ff50d88a6 1-54
+test/helpers.js
+  s_8305d21c167246::t_122ac7f9572d0f 10-11
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/.openspec.yaml
+  s_8305d21c167246::t_d127d09a093c08 1-2
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/proposal.md
+  s_8305d21c167246::t_02376254157c3a 1-61
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/food/spec.md
+  s_8305d21c167246::t_012807ceee0c16 1-22
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/game-controls/spec.md
+  s_8305d21c167246::t_eaf4dbfbf85aa7 1-89
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/ice-obstacles/spec.md
+  s_8305d21c167246::t_3b27c07cf8a46b 1-54
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/player-movement/spec.md
+  s_8305d21c167246::t_f994f6c990b519 1-49
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/score/spec.md
+  s_8305d21c167246::t_6302a0cf93d119 1-24
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/sprite-pipeline/spec.md
+  s_8305d21c167246::t_865cdbeefd8c7f 1-32
+package-lock.json
+  s_8305d21c167246::t_c4f2fd492d4a38 12-13,972-981
+src/js/render/renderer.js
+  s_8305d21c167246::t_a288d9c892fc18 10,23-24
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/design.md
+  s_8305d21c167246::t_b86256f49a5da4 1-73
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/animals/spec.md
+  s_8305d21c167246::t_7bc9335e4bb577 1-73
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/player-energy/spec.md
+  s_8305d21c167246::t_7d581e5a44fc01 1-20
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/room-map/spec.md
+  s_8305d21c167246::t_d49e73fbd511ef 1-74
+openspec/changes/archive/2026-10-25-ice-obstacles-food-and-sprites/specs/snowballs/spec.md
+  s_8305d21c167246::t_33fc5f2c705b14 1-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4fdd3e7244beec93a14f71ed4c3bafad793c7bfd",
+  "prompts": {},
+  "sessions": {
+    "s_8305d21c167246": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58e6f587-c1fd-49c2-b41b-69ce379b9044",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Tadej Zel <326005104+dejt4@users.noreply.github.com>"
+    }
+  }
+}
