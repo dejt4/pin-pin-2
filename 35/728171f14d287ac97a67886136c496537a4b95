@@ -1,0 +1,172 @@
+src/js/platform/gamepad.js
+  s_8305d21c167246::t_590f81d9cda208 1-47
+openspec/changes/first-room/specs/player-energy/spec.md
+  s_8305d21c167246::t_2fb310dde86e91 1-50
+README.md
+  s_8305d21c167246::t_bbbede846f22ea 1-47
+test/config/room-1.test.js
+  s_8305d21c167246::t_e3433e84b570c0 43-85
+  s_8305d21c167246::t_9e986859c74531 1-42,86-100
+test/pinpin.test.js
+  s_8305d21c167246::t_f748044a4dd941 1-28
+openspec/changes/first-room/specs/player-movement/spec.md
+  s_8305d21c167246::t_3e9e31021e6184 1-100
+test/core/player.test.js
+  s_8305d21c167246::t_d7dd81d1b17dc2 1-178,180-187,190-194,196-211,213-351
+  s_8305d21c167246::t_e00fff7463e09f 179
+  s_8305d21c167246::t_f7efab57a8e0a0 195
+  s_8305d21c167246::t_c0ea1f6d8386ea 212
+  s_8305d21c167246::t_4e259f7b868f30 188-189
+src/js/pinpin.js
+  s_8305d21c167246::t_d992ef69b5860c 1-42
+test/helpers.js
+  s_8305d21c167246::t_603198c8d1681d 1-34
+test/core/room.test.js
+  s_8305d21c167246::t_05eae09a243e9e 1-120,122,124-138
+  s_8305d21c167246::t_571df1c53910a8 121,123
+.gitignore
+  s_8305d21c167246::t_6439c6f4ad8584 1
+src/js/platform/keyboard.js
+  s_8305d21c167246::t_9cbe06a46b7318 1-56
+test/core/loop.test.js
+  s_8305d21c167246::t_88409a6dd42862 1-63
+src/js/config/sprites.js
+  s_8305d21c167246::t_24bdb0b7d12aad 1-49
+AGENTS.md
+  s_8305d21c167246::t_c2d150e6c52e43 24-39,43-44,48-58,61,63-66,70,73-77,81,85-94,109,114-115,122-123
+src/js/render/renderer.js
+  s_8305d21c167246::t_c71521081dea9f 1-34
+src/js/render/tiles.js
+  s_8305d21c167246::t_8c91c331f94621 99-102
+  s_8305d21c167246::t_474dc6347346da 22
+  s_8305d21c167246::t_26c405c5f95407 1-21,23-98,103-124
+tools/serve.js
+  s_8305d21c167246::t_20fa67863b8f57 1-48
+src/index.html
+  s_8305d21c167246::t_114098bd7d1312 1-12,44-45
+  s_8305d21c167246::t_70f93a17f4e5a4 16-18,22-28,33-43
+  s_8305d21c167246::t_4e309c6e5c5469 13-15,19-21,29-32
+src/js/core/game.js
+  s_8305d21c167246::t_a4f15637d99efd 1-192
+.claude/launch.json
+  s_8305d21c167246::t_75e4a75689484c 1-11
+openspec/changes/first-room/specs/game-controls/spec.md
+  s_8305d21c167246::t_a24dda45abb1d3 1-65
+openspec/changes/first-room/.openspec.yaml
+  s_8305d21c167246::t_a47e52ae78839e 1-2
+idea/init.md
+  s_8305d21c167246::t_cb2e9f56a2cca0 54
+  s_8305d21c167246::t_f1e9a781e61a1c 109
+  s_8305d21c167246::t_d4760d3cafbe41 51-53
+  s_8305d21c167246::t_a14cc03dfe85d3 55-57,106-108
+  s_8305d21c167246::t_81401bc789dfe0 110-112
+  s_8305d21c167246::t_4d8fe497f74234 1-50,58-105,113-116
+src/js/core/actions.js
+  s_8305d21c167246::t_ea00ac82f0acd5 1-93
+test/core/camera.test.js
+  s_8305d21c167246::t_381e9d75254309 1-27
+src/js/core/room.js
+  s_8305d21c167246::t_4ee75567c9f18f 1-199
+package.json
+  s_8305d21c167246::t_e326b559fa3d2b 1-8,10-15
+  s_8305d21c167246::t_6439c6f4ad8584 9
+src/js/config/rooms/room-1.js
+  s_8305d21c167246::t_6f6594bb17f909 1-29
+src/js/render/sprites.js
+  s_8305d21c167246::t_e4a2dfaade1fad 1-31
+src/js/render/hud.js
+  s_8305d21c167246::t_a6cb2691cc8e9e 1-39
+openspec/changes/first-room/tasks.md
+  s_8305d21c167246::t_d0632c0fa50a69 8-9
+  s_8305d21c167246::t_ea9bded82947fc 1-4,10-12,16-18,22-24,30-32,35-37,40-42,46-49,51-52
+  s_8305d21c167246::t_22ef132bd73ab9 13-15
+  s_8305d21c167246::t_be46bbec3b5306 26-29
+  s_8305d21c167246::t_e46f9a3e245f76 5-7
+  s_8305d21c167246::t_d2196d37de1082 33-34,38-39
+  s_8305d21c167246::t_e7319918a22bc7 19-20
+  s_8305d21c167246::t_e688574b4ad9ba 21
+  s_8305d21c167246::t_d4a67830360cdb 25
+  s_8305d21c167246::t_3630350ed709c6 43-45,50
+src/js/render/overlay.js
+  s_8305d21c167246::t_013b1acb0d70ec 1-40,42-45,47-51,53-62
+  s_8305d21c167246::t_494e3aeee4cbae 41,46,52
+src/js/config/animations.js
+  s_8305d21c167246::t_b8c519687ba9f0 1-40
+src/js/core/loop.js
+  s_8305d21c167246::t_f1d5a63e156e40 1-37
+src/js/app/main.js
+  s_8305d21c167246::t_04e9ade58dde33 1-66
+test/core/game.test.js
+  s_8305d21c167246::t_3db9974a7fe2cc 1-116,119-244
+  s_8305d21c167246::t_eafbb2fbb36d9d 117-118
+src/js/platform/screen.js
+  s_8305d21c167246::t_cfc319d970ca03 1-50
+test/core/actions.test.js
+  s_8305d21c167246::t_c340dba906214e 1-82
+src/js/core/player.js
+  s_8305d21c167246::t_92306238b60f62 1-336
+openspec/changes/first-room/specs/game-flow/spec.md
+  s_8305d21c167246::t_8142f9768d5ce8 1-56
+  s_8305d21c167246::t_0387a4c3dc9343 57
+src/js/core/math.js
+  s_8305d21c167246::t_1d42a3e7e46b9e 1-42
+test/core/energy.test.js
+  s_8305d21c167246::t_c6ff62ad2ff691 1-61
+eslint.config.js
+  s_8305d21c167246::t_e688574b4ad9ba 28
+  s_8305d21c167246::t_819c86bfe8f076 1-27,29-67,69-79
+  s_8305d21c167246::t_9b17995f704543 68
+src/js/config/settings.js
+  s_8305d21c167246::t_1f49f4a7cb10ae 1-18,22-54
+  s_8305d21c167246::t_55773f472befc2 19-21
+src/js/core/physics.js
+  s_8305d21c167246::t_96f6cfe78bd6b4 1-154
+openspec/changes/first-room/specs/camera-view/spec.md
+  s_8305d21c167246::t_94cb55230cedbe 1-50
+test/core/physics.test.js
+  s_8305d21c167246::t_2c12e5777a7dc9 94-95
+  s_8305d21c167246::t_49904109992d69 1-93,96-124
+src/js/config/controls.js
+  s_8305d21c167246::t_5f8a109110da1b 1-39
+openspec/changes/first-room/proposal.md
+  s_8305d21c167246::t_2f41c414a457b8 1-38
+test/core/math.test.js
+  s_8305d21c167246::t_2f8c4f15d19fd0 1-33
+openspec/changes/first-room/design.md
+  s_8305d21c167246::t_b7920695b54240 1-33,35-78
+  s_8305d21c167246::t_6277a3a6f547fe 34
+src/js/platform/input.js
+  s_8305d21c167246::t_5d7d14cbc429d2 1-24
+src/js/core/camera.js
+  s_8305d21c167246::t_2e65d820f05f95 1-30
+src/js/core/energy.js
+  s_8305d21c167246::t_a307137b6e9141 1-59
+src/js/platform/images.js
+  s_8305d21c167246::t_053be18a52f00f 1-93
+openspec/changes/first-room/specs/room-map/spec.md
+  s_8305d21c167246::t_f43e69ea343d83 1-86
+src/style.css
+  s_8305d21c167246::t_6a3351aed08046 1-15
+src/js/render/background.js
+  s_8305d21c167246::t_ccb188308c3637 1-47
+test/config/sprites.test.js
+  s_8305d21c167246::t_13f7d42de1b547 1-30
+package-lock.json
+  s_8305d21c167246::t_48b1070a906f74 1-1113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "35728171f14d287ac97a67886136c496537a4b95",
+  "prompts": {},
+  "sessions": {
+    "s_8305d21c167246": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58e6f587-c1fd-49c2-b41b-69ce379b9044",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Tadej Zel <326005104+dejt4@users.noreply.github.com>"
+    }
+  }
+}
