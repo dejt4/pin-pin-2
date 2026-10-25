@@ -17,6 +17,8 @@
     climb: { frames: ['walk-up-1', 'walk-up-2', 'walk-up-3', 'walk-up-2'], fps: 7 },
     climbIdle: { frames: ['walk-up-2'] },
     hurt: { frames: ['bump-left'], faces: 'left' },
+    // nadomestek, dokler ni sličic za met: odriv s stegnjenim krilcem
+    throw: { frames: ['jump-takeoff'], faces: 'right' },
     tired: { frames: ['cry-1', 'cry-2', 'cry-3', 'cry-2'], fps: 4 },
     front: { frames: ['stand-down'] },
     back: { frames: ['walk-up-1'] }

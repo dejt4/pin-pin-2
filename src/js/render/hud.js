@@ -1,10 +1,13 @@
-// Vrstica energije v zgornjem levem kotu (ne premika se s kamero).
+// Vrstica energije v zgornjem levem kotu in točke v zgornjem desnem (ne premikata se s kamero).
 (function (PinPin) {
   'use strict';
 
   var energy = PinPin.get('core.energy', 'core/energy.js');
   var spriteConfig = PinPin.get('config.sprites', 'config/sprites.js');
 
+  var settings = PinPin.get('config.settings', 'config/settings.js');
+
+  var W = settings.screen.width;
   var X = 12;
   var Y = 12;
   var BAR_X = 54;
@@ -33,6 +36,18 @@
     ctx.fillRect(BAR_X, Y, BAR_W, BAR_H);
     ctx.fillStyle = barColor(ratio);
     ctx.fillRect(BAR_X, Y, BAR_W * ratio, BAR_H);
+
+    // točke zgoraj desno
+    ctx.font = 'bold 22px "Trebuchet MS", Verdana, Arial, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#1d3557';
+    ctx.fillStyle = '#ffd166';
+    var label = '★ ' + game.score;
+    ctx.strokeText(label, W - X, Y - 3);
+    ctx.fillText(label, W - X, Y - 3);
   }
 
   PinPin.register('render.hud', { draw: draw });

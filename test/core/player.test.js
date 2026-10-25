@@ -349,3 +349,14 @@ test('hoja: sličice se menjajo s časom', function () {
   }
   assert.ok(images['walk-right-1'] && images['walk-right-2'] && images['walk-right-3']);
 });
+
+test('zapora ustavi pingvina pri hoji in skoku', function () {
+  var p = spawn(flat);
+  var input = h.createInput();
+  // zapora sega tudi nad vrh sobe, da je ni mogoče preskočiti
+  var wall = [{ x: 6 * T, y: -1000, width: T, height: 1000 + 2 * T }];
+  for (var i = 0; i < 120; i++) {
+    player.step(p, flat, input(i % 30 === 0 ? ['right', 'jump'] : ['right']), DT, wall);
+  }
+  assert.ok(p.x + p.width <= 6 * T);
+});

@@ -122,3 +122,36 @@ test('vrh lestve je enosmerna podlaga', function () {
   assert.strictEqual(res.landed, true);
   assert.strictEqual(b.y + b.height, T);
 });
+
+test('zapora ustavi telo z obeh strani', function () {
+  var open = parse([
+    'S........G',
+    '..........',
+    '##########'
+  ]);
+  var wall = [{ x: 200, y: 0, width: 40, height: 80 }];
+  var b = body(100, 40);
+  for (var i = 0; i < 40; i++) {
+    physics.moveX(open, b, 3, wall);
+  }
+  assert.strictEqual(b.x + b.width, 200);
+  var c = body(300, 40);
+  for (i = 0; i < 40; i++) {
+    physics.moveX(open, c, -3, wall);
+  }
+  assert.strictEqual(c.x, 240);
+});
+
+test('zapora ne ustavi telesa, ki je nad ali pod njo', function () {
+  var open = parse([
+    'S........G',
+    '..........',
+    '##########'
+  ]);
+  var wall = [{ x: 200, y: 0, width: 40, height: 30 }];
+  var b = body(100, 40);
+  for (var i = 0; i < 60; i++) {
+    physics.moveX(open, b, 3, wall);
+  }
+  assert.ok(b.x > 240);
+});

@@ -136,3 +136,34 @@ test('varno mesto: blizu začetka je začetek', function () {
   assert.strictEqual(p.col, 2);
   assert.strictEqual(p.row, 0);
 });
+
+test('kupi snega in živali', function () {
+  var r = parse([
+    '...u..k..',
+    '.S*.M.V.G',
+    '#########'
+  ]);
+  assert.strictEqual(room.isPile(room.tileAt(r, 2, 1)), true);
+  assert.strictEqual(room.isSolid(room.tileAt(r, 2, 1)), false);
+  assert.deepStrictEqual(r.animals.map(function (a) { return a.type; }), ['fly', 'mosquitoes', 'bear', 'wolf']);
+  assert.deepStrictEqual({ col: r.animals[2].col, row: r.animals[2].row }, { col: 4, row: 1 });
+  // živali niso ploščice
+  assert.strictEqual(room.tileAt(r, 4, 1), '.');
+  assert.strictEqual(room.tileAt(r, 3, 0), '.');
+});
+
+test('napaka: medved ali volk brez tal', function () {
+  assert.throws(function () { parse(['SM.G', '#.##']); }, /vrstici 1, stolpec 2 ni trdnih tal/);
+  assert.throws(function () { parse(['V..G', '.S..', '####']); }, /ni trdnih tal/);
+});
+
+test('prva podlaga pod vrstico', function () {
+  var r = parse([
+    'S..G',
+    '....',
+    '.==.',
+    '####'
+  ]);
+  assert.strictEqual(room.surfaceBelow(r, 1, 0), 2 * T);
+  assert.strictEqual(room.surfaceBelow(r, 0, 0), 3 * T);
+});

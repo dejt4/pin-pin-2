@@ -11,8 +11,17 @@
   var FISH = 'f';
   var START = 'S';
   var GOAL = 'G';
+  var PILE = '*';
 
-  var KNOWN = EMPTY + GROUND + CUBE + FLOE + LADDER + SPIKES + FISH + START + GOAL;
+  // znak → vrsta živali
+  var ANIMALS = {
+    M: 'bear',
+    V: 'wolf',
+    u: 'fly',
+    k: 'mosquitoes'
+  };
+
+  var KNOWN = EMPTY + GROUND + CUBE + FLOE + LADDER + SPIKES + FISH + START + GOAL + PILE + 'MVuk';
   var FISH_COLORS = 4;
 
   function fail(message) {
@@ -30,6 +39,7 @@
     var fish = [];
     var start = null;
     var goals = [];
+    var animals = [];
 
     for (var r = 0; r < rows.length; r++) {
       var line = rows[r];
@@ -63,6 +73,9 @@
         } else if (ch === GOAL) {
           goals.push({ col: c, row: r, x: c * tileSize, y: r * tileSize, width: tileSize, height: tileSize });
           ch = EMPTY;
+        } else if (Object.prototype.hasOwnProperty.call(ANIMALS, ch)) {
+          animals.push({ type: ANIMALS[ch], col: c, row: r });
+          ch = EMPTY;
         }
         row.push(ch);
       }
@@ -75,6 +88,14 @@
     if (goals.length === 0) {
       fail('ni cilja (G).');
     }
+    for (var a = 0; a < animals.length; a++) {
+      var animal = animals[a];
+      var walker = animal.type === 'bear' || animal.type === 'wolf';
+      var below = animal.row + 1 < tiles.length ? tiles[animal.row + 1][animal.col] : EMPTY;
+      if (walker && !isSolid(below)) {
+        fail('pod živaljo v vrstici ' + (animal.row + 1) + ', stolpec ' + (animal.col + 1) + ' ni trdnih tal.');
+      }
+    }
 
     return {
       name: source.name,
@@ -86,7 +107,8 @@
       tiles: tiles,
       fish: fish,
       start: start,
-      goals: goals
+      goals: goals,
+      animals: animals
     };
   }
 
@@ -113,6 +135,22 @@
 
   function isSpikes(tile) {
     return tile === SPIKES;
+  }
+
+  function isPile(tile) {
+    return tile === PILE;
+  }
+
+  // Zgornji rob prve podlage (trdne ali enosmerne) pod vrstico row v stolpcu col;
+  // če je ni, spodnji rob sobe.
+  function surfaceBelow(room, col, row) {
+    for (var r = row + 1; r < room.rows; r++) {
+      var tile = tileAt(room, col, r);
+      if (isSolid(tile) || isOneWay(tile)) {
+        return r * room.tileSize;
+      }
+    }
+    return room.height;
   }
 
   // Vrh lestve: najvišja ploščica lestve v stolpcu deluje kot enosmerna podlaga.
@@ -177,7 +215,8 @@
       CUBE: CUBE,
       FLOE: FLOE,
       LADDER: LADDER,
-      SPIKES: SPIKES
+      SPIKES: SPIKES,
+      PILE: PILE
     },
     FISH_COLORS: FISH_COLORS,
     parse: parse,
@@ -186,6 +225,8 @@
     isOneWay: isOneWay,
     isLadder: isLadder,
     isSpikes: isSpikes,
+    isPile: isPile,
+    surfaceBelow: surfaceBelow,
     isLadderTop: isLadderTop,
     startPoint: startPoint,
     safePoint: safePoint

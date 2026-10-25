@@ -34,11 +34,18 @@
     return false;
   }
 
-  // Vodoravni premik. Vrne true, če je telo zadelo zid ali rob sobe.
-  function moveX(r, body, dx) {
+  function overlapsVertically(a, b) {
+    return a.y < b.y + b.height && a.y + a.height > b.y;
+  }
+
+  // Vodoravni premik. Vrne true, če je telo zadelo zid, zaporo ali rob sobe.
+  // blockers: neobvezen seznam dodatnih trdnih pravokotnikov (zapore poti)
+  function moveX(r, body, dx, blockers) {
     var T = r.tileSize;
     var hit = false;
     var col;
+    var i;
+    var b;
 
     if (dx > 0) {
       var right = body.x + body.width;
@@ -50,6 +57,13 @@
           break;
         }
       }
+      for (i = 0; blockers && i < blockers.length; i++) {
+        b = blockers[i];
+        if (overlapsVertically(body, b) && b.x >= right - EPS && b.x < newRight) {
+          newRight = b.x;
+          hit = true;
+        }
+      }
       body.x = newRight - body.width;
     } else if (dx < 0) {
       var left = body.x;
@@ -59,6 +73,13 @@
           newLeft = (col + 1) * T;
           hit = true;
           break;
+        }
+      }
+      for (i = 0; blockers && i < blockers.length; i++) {
+        b = blockers[i];
+        if (overlapsVertically(body, b) && b.x + b.width <= left + EPS && b.x + b.width > newLeft) {
+          newLeft = b.x + b.width;
+          hit = true;
         }
       }
       body.x = newLeft;

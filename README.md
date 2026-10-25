@@ -11,7 +11,9 @@ Ideja in odločitve o igri: [`idea/init.md`](idea/init.md). Navodila za razvoj z
 | levo / desno      | ← →        | križec ali leva palčka |
 | gor / dol (lestev)| ↑ ↓        | križec ali leva palčka |
 | skok              | Y          | ×                      |
-| met kepe          | X          | □ (še brez učinka)     |
+| met kepe          | X          | □                      |
+
+Kepe mečeš ob kupu snega (neomejeno); ko odideš od kupa, imaš eno kepo s sabo.
 
 Na telefonu ali tablici se pokažejo gumbi na zaslonu: križec na desni, Skok in Kepa na levi. Pokončno so pod igro, ležeče prosojno čez igro.
 
@@ -47,5 +49,10 @@ Soba je zapisana z znaki v `src/js/config/rooms/room-1.js` (ena vrstica besedila
 | `f`  | riba |
 | `S`  | začetek |
 | `G`  | cilj |
+| `*`  | kup snega |
+| `M`  | medved (stoji na tleh pod znakom) |
+| `V`  | volk (stoji na tleh pod znakom) |
+| `u`  | muha (zapira pot, 5 kep) |
+| `k`  | trije komarji (zapirajo pot, vsaka kepa enega) |
 
-Nastavitve (hitrost hoje, višina skoka, energija ...) so v `src/js/config/settings.js`.
+Nastavitve (hitrost hoje, višina skoka, energija, kepe, živali, točke ...) so v `src/js/config/settings.js`.

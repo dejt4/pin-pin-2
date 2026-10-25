@@ -43,7 +43,7 @@
 - [x] 7.1 Napiši `config/sprites.js` (seznam sličic in velikosti izrisa) in `platform/images.js` (nalaganje, enkratno pomanjšanje, napaka z imenom datoteke) ter `platform/screen.js` (platno 640 × 360, prilagoditev oknu 16 : 9); preveri v brskalniku, da se sličice naložijo in da napačno ime pokaže napako
 - [x] 7.2 Napiši `render/background.js` (nebo in gore s paralakso) in `render/tiles.js` (barvni pravokotniki za tla in lestve, obstoječe sličice za kocko, ploščo, konice, ribe, preprost cilj) ter preveri v brskalniku, da je soba vidna in se ozadje pomika počasneje
 - [x] 7.3 Napiši `render/sprites.js` (pingvin z zrcaljenjem in utripanjem), `render/hud.js` (vrstica energije), `render/overlay.js` (napisi za začetek, nalaganje, utrujenost, "Bravo!") in `render/renderer.js`; preveri v brskalniku vse zaslone
-- [ ] 7.4 Napiši `app/main.js` (nalaganje, zanka z akumulatorjem 1/60 s, največ 5 korakov na sličico) in preveri, da igra v brskalniku teče od začetnega zaslona do cilja in do utrujenosti
+- [x] 7.4 Napiši `app/main.js` (nalaganje, zanka z akumulatorjem 1/60 s, največ 5 korakov na sličico) in preveri, da igra v brskalniku teče od začetnega zaslona do cilja in do utrujenosti
 
 ## 8. Končno preverjanje
 
@@ -56,4 +56,4 @@
 - [x] 9.1 Dodaj v `core/actions.read` vir akcij z dotika in teste (dotik sam, dotik skupaj s tipkovnico, pritisk in držanje gumba); preveri z `npm test`
 - [x] 9.2 Napiši `platform/touch.js` (gumbi, sledenje prstom, drsenje po križcu, več prstov, prikaz samo na napravah na dotik), dodaj gumbe in postavitev v `index.html` in `style.css` ter poveži v `platform/input.js`; preveri v brskalniku z mobilno velikostjo in umetnimi dotiki
 - [x] 9.3 Prilagodi `platform/screen.js` prostoru `#stage` (pokončno: igra na vrhu, gumbi pod njo; ležeče: igra čez cel zaslon, gumbi prosojno v kotih); preveri v brskalniku pokončno in ležeče ter da na namiznem brskalniku gumbov ni
-- [ ] 9.4 Uporabnik preizkusi igro na telefonu (pokončno in ležeče) in sporoči rezultat; nalogo označi šele po potrditvi uporabnika
+- [x] 9.4 Uporabnik preizkusi igro na telefonu (pokončno in ležeče) in sporoči rezultat; nalogo označi šele po potrditvi uporabnika

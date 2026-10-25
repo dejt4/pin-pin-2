@@ -47,9 +47,10 @@
       }
       break;
     case 'goal':
-      text(ctx, 'Bravo!', 110, 64);
+      text(ctx, 'Bravo!', 100, 64);
+      text(ctx, 'Točke: ' + g.score, 160, 30);
       if (game.restartReady(g)) {
-        text(ctx, 'Pritisni tipko za novo igro', 170, 24);
+        text(ctx, 'Pritisni tipko za novo igro', 205, 24);
       }
       break;
     }

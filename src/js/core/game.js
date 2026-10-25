@@ -18,6 +18,8 @@
   var player = isNode ? require('./player.js') : PinPin.get('core.player', 'core/player.js');
   var energy = isNode ? require('./energy.js') : PinPin.get('core.energy', 'core/energy.js');
   var camera = isNode ? require('./camera.js') : PinPin.get('core.camera', 'core/camera.js');
+  var snowballs = isNode ? require('./snowballs.js') : PinPin.get('core.snowballs', 'core/snowballs.js');
+  var animals = isNode ? require('./animals.js') : PinPin.get('core.animals', 'core/animals.js');
 
   var SCREEN_COLS = settings.screen.width / settings.tileSize;
   // del ploščice s konicami, ki rani (spodnji del, malo ožji)
@@ -33,6 +35,9 @@
       player: player.create(room.startPoint(r)),
       energy: energy.create(),
       collected: {},
+      snow: snowballs.createState(),
+      animals: animals.create(r),
+      score: 0,
       cameraX: 0
     };
     game.player.pose = 'front';
@@ -44,12 +49,23 @@
     game.stateTime = 0;
   }
 
-  // Soba od začetka: pingvin na začetku, polna energija, vse ribe na mestu.
+  // Soba od začetka: pingvin na začetku, polna energija, vse ribe in živali na mestu, brez kep in točk.
   function reset(game) {
     game.player = player.create(room.startPoint(game.room));
     game.energy = energy.create();
     game.collected = {};
+    game.snow = snowballs.createState();
+    game.animals = animals.create(game.room);
+    game.score = 0;
     updateCamera(game);
+  }
+
+  // Vrnitev na varno mesto en zaslon nazaj. Živali, točke in nošena kepa ostanejo.
+  function sendBack(game) {
+    var p = game.player;
+    var point = room.safePoint(game.room, player.centerX(p), SCREEN_COLS);
+    player.placeAt(p, point);
+    snowballs.clearFlying(game.snow);
   }
 
   function updateCamera(game) {
@@ -97,8 +113,7 @@
     if (p.y <= game.room.height) {
       return false;
     }
-    var point = room.safePoint(game.room, player.centerX(p), SCREEN_COLS);
-    player.placeAt(p, point);
+    sendBack(game);
     return true;
   }
 
@@ -112,9 +127,31 @@
     return false;
   }
 
+  function addScore(game, events) {
+    for (var i = 0; i < events.length; i++) {
+      game.score += settings.score[events[i]];
+    }
+  }
+
+  // Medved ali volk ujame pingvina: nazaj na varno mesto, kazen, kratka neranljivost.
+  function checkCaught(game) {
+    var p = game.player;
+    if (p.invulnerable > 0 || !animals.catches(game.animals, p)) {
+      return;
+    }
+    sendBack(game);
+    energy.caughtPenalty(game.energy);
+    p.invulnerable = settings.player.invulnerableTime;
+  }
+
   function stepPlaying(game, act, dt) {
     energy.drain(game.energy, dt);
-    player.step(game.player, game.room, act, dt);
+    player.step(game.player, game.room, act, dt, animals.blockers(game.animals));
+    snowballs.update(game.snow, game.player, game.room, act, dt, game.cameraX);
+    animals.step(game.animals, game.room, dt);
+    addScore(game, animals.hitBy(game.animals, game.snow.balls));
+    snowballs.removeDead(game.snow);
+    checkCaught(game);
     collectFish(game);
     touchSpikes(game);
     if (checkPit(game)) {
@@ -156,7 +193,8 @@
       break;
     case 'tired':
       // pingvin brez nadzora pade na tla in joka
-      player.step(game.player, game.room, IDLE, dt);
+      player.step(game.player, game.room, IDLE, dt, animals.blockers(game.animals));
+      animals.step(game.animals, game.room, dt);
       checkPit(game);
       if (canRestart(game, act)) {
         startPlaying(game);

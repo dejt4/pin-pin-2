@@ -32,6 +32,10 @@
     change(e, -cfg.spikesPenalty);
   }
 
+  function caughtPenalty(e) {
+    change(e, -cfg.caughtPenalty);
+  }
+
   function isEmpty(e) {
     return e.value <= 0;
   }
@@ -47,6 +51,7 @@
     eatFish: eatFish,
     pitPenalty: pitPenalty,
     spikesPenalty: spikesPenalty,
+    caughtPenalty: caughtPenalty,
     isEmpty: isEmpty,
     ratio: ratio
   };

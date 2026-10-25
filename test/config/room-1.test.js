@@ -40,47 +40,51 @@ test('prva soba ima prepad, lestev, konice, ledene plošče, vsaj 8 rib in cilj 
   assert.ok(r.goals[0].col >= r.cols - screenCols, 'cilj je na zadnjem zaslonu');
 });
 
-// Preprost samodejni igralec: hodi desno, skoči pred prepadom, zidom ali konicami
-// in pleza po lestvi, kadar je pred njo.
-function isSurface(col, row) {
-  var t = room.tileAt(r, col, row);
-  return room.isSolid(t) || room.isOneWay(t) || room.isLadderTop(r, col, row);
-}
-
-test('prvo sobo je mogoče prehoditi do cilja, preden zmanjka energije', function () {
-  var game = require('../../src/js/core/game.js');
-  var player = require('../../src/js/core/player.js');
-  var h = require('../helpers.js');
-  var g = game.create(room1);
-  var input = h.createInput();
-  game.step(g, input(['jump']), h.DT);
-  game.step(g, input([]), h.DT);
-
-  var climbed = {};
-  for (var i = 0; i < 60 * 120 && g.state === 'playing'; i++) {
-    var p = g.player;
-    var col = Math.floor(player.centerX(p) / T);
-    var feetRow = Math.round((p.y + p.height) / T);
-    var names = ['right'];
-    var ladderHere = room.isLadder(room.tileAt(r, col, feetRow - 1));
-    if (p.mode === 'climb' || (p.mode === 'ground' && ladderHere && !climbed[col])) {
-      names = ['up'];
-      if (p.mode === 'climb') {
-        climbed[col] = true;
-      }
-    } else if (p.mode === 'ground') {
-      var ahead = Math.floor((player.centerX(p) + 30) / T);
-      var gap = !isSurface(ahead, feetRow);
-      var wall = room.isSolid(room.tileAt(r, ahead, feetRow - 1));
-      var spikes = room.isSpikes(room.tileAt(r, ahead, feetRow - 1));
-      if (gap || wall || spikes) {
-        names.push('jump');
+test('prva soba ima kupe snega, medveda, volka, muho in komarje na poti ter živali na stranskem nivoju', function () {
+  var ground = (r.rows - 2) * T;
+  var piles = [];
+  for (var c = 0; c < r.cols; c++) {
+    for (var row = 0; row < r.rows; row++) {
+      if (room.isPile(room.tileAt(r, c, row))) {
+        piles.push({ col: c, row: row });
       }
     }
-    game.step(g, input(names), h.DT);
   }
+  assert.ok(piles.length >= 2);
+  var types = r.animals.map(function (a) { return a.type; });
+  ['bear', 'wolf', 'fly', 'mosquitoes'].forEach(function (type) {
+    assert.ok(types.indexOf(type) !== -1, 'manjka ' + type);
+  });
+  var side = 0;
+  r.animals.forEach(function (a) {
+    if (a.type !== 'fly' && a.type !== 'mosquitoes') {
+      return;
+    }
+    var floor = room.surfaceBelow(r, a.col, a.row);
+    if (floor < ground) {
+      side++;
+    }
+    // kup na isti višini največ 6 ploščic pred živaljo
+    var pile = piles.filter(function (p) {
+      return p.row === a.row && p.col < a.col && a.col - p.col <= 6;
+    });
+    assert.ok(pile.length > 0, 'pred živaljo v stolpcu ' + a.col + ' ni kupa snega');
+  });
+  assert.ok(side > 0, 'na stranskem nivoju ni muhe ali komarjev');
+});
+
+test('prvo sobo je mogoče prehoditi do cilja, preden zmanjka energije, in pregnati vse muhe in komarje', function () {
+  var game = require('../../src/js/core/game.js');
+  var animals = require('../../src/js/core/animals.js');
+  var bot = require('../bot.js');
+  var g = game.create(room1);
+  var result = bot.play(g, 60 * 120);
   assert.strictEqual(g.state, 'goal');
-  assert.ok(Object.keys(climbed).length > 0, 'pot vodi po lestvi');
+  assert.ok(result.climbed > 1, 'pot vodi po lestvi in na stranski nivo');
+  var cleared = g.animals.filter(function (a) { return a.type === 'fly' || a.type === 'mosquitoes'; })
+    .every(function (a) { return !animals.isBlocking(a); });
+  assert.ok(cleared, 'vse muhe in komarji so pregnani');
+  assert.strictEqual(g.score, 3 + 3 + 3);
 });
 
 test('za vsak prepad obstaja varno mesto na tleh, ne v prepadu in ne ob konicah', function () {

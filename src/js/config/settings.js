@@ -33,7 +33,34 @@
       drainPerSecond: 100 / 120,
       fish: 25,
       pitPenalty: 15,
-      spikesPenalty: 10
+      spikesPenalty: 10,
+      caughtPenalty: 15
+    },
+
+    snowball: {
+      speed: 360,
+      size: 10,
+      // višina kepe pod vrhom pingvina (prsi)
+      chest: 12,
+      // najkrajši čas med dvema metoma
+      cooldown: 0.3,
+      // trajanje animacije meta
+      throwTime: 0.25
+    },
+
+    animals: {
+      // range: največja razdalja od začetnega položaja v ploščicah
+      bear: { width: 56, height: 52, speed: 50, range: 4 },
+      wolf: { width: 60, height: 30, speed: 80, range: 4 },
+      flyHits: 5,
+      mosquitoes: 3,
+      // trajanje sličice "zadet" po kepi
+      hitTime: 0.3
+    },
+
+    score: {
+      fly: 3,
+      mosquito: 1
     },
 
     flow: {

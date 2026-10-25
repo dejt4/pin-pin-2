@@ -36,6 +36,8 @@
       invulnerable: 0,
       jumpTime: Infinity,
       landTime: 0,
+      // preostanek animacije meta kepe (nastavi core/snowballs.js)
+      throwTime: 0,
       // posebna poza za zaslone (null, 'front', 'back')
       pose: null,
       anim: null,
@@ -55,6 +57,7 @@
     p.climbing = false;
     p.jumpTime = Infinity;
     p.landTime = 0;
+    p.throwTime = 0;
   }
 
   function centerX(p) {
@@ -108,9 +111,9 @@
   }
 
   // Gibanje z gravitacijo (vsa stanja razen plezanja).
-  function stepBody(p, r, dt) {
+  function stepBody(p, r, dt, blockers) {
     p.vy = Math.min(p.vy + cfg.gravity * dt, cfg.maxFallSpeed);
-    physics.moveX(r, p, p.vx * dt);
+    physics.moveX(r, p, p.vx * dt, blockers);
     var res = physics.moveY(r, p, p.vy * dt, true);
     if (res.landed) {
       p.vy = 0;
@@ -133,7 +136,7 @@
     }
   }
 
-  function stepFree(p, r, act, dt) {
+  function stepFree(p, r, act, dt, blockers) {
     if (p.mode === 'ground' || p.mode === 'air') {
       var dir = direction(act);
       p.vx = dir * cfg.walkSpeed;
@@ -147,7 +150,7 @@
         }
         if (act.down.down && onLadderTop(p, r)) {
           startClimb(p, r);
-          stepClimb(p, r, act, dt);
+          stepClimb(p, r, act, dt, blockers);
           return;
         }
         if (act.pressed.jump) {
@@ -157,10 +160,10 @@
     } else if (p.mode === 'tired') {
       p.vx = 0;
     }
-    stepBody(p, r, dt);
+    stepBody(p, r, dt, blockers);
   }
 
-  function stepClimb(p, r, act, dt) {
+  function stepClimb(p, r, act, dt, blockers) {
     var T = r.tileSize;
     var dir = direction(act);
 
@@ -171,7 +174,7 @@
       }
       jump(p);
       p.climbing = false;
-      stepBody(p, r, dt);
+      stepBody(p, r, dt, blockers);
       return;
     }
     if (dir !== 0) {
@@ -180,7 +183,7 @@
       p.mode = 'air';
       p.jumpTime = Infinity;
       p.climbing = false;
-      stepFree(p, r, act, dt);
+      stepFree(p, r, act, dt, blockers);
       return;
     }
 
@@ -213,17 +216,21 @@
     }
   }
 
-  function step(p, r, act, dt) {
+  // blockers: neobvezne zapore poti (glej core/physics.js moveX)
+  function step(p, r, act, dt, blockers) {
     if (p.invulnerable > 0) {
       p.invulnerable = Math.max(0, p.invulnerable - dt);
     }
     if (p.landTime > 0) {
       p.landTime = Math.max(0, p.landTime - dt);
     }
+    if (p.throwTime > 0) {
+      p.throwTime = Math.max(0, p.throwTime - dt);
+    }
     if (p.mode === 'climb') {
-      stepClimb(p, r, act, dt);
+      stepClimb(p, r, act, dt, blockers);
     } else {
-      stepFree(p, r, act, dt);
+      stepFree(p, r, act, dt, blockers);
     }
     if (p.mode === 'air') {
       p.jumpTime += dt;
@@ -269,6 +276,11 @@
       return 'hurt';
     case 'climb':
       return p.climbing ? 'climb' : 'climbIdle';
+    }
+    if (p.throwTime > 0) {
+      return 'throw';
+    }
+    switch (p.mode) {
     case 'air':
       if (p.jumpTime < timing.takeoff) {
         return 'jumpTakeoff';
