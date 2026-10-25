@@ -1,0 +1,57 @@
+src/js/core/actions.js
+  s_8305d21c167246::t_54ff4524ec842a 1
+  s_8305d21c167246::t_01cd42a870be0e 72-73
+  s_8305d21c167246::t_85f1b8a892fb09 26-27,31-35
+  s_8305d21c167246::t_ab963610cf9a06 36
+src/js/platform/input.js
+  s_8305d21c167246::t_57f4888007f57e 1,10-11,18
+README.md
+  s_8305d21c167246::t_678c73a06a3091 16-19
+AGENTS.md
+  s_8305d21c167246::t_eb80065dbf0f39 96-97
+openspec/changes/first-room/design.md
+  s_8305d21c167246::t_5e8437caff7d27 66-74
+openspec/changes/first-room/tasks.md
+  s_8305d21c167246::t_07b18d4fc2fb29 53-55,59
+  s_8305d21c167246::t_6b1cee73f2d923 56
+  s_8305d21c167246::t_e14120dbd0d2ea 57-58
+src/js/app/main.js
+  s_8305d21c167246::t_6fc03a4cbcf9bd 12
+  s_8305d21c167246::t_540754b9cc3321 30-33
+src/index.html
+  s_8305d21c167246::t_52b58a80d6c646 7
+  s_8305d21c167246::t_71cff825334db4 5,13-28,49
+openspec/changes/first-room/specs/game-controls/spec.md
+  s_8305d21c167246::t_4b0250c34cbb4f 5
+  s_8305d21c167246::t_3f63eac6fafc0e 46-68
+src/style.css
+  s_8305d21c167246::t_940b851c0d9946 16-176
+src/js/platform/touch.js
+  s_8305d21c167246::t_3340ccc78b02d5 1-116
+openspec/changes/first-room/proposal.md
+  s_8305d21c167246::t_d514a4b1817e85 10
+  s_8305d21c167246::t_52efd49f14256b 23
+src/js/platform/screen.js
+  s_8305d21c167246::t_0a4eb7224540f2 29-31,36,40-44,48
+  s_8305d21c167246::t_23001e063d8067 9-10
+  s_8305d21c167246::t_723a782342b983 2
+  s_8305d21c167246::t_583cdedec37e04 49
+test/core/actions.test.js
+  s_8305d21c167246::t_fd9ca73a4f3e89 83-111
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b1249cdfc37f71de41b628c6181583529ede9978",
+  "prompts": {},
+  "sessions": {
+    "s_8305d21c167246": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58e6f587-c1fd-49c2-b41b-69ce379b9044",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Tadej Zel <326005104+dejt4@users.noreply.github.com>"
+    }
+  }
+}
