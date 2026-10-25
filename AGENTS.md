@@ -21,46 +21,77 @@ Branje stanja je dovoljeno (`git status`, `git diff`, `git log`).
 
 ## O projektu
 
-**Pin-Pin** (prej Kvadratek) je preprosta 2D igra za brskalnik: igralec premika lik gor, dol, levo in desno s tipkovnico ali kontrolerjem. Lik bo pingvin z animacijami hoje, obrata in skoka. Igra mora delovati tudi v vgrajenem brskalniku PlayStationa 4 Slim. Izvirna ideja je v `idea/base.md`, arhitektura v `idea/architecture.md`.
+**Pin-Pin** je 2D platformer za brskalnik v slogu Amigine igre **Prehistorik**: stranski pogled, pingvin hodi levo in desno, skače čez prepade, pleza po lestvah, mapa se vodoravno pomika za njim. Zgodbe in liki izhajajo iz domišljijskih prigod avtorjeve hčerke (2 leti), ki bo igro tudi igrala, zato je igra prijazna in ima malo kontrol.
+
+Bistvo igre (podrobno v `idea/init.md`):
+- **Soba**: ena mapa, nekaj zaslonov široka, cilj na koncu.
+- **Energija** s časom upada, ribe jo napolnijo. Pri nič se pingvin utrudi in soba se začne znova.
+- **Kepe**: ob kupu snega jih mečeš neomejeno, eno lahko neseš s sabo.
+- **Živali**: medveda in volka preskočiš ali s kepo obrneš; muho preženeš s 5 kepami; komarje (3) kepe zalepijo na tla.
+- **Kazni**: padec v prepad ali ulov živali te vrne na varno mesto en zaslon nazaj in vzame nekaj energije.
+- **Točke** za pregnane muhe in komarje.
+
+Igra mora delovati tudi v vgrajenem brskalniku **PlayStationa 4 Slim**, s tipkovnico in s kontrolerjem.
+
+## Dokumenti
+
+- `idea/init.md`: začetna ideja in vse dogovorjene odločitve o igri. Je vir resnice za pravila igre, dokler niso zapisana v `openspec/specs/`. Ne spreminjaj brez dovoljenja uporabnika.
+- `openspec/`: specifikacije (`specs/`) in spremembe (`changes/`).
 
 ## Struktura
+
+Trenutno obstajajo samo `idea/`, `openspec/` in grafike v `src/graphic/`. Ostale mape so načrtovane in nastanejo z implementacijo.
 
 ```
 AGENTS.md           ta navodila (skupna za vse AI agente)
 CLAUDE.md           vstopna točka za Claude Code, uvozi AGENTS.md
-idea/               izvirne ideje in predlogi (ne spreminjaj brez dovoljenja)
-openspec/           OpenSpec: specifikacije (specs/) in spremembe (changes/)
-src/                vsa koda in grafika aplikacije (koren spletne strani)
-  index.html, style.css
-  graphic/          sličice; graphic/source/ so izvorne slike, ki se ne objavijo
-  js/               koda igre po slojih (glej spodaj)
-test/               testi; struktura zrcali src/js (npr. test/core/)
-tools/              razvojni skripti (Node.js, niso del igre): priprava sličic
-.github/workflows/  objava src/ na GitHub Pages
+idea/               ideje in odločitve o igri
+openspec/           OpenSpec: specifikacije in spremembe
+src/                vsa koda in grafika aplikacije (koren spletne strani, ki se objavi)
+  graphic/          sličice, ki jih igra naloži
+    penguin/        animacije pingvina (hoja, skok, obrat, odboj, jok)
+    fish/           ribe
+    ice/            ledene ovire (kocka, plošča, konice)
+    source/         izvorne slike (velike, se ne naložijo v igro)
+  index.html, style.css   (načrtovano)
+  js/               koda igre po slojih (načrtovano, glej spodaj)
+test/               testi; struktura zrcali src/js (načrtovano)
 ```
 
-Generirane datoteke se ne urejajo ročno, ampak s `npm run sprites` iz `tools/sprites.json` (listi `penguin`, `ice`, `fish`) in izvirnikov v `src/graphic/source/`: sličice v `src/graphic/penguin/`, `src/graphic/ice/` in `src/graphic/fish/` ter `src/js/config/sprite-info.js` (ključ za vsak list).
+V `src/` gre samo to, kar potrebuje igra v brskalniku. Dokumenti, ideje in orodja so v korenu.
 
-Vse nove datoteke aplikacije gredo v `src/`. V korenu so samo orodja in dokumentacija.
+### Grafika
+- Sobe se sestavljajo iz **ploščic** (tla, ploščadi, lestve, kupi snega ...) in **ozadja**, ki se ponavlja in pomika počasneje (paralaksa). Mapa sobe je zapisana kot podatki v `src/js/config/`, ne kot ena velika slika.
+- Dokler grafike za ploščice ali živali ni, se rišejo kot preprosti barvni pravokotniki.
+- Orodja za pripravo sličic iz `src/graphic/source/` še ni. Obstoječe sličice v `penguin/`, `fish/` in `ice/` so že pripravljene; ne prepisuj jih ročno.
 
 ## Sloji
 
-Podrobno v `idea/architecture.md`. Sloj sme uporabljati samo sloje pod sabo:
+Sloj sme uporabljati samo sloje pod sabo:
 
 ```
-app        src/js/app/       zagon, zanka, zasloni
-render     src/js/render/    izris stanja (samo bere stanje)
-platform   src/js/platform/  brskalnik: vhod, zaslon, nalaganje slik
-core       src/js/core/      čista pravila igre, brez API-jev brskalnika
-config     src/js/config/    samo podatki (nastavitve, tipke, animacije)
+app        src/js/app/       zagon, zanka, zasloni (začetek, utrujenost, cilj)
+render     src/js/render/    izris stanja: kamera, ozadje, ploščice, liki, vrstica energije (samo bere stanje)
+platform   src/js/platform/  brskalnik: vhod (tipkovnica, kontroler), zaslon, nalaganje slik
+core       src/js/core/      čista pravila igre: gravitacija, trki s ploščicami, lestve, energija, kepe, živali
+config     src/js/config/    samo podatki: nastavitve, tipke, animacije, mape sob
 ```
 
 - Platform sme iz core uporabljati samo čiste pomožne funkcije (npr. `core/math.js`), ne pravil igre.
-- Naprave se prevedejo v **akcije** v `core/actions.js` po razporeditvi iz `config/controls.js`. Pravila igre ne poznajo tipk.
+- Naprave se prevedejo v **akcije** (levo, desno, gor, dol, skok, kepa) v `core/actions.js` po razporeditvi iz `config/controls.js`. Pravila igre ne poznajo tipk.
 - Vsak modul se registrira v `window.PinPin` z `PinPin.register('sloj.modul', ...)`. Odvisnosti pridobi s `PinPin.get('sloj.modul', 'sloj/datoteka.js')`, ki ob napačnem vrstnem redu skript sproži jasno napako.
 - Moduli v `config/` in `core/` imajo dvojni izvoz (`module.exports` v Node.js, `PinPin.register` v brskalniku), da jih je mogoče testirati.
 - Nov modul je treba dodati tudi v `src/index.html` na pravo mesto v vrstnem redu: `pinpin.js` → config → core → platform → render → app.
-- ESLint v `config/` in `core/` prepove API-je brskalnika. Ostala pravila med sloji preveri agent sam.
+- Pravila igre tečejo s **fiksnim časovnim korakom**, da se igra enako obnaša ne glede na hitrost naprave (PS4).
+
+## Kontrole
+
+| Akcija          | Tipkovnica (`keyCode`) | Kontroler PS4 |
+|-----------------|------------------------|---------------|
+| levo / desno    | ← → (37, 39)           | križec ali leva palčka |
+| gor / dol (lestev) | ↑ ↓ (38, 40)        | križec ali leva palčka |
+| skok            | Y (89)                 | × |
+| met kepe        | X (88)                 | □ |
 
 ## Delovni tok (OpenSpec)
 
@@ -75,16 +106,18 @@ Vsaka nova funkcionalnost gre skozi OpenSpec change v `openspec/changes/<ime>/`:
 
 - **ES5 JavaScript brez gradbenega koraka** zaradi brskalnika PS4: brez `let`/`const`, puščičnih funkcij, razredov, predlog nizov in ES modulov. Datoteke se naložijo z navadnimi oznakami `<script>` in si delijo imenski prostor `window.PinPin`.
 - Tipke se prepoznajo po `keyCode`, ne po `event.key` ali `event.code`.
-- Brez zunanjih knjižnic za izvajanje. Razvojna orodja (ESLint) so dovoljena.
+- Brez zunanjih knjižnic za izvajanje. Razvojna orodja (ESLint, Node.js) so dovoljena.
 - Pravila igre (`src/js/core/`) ne smejo uporabljati API-jev brskalnika, da jih je mogoče testirati v Node.js.
 
 ## Ukazi
+
+`package.json` še ne obstaja. Ko bo pripravljen, veljata:
 
 ```
 npm run lint    # ESLint: ES5 in meje slojev
 npm test        # testi v test/ z node:test
 ```
 
-Lokalni zagon: statični strežnik nad mapo `src/` (glej `README.md`).
-
 Pred zaključkom naloge, ki spreminja kodo, morata oba ukaza uspeti.
+
+Lokalni zagon: statični strežnik nad mapo `src/`.
