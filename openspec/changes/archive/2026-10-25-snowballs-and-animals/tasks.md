@@ -2,7 +2,7 @@
 
 ## 0. Predpogoj
 
-- [ ] 0.1 Sprememba `first-room` je arhivirana (po uporabnikovem preizkusu s tipkovnico in na PS4), tako da `openspec validate snowballs-and-animals --strict` ne javlja več opozoril za MODIFIED/REMOVED; preveri z ukazom. Implementacija se lahko začne prej, arhiviranje te spremembe pa ne
+- [x] 0.1 Sprememba `first-room` je arhivirana (po uporabnikovem preizkusu s tipkovnico in na PS4), tako da `openspec validate snowballs-and-animals --strict` ne javlja več opozoril za MODIFIED/REMOVED; preveri z ukazom. Implementacija se lahko začne prej, arhiviranje te spremembe pa ne
 
 ## 1. Soba in nastavitve
 
@@ -34,4 +34,4 @@
 ## 6. Končno preverjanje
 
 - [x] 6.1 Preveri, da `npm run lint` in `npm test` uspeta in da je `README.md` (znaki sobe, kontrole) posodobljen
-- [ ] 6.2 Uporabnik preigra prvo sobo na telefonu ali računalniku (kepe ob kupu in nošena kepa, preskok in obrat medveda in volka, ulov, muha, komarji, stranski nivo, točke) in sporoči rezultat; nalogo označi šele po potrditvi uporabnika
+- [x] 6.2 Uporabnik preigra prvo sobo na telefonu ali računalniku (kepe ob kupu in nošena kepa, preskok in obrat medveda in volka, ulov, muha, komarji, stranski nivo, točke) in sporoči rezultat; nalogo označi šele po potrditvi uporabnika

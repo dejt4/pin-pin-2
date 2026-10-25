@@ -48,8 +48,9 @@
 ## 8. Končno preverjanje
 
 - [x] 8.1 Preveri, da `npm run lint` in `npm test` uspeta
-- [ ] 8.2 Ročno preigraj prvo sobo v namiznem brskalniku s tipkovnico in kontrolerjem (če je na voljo): skok čez prepad, lestev gor in dol, konice, padec v prepad in vrnitev, pobiranje rib, utrujenost, cilj
-- [ ] 8.3 Uporabnik preizkusi igro v brskalniku PS4 (tipkovnica in kontroler) in sporoči rezultat; nalogo označi šele po potrditvi uporabnika
+- [x] 8.2 Ročno preigraj prvo sobo v namiznem brskalniku s tipkovnico in kontrolerjem (če je na voljo): skok čez prepad, lestev gor in dol, konice, padec v prepad in vrnitev, pobiranje rib, utrujenost, cilj
+
+Naloga 8.3 (preizkus v brskalniku PS4) je premaknjena v spremembo `ps4-verification`, ker je avtor trenutno ne more izvesti.
 
 ## 9. Gumbi na dotik
 
