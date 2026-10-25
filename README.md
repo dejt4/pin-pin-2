@@ -37,7 +37,7 @@ Igra nima gradbenega koraka: `src/` je cela spletna stran in se objavi tako, kot
 
 ## Sličice
 
-Sličice živali, ledenih ovir in hrane pripravi `npm run sprites` iz izvornih listov v `src/graphic/source/` po nastavitvah v `tools/sprites.json` (izrez, odstranitev črnega ozadja, pomanjšanje, poravnava). Izid so sličice v `src/graphic/animals/`, `obstacles/` in `food/` ter `src/js/config/sprite-info.js` z velikostmi. Teh datotek ne urejaj ročno: zamenjaj izvorni list ali popravi `tools/sprites.json` in ukaz zaženi znova.
+Sličice živali, ledenih ovir, hrane, terena, okraskov in ozadja pripravi `npm run sprites` iz izvornih listov v `src/graphic/source/` po nastavitvah v `tools/sprites.json` (izrez, odstranitev ozadja: črno, naslikana šahovnica ali prava prosojnost, pomanjšanje, poravnava ali razrez na ploščice). Izid so sličice v `src/graphic/animals/`, `obstacles/`, `food/`, `terrain/`, `decor/` in `background/` ter `src/js/config/sprite-info.js` z velikostmi. Teh datotek ne urejaj ročno: zamenjaj izvorni list ali popravi `tools/sprites.json` in ukaz zaženi znova.
 
 ## Soba
 
@@ -46,11 +46,11 @@ Soba je zapisana z znaki v `src/js/config/rooms/room-1.js`, razdeljena na odseke
 | Znak | Pomen |
 |------|-------|
 | `.`  | prazno |
-| `#`  | snežna tla |
-| `B`  | ledena kocka |
-| `=`  | ledena plošča (od spodaj se gre skozi) |
+| `#`  | tla: debela dve ploščici ali več so zasneženi kamni, debela eno ploščico led |
+| `B`  | ledeni blok |
+| `=`  | ledena polica s svečami (od spodaj se gre skozi) |
 | `H`  | lestev |
-| `^`  | ledene konice |
+| `^`  | ledeni kristali (nevarni) |
 | `f`  | hrana (jabolko, korenček ali banana) |
 | `S`  | začetek |
 | `G`  | cilj |
@@ -60,5 +60,10 @@ Soba je zapisana z znaki v `src/js/config/rooms/room-1.js`, razdeljena na odseke
 | `V`  | volk (stoji na tleh pod znakom) |
 | `W`  | ledeni zid (stoji na tleh, 5 kep) |
 | `i`  | ledena sveča (visi s trdne ploščice, pod njo prazna vrstica in tla, 3 kepe) |
+| `t`  | okrasek: drevo (stoji na tleh, ne ovira) |
+| `g`  | okrasek: grm |
+| `k`  | okrasek: kamen |
+
+V prepadih (stolpci brez tal v spodnji vrstici) se samodejno nariše voda.
 
 Nastavitve (hitrost hoje, višina skoka, energija, kepe, živali, ovire, točke ...) so v `src/js/config/settings.js`.

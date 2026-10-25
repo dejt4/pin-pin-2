@@ -26,7 +26,14 @@
     i: 'icicle'
   };
 
-  var KNOWN = EMPTY + GROUND + CUBE + FLOE + LADDER + SPIKES + FOOD + START + GOAL + PILE + 'MPVWi';
+  // znak → okrasek (ne ovira, nariše se za pingvinom)
+  var DECOR = {
+    t: 'tree',
+    g: 'bush',
+    k: 'rock'
+  };
+
+  var KNOWN = EMPTY + GROUND + CUBE + FLOE + LADDER + SPIKES + FOOD + START + GOAL + PILE + 'MPVWi' + 'tgk';
   var FOOD_KINDS = 3;
 
   function fail(message) {
@@ -77,6 +84,7 @@
     var goals = [];
     var animals = [];
     var obstacles = [];
+    var decor = [];
 
     function at(c, r) {
       var w = joined.where[c];
@@ -118,6 +126,9 @@
         } else if (Object.prototype.hasOwnProperty.call(OBSTACLES, ch)) {
           obstacles.push({ type: OBSTACLES[ch], col: c, row: r });
           ch = EMPTY;
+        } else if (Object.prototype.hasOwnProperty.call(DECOR, ch)) {
+          decor.push({ type: DECOR[ch], col: c, row: r });
+          ch = EMPTY;
         }
         row.push(ch);
       }
@@ -138,6 +149,11 @@
     for (i = 0; i < animals.length; i++) {
       if (!isSolid(tile(animals[i].col, animals[i].row + 1))) {
         fail('pod živaljo ni trdnih tal (' + at(animals[i].col, animals[i].row) + ').');
+      }
+    }
+    for (i = 0; i < decor.length; i++) {
+      if (!isSolid(tile(decor[i].col, decor[i].row + 1))) {
+        fail('pod okraskom ni trdnih tal (' + at(decor[i].col, decor[i].row) + ').');
       }
     }
     for (i = 0; i < obstacles.length; i++) {
@@ -167,7 +183,8 @@
       start: start,
       goals: goals,
       animals: animals,
-      obstacles: obstacles
+      obstacles: obstacles,
+      decor: decor
     };
   }
 

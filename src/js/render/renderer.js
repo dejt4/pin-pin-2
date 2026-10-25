@@ -17,7 +17,7 @@
         var ctx = screen.ctx;
         var scale = screen.pixelScale;
         screen.begin();
-        background.draw(ctx, game.cameraX);
+        background.draw(ctx, game.cameraX, cache, scale);
         tiles.draw(ctx, game, cache, scale);
         snowballs.drawPiles(ctx, game);
         obstacles.draw(ctx, game, cache, scale);

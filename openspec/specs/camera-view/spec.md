@@ -24,11 +24,19 @@ Kamera MUST NOT pokazati ničesar levo od levega ali desno od desnega roba sobe.
 - **THEN** je desni rob sobe na desnem robu zaslona
 
 ### Requirement: Paralaksa ozadja
-Ozadje SHALL biti za ploščicami in se pri premiku kamere pomakniti počasneje od ploščic. Ozadje MUST pokrivati ves zaslon na vsej širini sobe.
+Ozadje SHALL biti za ploščicami in se pri premiku kamere pomakniti počasneje od ploščic. Sestavljeno je iz neba in dveh plasti gorskih panoram: daljna plast se pomika počasneje od bližnje. Panorami se ponavljata izmenično zrcaljeni, tako da med ponovitvami ni vrzeli ali šiva. Ozadje MUST pokrivati ves zaslon na vsej širini sobe.
 
 #### Scenario: Premik kamere
 - **WHEN** se kamera pomakne za en zaslon desno
 - **THEN** se ozadje pomakne za manj kot en zaslon
+
+#### Scenario: Dve plasti
+- **WHEN** se kamera pomakne desno
+- **THEN** se daljne gore pomaknejo manj kot bližnje, obe pa manj kot ploščice
+
+#### Scenario: Brez šivov
+- **WHEN** pingvin prehodi celotno sobo
+- **THEN** v ozadju ni vrzeli med ponovitvami panoram
 
 ### Requirement: Prilagoditev zaslonu
 Igra SHALL imeti stalno logično velikost in razmerje 16 : 9. Slika MUST biti povečana ali pomanjšana tako, da v celoti zapolni okno brskalnika po eni dimenziji in ostane na sredini, brez popačenja razmerja. Ob spremembi velikosti okna se MUST prilagoditi.

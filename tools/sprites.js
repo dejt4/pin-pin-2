@@ -35,7 +35,14 @@ config.groups.forEach(function (group) {
   var frames = group.frames.map(function (f) {
     var r = f.rect;
     var image = lib.crop(sheet, r[0], r[1], r[2], r[3]);
-    lib.removeBackground(image, threshold);
+    // ozadje lista: temno (privzeto), naslikana šahovnica ali prava prosojnost
+    if (group.background === 'checker') {
+      lib.removeChecker(image);
+    } else if (group.background === 'alpha') {
+      lib.applyAlpha(image, 128);
+    } else {
+      lib.removeBackground(image, threshold);
+    }
     // pravokotniki za brisanje so v koordinatah lista
     lib.clearRects(image, (f.clear || []).map(function (c) {
       return [c[0] - r[0], c[1] - r[1], c[2], c[3]];
@@ -43,7 +50,14 @@ config.groups.forEach(function (group) {
     lib.dropEdgeTouching(image, f.dropEdges);
     return { name: f.name, image: image };
   });
-  var laid = lib.layoutGroup(frames, { align: group.align, height: group.height, scale: config.scale });
+  var laid = lib.layoutGroup(frames, {
+    align: group.align,
+    height: group.height,
+    cols: group.cols,
+    rows: group.rows,
+    tile: config.tile,
+    scale: config.scale
+  });
   laid.forEach(function (s) {
     var rel = 'graphic/' + group.out + '/' + s.name + '.png';
     writePng(path.join(root, 'src', rel), s.image);

@@ -78,7 +78,9 @@
     },
 
     camera: {
-      parallax: 0.3
+      // ozadje: daljne gore se pomikajo počasneje od bližnjih
+      parallaxFar: 0.15,
+      parallaxNear: 0.35
     }
   };
 

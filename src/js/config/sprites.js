@@ -1,5 +1,5 @@
 // Sličice: datoteke, velikost izrisa v logičnih točkah in izrez (crop) iz izvirnika.
-// Sličice živali, ovir in hrane pripravi `npm run sprites` (glej config/sprite-info.js).
+// Sličice živali, ovir, hrane, terena, okraskov in ozadja pripravi `npm run sprites` (glej config/sprite-info.js).
 (function (root) {
   'use strict';
 
@@ -31,10 +31,6 @@
   for (var name in spriteInfo) {
     images[name] = spriteInfo[name];
   }
-
-  images['ice-cube'] = { file: 'graphic/ice/ice-cube.png', width: 40, height: 40, crop: { x: 40, y: 0, width: 256, height: 208 } };
-  images['ice-floe'] = { file: 'graphic/ice/ice-floe.png', width: 44, height: 26 };
-  images['ice-spikes'] = { file: 'graphic/ice/ice-spikes.png', width: 52, height: 40, crop: { x: 20, y: 0, width: 296, height: 208 } };
 
   var sprites = {
     images: images,

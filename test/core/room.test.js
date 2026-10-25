@@ -217,3 +217,20 @@ test('varno mesto: ne ob ledeni oviri', function () {
   assert.ok(p.col !== 4 && p.col !== 5 && p.col !== 6);
   assert.strictEqual(p.col, 6 - 3);
 });
+
+test('okraski: drevo, grm in kamen niso ploščice', function () {
+  var r = parse([
+    '.S.t.g.k.G',
+    '##########'
+  ]);
+  assert.deepStrictEqual(r.decor, [
+    { type: 'tree', col: 3, row: 0 },
+    { type: 'bush', col: 5, row: 0 },
+    { type: 'rock', col: 7, row: 0 }
+  ]);
+  assert.strictEqual(room.tileAt(r, 3, 0), '.');
+});
+
+test('napaka: okrasek brez tal', function () {
+  assert.throws(function () { parse(['S.t.G', '##.##']); }, /pod okraskom ni trdnih tal.*odsek 1, vrstica 1, stolpec 3/);
+});

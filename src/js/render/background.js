@@ -1,5 +1,5 @@
-// Ozadje: nebo in gore, narisano s kodo, dokler ni slike ozadja.
-// Daljne gore se pomikajo s faktorjem paralakse, bližnji hribi dvakrat hitreje.
+// Ozadje: nebo (barvni prehod) in dve plasti gorskih panoram s paralakso.
+// Panorama se ponavlja izmenično zrcaljena, zato se konec ene ujema z začetkom naslednje.
 (function (PinPin) {
   'use strict';
 
@@ -9,38 +9,42 @@
   var W = settings.screen.width;
   var H = settings.screen.height;
 
-  // Višina vrha v sloju za indeks; ponovljivo brez naključja.
-  function peak(index, min, range) {
-    var n = Math.sin(index * 12.9898) * 43758.5453;
-    return min + (n - Math.floor(n)) * range;
-  }
+  // spodnji rob plasti (logične točke od vrha zaslona)
+  var FAR_BOTTOM = 250;
+  var NEAR_BOTTOM = 300;
 
-  function drawLayer(ctx, offset, spacing, baseY, min, range, color) {
-    var first = Math.floor(offset / spacing) - 1;
-    var last = Math.ceil((offset + W) / spacing) + 1;
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.moveTo(first * spacing - offset, H);
-    for (var i = first; i <= last; i++) {
-      var x = i * spacing - offset;
-      ctx.lineTo(x, baseY - peak(i, min, range));
-      ctx.lineTo(x + spacing / 2, baseY - peak(i + 0.5, min * 0.4, range * 0.4));
+  var sky = null;
+
+  function drawLayer(ctx, cache, scale, name, offset, bottom) {
+    var info = cache.info(name);
+    var image = cache.get(name, scale);
+    var w = info.width;
+    var y = bottom - info.height;
+    var first = Math.floor(offset / w);
+    for (var i = first; i * w - offset < W; i++) {
+      var x = i * w - offset;
+      if (i % 2 === 0) {
+        ctx.drawImage(image, x, y, w, info.height);
+      } else {
+        ctx.save();
+        ctx.translate(x + w, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(image, 0, y, w, info.height);
+        ctx.restore();
+      }
     }
-    ctx.lineTo(last * spacing - offset, H);
-    ctx.closePath();
-    ctx.fill();
   }
 
-  function draw(ctx, cameraX) {
-    var sky = ctx.createLinearGradient(0, 0, 0, H);
-    sky.addColorStop(0, '#6fb7e8');
-    sky.addColorStop(1, '#d9f0fb');
+  function draw(ctx, cameraX, cache, scale) {
+    if (!sky) {
+      sky = ctx.createLinearGradient(0, 0, 0, H);
+      sky.addColorStop(0, '#6fb7e8');
+      sky.addColorStop(1, '#dff2fb');
+    }
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, H);
-
-    var far = camera.backgroundOffset(cameraX);
-    drawLayer(ctx, far, 160, 260, 70, 90, '#a9c9e2');
-    drawLayer(ctx, far * 2, 110, 290, 30, 40, '#e8f4fb');
+    drawLayer(ctx, cache, scale, 'mountains-far', camera.backgroundOffset(cameraX, 'far'), FAR_BOTTOM);
+    drawLayer(ctx, cache, scale, 'mountains-near', camera.backgroundOffset(cameraX, 'near'), NEAR_BOTTOM);
   }
 
   PinPin.register('render.background', { draw: draw });

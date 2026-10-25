@@ -1,5 +1,6 @@
 {
   "scale": 2,
+  "tile": 40,
   "threshold": 30,
   "groups": [
     {
@@ -8,11 +9,11 @@
       "align": "bottom",
       "height": 52,
       "frames": [
-        { "name": "bear-walk-1", "rect": [10, 70, 340, 289] },
-        { "name": "bear-walk-2", "rect": [350, 70, 340, 289] },
-        { "name": "bear-walk-3", "rect": [690, 70, 362, 289] },
-        { "name": "bear-push-1", "rect": [1060, 70, 430, 289] },
-        { "name": "bear-push-2", "rect": [1490, 70, 385, 289], "dropEdges": ["left"] }
+        {"name": "bear-walk-1", "rect": [10, 70, 340, 289]},
+        {"name": "bear-walk-2", "rect": [350, 70, 340, 289]},
+        {"name": "bear-walk-3", "rect": [690, 70, 362, 289]},
+        {"name": "bear-push-1", "rect": [1060, 70, 430, 289]},
+        {"name": "bear-push-2", "rect": [1490, 70, 385, 289], "dropEdges": ["left"]}
       ]
     },
     {
@@ -21,11 +22,11 @@
       "align": "bottom",
       "height": 42,
       "frames": [
-        { "name": "wolf-walk-1", "rect": [0, 477, 360, 272] },
-        { "name": "wolf-walk-2", "rect": [360, 477, 340, 272] },
-        { "name": "wolf-walk-3", "rect": [700, 477, 355, 272], "dropEdges": ["left"] },
-        { "name": "wolf-push-1", "rect": [1060, 477, 402, 272] },
-        { "name": "wolf-push-2", "rect": [1462, 477, 413, 272], "dropEdges": ["left"] }
+        {"name": "wolf-walk-1", "rect": [0, 477, 360, 272]},
+        {"name": "wolf-walk-2", "rect": [360, 477, 340, 272]},
+        {"name": "wolf-walk-3", "rect": [700, 477, 355, 272], "dropEdges": ["left"]},
+        {"name": "wolf-push-1", "rect": [1060, 477, 402, 272]},
+        {"name": "wolf-push-2", "rect": [1462, 477, 413, 272], "dropEdges": ["left"]}
       ]
     },
     {
@@ -34,11 +35,11 @@
       "align": "bottom",
       "height": 50,
       "frames": [
-        { "name": "polar-walk-1", "rect": [15, 58, 295, 224] },
-        { "name": "polar-walk-2", "rect": [310, 58, 274, 224] },
-        { "name": "polar-walk-3", "rect": [584, 58, 331, 224] },
-        { "name": "polar-push-1", "rect": [915, 58, 323, 224] },
-        { "name": "polar-push-2", "rect": [1238, 58, 292, 224], "dropEdges": ["left"] }
+        {"name": "polar-walk-1", "rect": [15, 58, 295, 224]},
+        {"name": "polar-walk-2", "rect": [310, 58, 274, 224]},
+        {"name": "polar-walk-3", "rect": [584, 58, 331, 224]},
+        {"name": "polar-push-1", "rect": [915, 58, 323, 224]},
+        {"name": "polar-push-2", "rect": [1238, 58, 292, 224], "dropEdges": ["left"]}
       ]
     },
     {
@@ -47,11 +48,11 @@
       "align": "bottom",
       "height": 72,
       "frames": [
-        { "name": "ice-wall-1", "rect": [15, 662, 307, 285] },
-        { "name": "ice-wall-2", "rect": [322, 662, 300, 285] },
-        { "name": "ice-wall-3", "rect": [622, 662, 286, 285] },
-        { "name": "ice-wall-4", "rect": [908, 662, 318, 285] },
-        { "name": "ice-wall-5", "rect": [1226, 662, 302, 285] }
+        {"name": "ice-wall-1", "rect": [15, 662, 307, 285]},
+        {"name": "ice-wall-2", "rect": [322, 662, 300, 285]},
+        {"name": "ice-wall-3", "rect": [622, 662, 286, 285]},
+        {"name": "ice-wall-4", "rect": [908, 662, 318, 285]},
+        {"name": "ice-wall-5", "rect": [1226, 662, 302, 285]}
       ]
     },
     {
@@ -60,13 +61,13 @@
       "align": "cell",
       "height": 80,
       "frames": [
-        { "name": "icicle-1", "rect": [11, 380, 160, 186] },
-        { "name": "icicle-2", "rect": [149, 380, 160, 186] },
-        { "name": "icicle-3", "rect": [289, 380, 160, 186] },
-        { "name": "icicle-4", "rect": [431, 380, 160, 186] },
-        { "name": "icicle-5", "rect": [570, 380, 160, 186] },
-        { "name": "icicle-6", "rect": [704, 380, 160, 186], "clear": [[845, 380, 19, 186]] },
-        { "name": "icicle-7", "rect": [844, 380, 160, 186] }
+        {"name": "icicle-1", "rect": [11, 380, 160, 186]},
+        {"name": "icicle-2", "rect": [149, 380, 160, 186]},
+        {"name": "icicle-3", "rect": [289, 380, 160, 186]},
+        {"name": "icicle-4", "rect": [431, 380, 160, 186]},
+        {"name": "icicle-5", "rect": [570, 380, 160, 186]},
+        {"name": "icicle-6", "rect": [704, 380, 160, 186], "clear": [[845, 380, 19, 186]]},
+        {"name": "icicle-7", "rect": [844, 380, 160, 186]}
       ]
     },
     {
@@ -75,7 +76,7 @@
       "align": "bottom",
       "height": 28,
       "frames": [
-        { "name": "carrot", "rect": [110, 40, 300, 360] }
+        {"name": "carrot", "rect": [110, 40, 300, 360]}
       ]
     },
     {
@@ -84,7 +85,7 @@
       "align": "bottom",
       "height": 24,
       "frames": [
-        { "name": "apple", "rect": [450, 40, 290, 360] }
+        {"name": "apple", "rect": [450, 40, 290, 360]}
       ]
     },
     {
@@ -93,7 +94,120 @@
       "align": "bottom",
       "height": 22,
       "frames": [
-        { "name": "banana", "rect": [760, 40, 330, 360] }
+        {"name": "banana", "rect": [760, 40, 330, 360]}
+      ]
+    },
+    {
+      "source": "Snowy Pixel Platformer Tileset.png",
+      "background": "checker",
+      "out": "terrain",
+      "align": "slices",
+      "cols": 4,
+      "rows": 2,
+      "frames": [
+        {"name": "ground", "rect": [14, 135, 173, 94]}
+      ]
+    },
+    {
+      "source": "Pixel-Art Terrain and Ice Sprite Sheet.png",
+      "background": "alpha",
+      "out": "terrain",
+      "align": "slices",
+      "cols": 4,
+      "frames": [
+        {"name": "ledge", "rect": [692, 577, 220, 102], "dropEdges": ["left"]}
+      ]
+    },
+    {
+      "source": "Snowy Pixel Platformer Tileset.png",
+      "background": "checker",
+      "out": "terrain",
+      "align": "bottom",
+      "height": 48,
+      "frames": [
+        {"name": "block", "rect": [890, 287, 58, 68]}
+      ]
+    },
+    {
+      "source": "Snowy Pixel Platformer Tileset.png",
+      "background": "checker",
+      "out": "terrain",
+      "align": "bottom",
+      "height": 40,
+      "frames": [
+        {"name": "crystals", "rect": [573, 644, 132, 121], "dropEdges": ["right", "left"]}
+      ]
+    },
+    {
+      "source": "Snowy Pixel Platformer Tileset.png",
+      "background": "checker",
+      "out": "terrain",
+      "align": "slices",
+      "cols": 1,
+      "rows": 2,
+      "frames": [
+        {"name": "ladder", "rect": [1453, 6, 62, 114]}
+      ]
+    },
+    {
+      "source": "Snowy Pixel Platformer Tileset.png",
+      "background": "checker",
+      "out": "decor",
+      "align": "bottom",
+      "height": 92,
+      "frames": [
+        {"name": "tree", "rect": [484, 642, 98, 158], "dropEdges": ["left", "right", "top"]}
+      ]
+    },
+    {
+      "source": "Snowy Pixel Platformer Tileset.png",
+      "background": "checker",
+      "out": "decor",
+      "align": "bottom",
+      "height": 24,
+      "frames": [
+        {"name": "bush", "rect": [119, 634, 98, 76]}
+      ]
+    },
+    {
+      "source": "Snowy Pixel Platformer Tileset.png",
+      "background": "checker",
+      "out": "decor",
+      "align": "bottom",
+      "height": 20,
+      "frames": [
+        {"name": "rock", "rect": [330, 662, 92, 68]}
+      ]
+    },
+    {
+      "source": "Snowy Pixel Platformer Tileset.png",
+      "background": "checker",
+      "out": "background",
+      "align": "strip",
+      "height": 130,
+      "frames": [
+        {"name": "mountains-far", "rect": [988, 444, 548, 128], "dropEdges": ["top", "bottom"]}
+      ]
+    },
+    {
+      "source": "Snowy Pixel Platformer Tileset.png",
+      "background": "checker",
+      "out": "background",
+      "align": "strip",
+      "height": 150,
+      "frames": [
+        {"name": "mountains-near", "rect": [1004, 670, 532, 150], "dropEdges": ["top"]}
+      ]
+    },
+    {
+      "source": "Pixel Art Ocean Wave Sprite Sheet.png",
+      "background": "checker",
+      "out": "background",
+      "align": "cell",
+      "height": 60,
+      "frames": [
+        {"name": "water-1", "rect": [34, 130, 1914, 246]},
+        {"name": "water-2", "rect": [34, 484, 1914, 246]}
       ]
     }
   ]

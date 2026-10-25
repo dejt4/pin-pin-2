@@ -21,7 +21,9 @@ test('konec sobe: desni rob sobe na desnem robu zaslona', function () {
   assert.strictEqual(camera.follow(ROOM, ROOM - 50), ROOM - W);
 });
 
-test('paralaksa: ozadje se pomakne manj kot ploščice', function () {
-  var offset = camera.backgroundOffset(W);
-  assert.ok(offset > 0 && offset < W);
+test('paralaksa: obe plasti ozadja se pomakneta manj kot ploščice, daljna manj od bližnje', function () {
+  var far = camera.backgroundOffset(W, 'far');
+  var near = camera.backgroundOffset(W, 'near');
+  assert.ok(far > 0 && near > 0 && near < W);
+  assert.ok(far < near);
 });

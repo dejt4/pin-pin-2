@@ -33,6 +33,32 @@ function brightness(img, i) {
 
 // Temne točke (svetlost <= threshold), povezane z robom slike, postanejo prosojne.
 function removeBackground(img, threshold) {
+  return floodFromEdges(img, function (i) {
+    return brightness(img, i) <= threshold;
+  });
+}
+
+// Naslikana sivo-bela šahovnica (svetle sive točke brez barve), povezana z robom, postane prosojna.
+// Sneg znotraj temne obrobe ostane, ker zapolnjevanje do njega ne pride.
+function removeChecker(img) {
+  return floodFromEdges(img, function (i) {
+    var r = img.data[i];
+    var g = img.data[i + 1];
+    var b = img.data[i + 2];
+    return Math.max(r, g, b) - Math.min(r, g, b) < 12 && Math.min(r, g, b) > 185;
+  });
+}
+
+// Prava prosojnost lista: točke z alfo <= threshold postanejo povsem prosojne, ostale neprosojne.
+function applyAlpha(img, threshold) {
+  for (var i = 0; i < img.width * img.height; i++) {
+    img.data[i * 4 + 3] = img.data[i * 4 + 3] <= threshold ? 0 : 255;
+  }
+  return img;
+}
+
+// Točke, za katere velja isBackground(index) in so povezane z robom slike, postanejo prosojne.
+function floodFromEdges(img, isBackground) {
   var w = img.width;
   var h = img.height;
   var seen = new Uint8Array(w * h);
@@ -45,7 +71,7 @@ function removeBackground(img, threshold) {
     }
     seen[p] = 1;
     var i = p * 4;
-    if (img.data[i + 3] === 0 || brightness(img, i) <= threshold) {
+    if (img.data[i + 3] === 0 || isBackground(i)) {
       stack.push(p);
     }
   }
@@ -250,12 +276,84 @@ function even(n) {
   return v % 2 ? v + 1 : v;
 }
 
+// Okvir vseh neprosojnih točk ali null.
+function contentBox(img) {
+  var box = null;
+  for (var y = 0; y < img.height; y++) {
+    for (var x = 0; x < img.width; x++) {
+      if (img.data[(y * img.width + x) * 4 + 3] === 0) {
+        continue;
+      }
+      if (!box) {
+        box = { x0: x, y0: y, x1: x, y1: y };
+      } else {
+        box.x0 = Math.min(box.x0, x);
+        box.y0 = Math.min(box.y0, y);
+        box.x1 = Math.max(box.x1, x);
+        box.y1 = Math.max(box.y1, y);
+      }
+    }
+  }
+  return box;
+}
+
+function trim(img) {
+  var b = contentBox(img);
+  if (!b) {
+    throw new Error('Sličica je prazna (vse ozadje).');
+  }
+  return crop(img, b.x0, b.y0, b.x1 - b.x0 + 1, b.y1 - b.y0 + 1);
+}
+
+// Kos, pomanjšan na cols ploščic v širino (in rows v višino, če je podano), razrezan na ploščice.
+// Imena: ime-stolpec (ena vrstica) ali ime-vrstica-stolpec.
+function slices(frame, options) {
+  var px = options.scale || 2;
+  var tile = options.tile * px;
+  var piece = trim(frame.image);
+  var w = options.cols * tile;
+  var h = options.rows ? options.rows * tile : even(piece.height * w / piece.width);
+  var big = resize(piece, w, h);
+  var rows = options.rows || 1;
+  var rowH = h / rows;
+  var out = [];
+  for (var r = 0; r < rows; r++) {
+    for (var c = 0; c < options.cols; c++) {
+      var name = rows > 1 ? frame.name + '-' + (r + 1) + '-' + (c + 1) : frame.name + '-' + (c + 1);
+      out.push({ name: name, image: crop(big, c * tile, Math.round(r * rowH), tile, Math.round(rowH)), width: tile / px, height: Math.round(rowH) / px });
+    }
+  }
+  return out;
+}
+
+// Pas (panorama): obrezan in pomanjšan na dano višino, širina sorazmerno.
+function strip(frame, options) {
+  var px = options.scale || 2;
+  var piece = trim(frame.image);
+  var h = even(options.height * px);
+  var w = even(piece.width * h / piece.height);
+  return { name: frame.name, image: resize(piece, w, h), width: w / px, height: h / px };
+}
+
 // Pripravi skupino sličic.
 //   frames: [{ name, image }] že izrezane slike z odstranjenim ozadjem
 //   options: { align: 'bottom' | 'cell', height: logična višina telesa (bottom) ali celice (cell), scale: točk na logično točko }
 // Vrne [{ name, image, width, height }] z logično velikostjo (width, height).
 function layoutGroup(frames, options) {
   var px = options.scale || 2;
+  var out;
+  if (options.align === 'slices') {
+    out = [];
+    frames.forEach(function (f) {
+      out = out.concat(slices(f, options));
+    });
+    return out;
+  }
+  if (options.align === 'strip') {
+    return frames.map(function (f) {
+      return strip(f, options);
+    });
+  }
   if (options.align === 'cell') {
     var cellH = frames[0].image.height;
     var cellW = frames[0].image.width;
@@ -308,6 +406,9 @@ module.exports = {
   createImage: createImage,
   crop: crop,
   removeBackground: removeBackground,
+  removeChecker: removeChecker,
+  applyAlpha: applyAlpha,
+  trim: trim,
   clearRects: clearRects,
   dropEdgeTouching: dropEdgeTouching,
   components: components,

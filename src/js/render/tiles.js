@@ -1,41 +1,32 @@
-// Ploščice sobe, hrana in cilj. Tla in lestve so barvni pravokotniki, dokler ni grafike.
+// Ploščice sobe s sličicami (tla, police, blok, kristali, lestev), voda v prepadih,
+// okraski, cilj in hrana. Kateri kos tal ali lestve se nariše, določi core/terrain.js.
 (function (PinPin) {
   'use strict';
 
   var settings = PinPin.get('config.settings', 'config/settings.js');
   var spriteConfig = PinPin.get('config.sprites', 'config/sprites.js');
   var room = PinPin.get('core.room', 'core/room.js');
+  var terrain = PinPin.get('core.terrain', 'core/terrain.js');
 
   var W = settings.screen.width;
+  var H = settings.screen.height;
+  // gladina vode pod vrhom tal ob prepadu
+  var WATER_DROP = 16;
+  // hitrost menjave sličic valov (na sekundo) in počasnega premikanja (točk na sekundo)
+  var WATER_FPS = 2;
+  var WATER_DRIFT = 12;
+  var WATER_DEEP = '#0b3f8f';
+  var DECOR = { tree: 'tree', bush: 'bush', rock: 'rock' };
 
   function drawSprite(ctx, cache, scale, name, x, y) {
     var info = cache.info(name);
     ctx.drawImage(cache.get(name, scale), x, y, info.width, info.height);
   }
 
-  function drawGround(ctx, r, col, row, x, y, T) {
-    ctx.fillStyle = '#9fc3dc';
-    ctx.fillRect(x, y, T, T);
-    ctx.fillStyle = '#86adc9';
-    ctx.fillRect(x + 4, y + 18, 10, 6);
-    ctx.fillRect(x + 22, y + 30, 12, 5);
-    if (room.tileAt(r, col, row - 1) !== room.TILES.GROUND) {
-      // snežna odeja na vrhu
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(x, y, T, 10);
-      ctx.fillStyle = '#e6f2fa';
-      ctx.fillRect(x, y + 10, T, 3);
-    }
-  }
-
-  function drawLadder(ctx, x, y, T) {
-    ctx.fillStyle = '#8a5a2b';
-    ctx.fillRect(x + 7, y, 5, T);
-    ctx.fillRect(x + T - 12, y, 5, T);
-    ctx.fillStyle = '#b07a43';
-    for (var i = 0; i < 3; i++) {
-      ctx.fillRect(x + 7, y + 6 + i * 13, T - 14, 4);
-    }
+  // Sličica s sredino na sredini ploščice in dnom na dnu ploščice.
+  function drawStanding(ctx, cache, scale, name, x, bottom, T) {
+    var info = cache.info(name);
+    ctx.drawImage(cache.get(name, scale), x + (T - info.width) / 2, bottom - info.height, info.width, info.height);
   }
 
   function drawGoal(ctx, goal) {
@@ -65,14 +56,75 @@
     ctx.fill();
   }
 
+  function drawDecor(ctx, game, cache, scale, first, last) {
+    var r = game.room;
+    var T = r.tileSize;
+    for (var i = 0; i < r.decor.length; i++) {
+      var d = r.decor[i];
+      if (d.col < first - 2 || d.col > last + 2) {
+        continue;
+      }
+      drawStanding(ctx, cache, scale, DECOR[d.type], d.col * T - game.cameraX, (d.row + 1) * T, T);
+    }
+  }
+
+  // Voda v zaporednih stolpcih prepada: valovi (dve sličici) od gladine navzdol, pod njimi globina.
+  function drawWater(ctx, game, cache, scale, first, last) {
+    var r = game.room;
+    var T = r.tileSize;
+    var camX = game.cameraX;
+    var name = 'water-' + (1 + Math.floor(game.stateTime * WATER_FPS) % 2);
+    var info = cache.info(name);
+    var image = cache.get(name, scale);
+    var surface = (r.rows - 2) * T + WATER_DROP;
+    var col = first;
+    while (col <= last) {
+      if (!terrain.isWaterColumn(r, col)) {
+        col++;
+        continue;
+      }
+      var start = col;
+      while (col <= last && terrain.isWaterColumn(r, col)) {
+        col++;
+      }
+      var x0 = start * T - camX;
+      var x1 = col * T - camX;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x0, surface, x1 - x0, H - surface);
+      ctx.clip();
+      ctx.fillStyle = WATER_DEEP;
+      ctx.fillRect(x0, surface + info.height - 2, x1 - x0, H - surface);
+      // vzorec je vezan na sobo, zato se sosednji stolpci nadaljujejo brez vrzeli
+      var shift = (start * T + game.stateTime * WATER_DRIFT) % info.width;
+      for (var x = x0 - shift; x < x1; x += info.width) {
+        ctx.drawImage(image, x, surface, info.width, info.height);
+      }
+      ctx.restore();
+    }
+  }
+
+  function drawTile(ctx, cache, scale, r, tile, col, row, x, y, T) {
+    if (tile === room.TILES.GROUND || tile === room.TILES.FLOE) {
+      drawSprite(ctx, cache, scale, terrain.groundPiece(r, col, row), x, y);
+    } else if (tile === room.TILES.LADDER) {
+      drawSprite(ctx, cache, scale, terrain.ladderPiece(r, col, row), x, y);
+    } else if (tile === room.TILES.CUBE) {
+      drawStanding(ctx, cache, scale, 'block', x, y + T, T);
+    } else if (tile === room.TILES.SPIKES) {
+      drawStanding(ctx, cache, scale, 'crystals', x, y + T, T);
+    }
+  }
+
   function draw(ctx, game, cache, scale) {
     var r = game.room;
     var T = r.tileSize;
     var camX = game.cameraX;
     var firstCol = Math.max(0, Math.floor(camX / T));
     var lastCol = Math.min(r.cols - 1, Math.floor((camX + W) / T));
-    var col;
-    var row;
+
+    drawDecor(ctx, game, cache, scale, firstCol, lastCol);
+    drawWater(ctx, game, cache, scale, firstCol, lastCol);
 
     for (var g = 0; g < r.goals.length; g++) {
       ctx.save();
@@ -81,26 +133,10 @@
       ctx.restore();
     }
 
-    for (row = 0; row < r.rows; row++) {
-      for (col = firstCol; col <= lastCol; col++) {
-        var tile = r.tiles[row][col];
-        var x = col * T - camX;
-        var y = row * T;
-        if (tile === room.TILES.GROUND) {
-          drawGround(ctx, r, col, row, x, y, T);
-        } else if (tile === room.TILES.CUBE) {
-          drawSprite(ctx, cache, scale, 'ice-cube', x, y);
-        } else if (tile === room.TILES.FLOE) {
-          drawSprite(ctx, cache, scale, 'ice-floe', x - 2, y - 2);
-        } else if (tile === room.TILES.LADDER) {
-          drawLadder(ctx, x, y, T);
-        } else if (tile === room.TILES.SPIKES) {
-          drawSprite(ctx, cache, scale, 'ice-spikes', x - 6, y);
-        } else if (row === r.rows - 1) {
-          // dno prepada: temna voda, da je luknja vidna
-          ctx.fillStyle = '#24577f';
-          ctx.fillRect(x, y + 12, T, T - 12);
-        }
+    // police s svečami segajo pod svojo ploščico, zato se vrstice rišejo od spodaj navzgor
+    for (var row = r.rows - 1; row >= 0; row--) {
+      for (var col = firstCol; col <= lastCol; col++) {
+        drawTile(ctx, cache, scale, r, r.tiles[row][col], col, row, col * T - camX, row * T, T);
       }
     }
 

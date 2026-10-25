@@ -12,9 +12,10 @@
     return math.clamp(targetX - w / 2, 0, Math.max(0, roomWidth - w));
   }
 
-  // Zamik ozadja: pomika se počasneje od ploščic.
-  function backgroundOffset(cameraX) {
-    return cameraX * settings.camera.parallax;
+  // Zamik plasti ozadja ('far' ali 'near'): pomika se počasneje od ploščic, daljna najpočasneje.
+  function backgroundOffset(cameraX, layer) {
+    var factor = layer === 'far' ? settings.camera.parallaxFar : settings.camera.parallaxNear;
+    return cameraX * factor;
   }
 
   var camera = {

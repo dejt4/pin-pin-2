@@ -13,11 +13,15 @@ Ukaz `npm run sprites` SHALL iz izvornih listov v `src/graphic/source/` po nasta
 - **THEN** so sličice in `sprite-info.js` posodobljeni brez ročnega dela
 
 ### Requirement: Odstranitev ozadja in napisov
-Orodje SHALL odstraniti enobarvno temno ozadje, ki je povezano z robom izreza, in ga narediti prosojnega. Temne obrobe in podrobnosti znotraj lika (npr. zenice) MUST ostati. Napisi na listu MUST NOT biti v sličicah.
+Orodje SHALL odstraniti ozadje, ki je povezano z robom izreza, in ga narediti prosojnega. Podprte so tri vrste ozadja: enobarvno temno ozadje (živali, ovire, hrana), naslikana sivo-bela šahovnica (Snowy list, valovi) in prava prosojnost lista (ledeni list). Temne obrobe, beli sneg znotraj obrobe in podrobnosti znotraj lika (npr. zenice) MUST ostati. Napisi na listu MUST NOT biti v sličicah.
 
 #### Scenario: Prosojno ozadje
 - **WHEN** je sličica medveda narisana na modro nebo
 - **THEN** okoli medveda ni črnega pravokotnika, obroba medveda pa je vidna
+
+#### Scenario: Šahovnica
+- **WHEN** je zasnežen kamnit kos s Snowy lista narisan na nebo
+- **THEN** okoli njega ni sivo-belih kvadratkov, sneg na vrhu pa je cel
 
 ### Requirement: Poravnana velikost
 Vse sličice iste skupine (npr. vse sličice volka) SHALL imeti enako velikost in lik na enakem mestu: dno lika na dnu sličice, sredina telesa na sredini sličice. Velikost v igri MUST biti zapisana v `sprite-info.js`, tako da igra sličico nariše samo na položaj (sredina, dno) brez zamikov za posamezne sličice. Sličice so shranjene v dvakratni velikosti za igro, da so ostre tudi na velikih zaslonih.
@@ -29,3 +33,10 @@ Vse sličice iste skupine (npr. vse sličice volka) SHALL imeti enako velikost i
 #### Scenario: Zrcaljenje
 - **WHEN** volk hodi v levo
 - **THEN** se ista sličica zrcali okoli sredine in volk ostane na istem mestu
+
+### Requirement: Razrez na ploščice
+Orodje SHALL znati kos (npr. široka tla ali polico) pomanjšati na izbrano število ploščic v širino in ga razrezati na enako široke navpične trakove (levi rob, sredina, desni rob). Vsi trakovi istega kosa MUST biti enako veliki, tako da se sosednji trakovi ujemajo brez zamika, ko so narisani drug ob drugem.
+
+#### Scenario: Tla iz trakov
+- **WHEN** so levi rob, dva kosa sredine in desni rob narisani zaporedno
+- **THEN** skupaj dajo izvirni kos brez vrzeli in zamika

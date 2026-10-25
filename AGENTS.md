@@ -54,7 +54,9 @@ src/                vsa koda in grafika aplikacije (koren spletne strani, ki se 
     animals/        medved, beli medved, volk (generirano z npm run sprites)
     obstacles/      ledeni zid, ledena sveča (generirano)
     food/           jabolko, korenček, banana (generirano)
-    ice/            ledene ploščice (kocka, plošča, konice)
+    terrain/        tla, police, blok, kristali, lestev (generirano)
+    decor/          drevo, grm, kamen (generirano)
+    background/     gorske panorame in valovi (generirano)
     source/         izvorne slike (velike, se ne naložijo v igro)
   index.html, style.css
   js/               koda igre po slojih (glej spodaj)
@@ -65,10 +67,10 @@ tools/              razvojna orodja (Node.js): strežnik, priprava sličic
 V `src/` gre samo to, kar potrebuje igra v brskalniku. Dokumenti, ideje in orodja so v korenu.
 
 ### Grafika
-- Sobe se sestavljajo iz **ploščic** (tla, ploščadi, lestve, kupi snega ...) in **ozadja**, ki se ponavlja in pomika počasneje (paralaksa). Mapa sobe je zapisana kot podatki v `src/js/config/`, ne kot ena velika slika.
-- Dokler grafike za ploščice ni (tla, lestve), se rišejo kot preprosti barvni pravokotniki.
-- Sličice živali, ovir in hrane izdela `npm run sprites` iz `src/graphic/source/` po `tools/sprites.json`: izreže jih, odstrani črno ozadje, pomanjša in poravna (vse sličice skupine enako velike, telo na sredini in dnu). Generirane datoteke (`src/graphic/animals/`, `obstacles/`, `food/`, `src/js/config/sprite-info.js`) se ne urejajo ročno.
-- Igra nariše sličico samo na položaj (sredina, dno; sveča: vrh), brez zamikov za posamezne sličice. Sličice pingvina in ledenih ploščic so starejše in niso iz orodja.
+- Sobe se sestavljajo iz **ploščic** (tla, police, lestve, kupi snega ...), **okraskov** in **ozadja** v dveh plasteh, ki se pomikata počasneje (paralaksa). Mapa sobe je zapisana kot podatki v `src/js/config/`, ne kot ena velika slika.
+- Kateri kos tal, police ali lestve se nariše (rob, sredina, kamni ali led), določi čista funkcija v `core/terrain.js`.
+- Sličice živali, ovir in hrane izdela `npm run sprites` iz `src/graphic/source/` po `tools/sprites.json`: izreže jih, odstrani črno ozadje, pomanjša in poravna (vse sličice skupine enako velike, telo na sredini in dnu). Generirane datoteke (`src/graphic/animals/`, `obstacles/`, `food/`, `terrain/`, `decor/`, `background/`, `src/js/config/sprite-info.js`) se ne urejajo ročno.
+- Igra nariše sličico samo na položaj (sredina, dno; sveča: vrh), brez zamikov za posamezne sličice. Sličice pingvina so starejše in niso iz orodja.
 
 ## Sloji
 
