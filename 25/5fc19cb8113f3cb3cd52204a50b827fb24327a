@@ -1,0 +1,126 @@
+src/js/render/animals.js
+  s_8305d21c167246::t_2f8252ff7a6e06 25-39,133-134,206-207,210
+  s_8305d21c167246::t_d64315a1513acc 177-190,204,227-228,231
+  s_8305d21c167246::t_e38c91f3ca7c60 1-24,40-132,135-176,191-203,205,208-209,211-226,229-230,232-258
+openspec/changes/snowballs-and-animals/specs/snowballs/spec.md
+  s_8305d21c167246::t_55749a09eead3e 1-70
+src/js/render/snowballs.js
+  s_8305d21c167246::t_eb2432975e36dc 1-22,26-64,68-76
+  s_8305d21c167246::t_078a969ee25280 65-67
+  s_8305d21c167246::t_d64315a1513acc 23-25
+src/js/config/settings.js
+  s_8305d21c167246::t_c15c1c836d5e42 36-63
+openspec/changes/snowballs-and-animals/design.md
+  s_8305d21c167246::t_a506864b602a2a 1-73
+openspec/changes/first-room/tasks.md
+  s_8305d21c167246::t_500b759100055a 46
+  s_8305d21c167246::t_960c2b5b823f68 59
+openspec/changes/snowballs-and-animals/specs/player-energy/spec.md
+  s_8305d21c167246::t_6fceabd57cb6f9 1-14
+openspec/changes/snowballs-and-animals/specs/game-controls/spec.md
+  s_8305d21c167246::t_a2874a4223d9b6 1-7
+src/js/core/game.js
+  s_8305d21c167246::t_c1294aacf73881 21-22,38-40,52,57-59,63-70,116,130-146,149-154,196-197
+test/bot.js
+  s_8305d21c167246::t_9d829aa0969c03 1-55,59-87
+  s_8305d21c167246::t_f4390d299533c0 57-58
+  s_8305d21c167246::t_2375e323f11817 56
+test/core/game.test.js
+  s_8305d21c167246::t_18be556e4382de 245-272,274-291,293-303,305-332
+  s_8305d21c167246::t_8bcb26ff1ea06c 273,292,304
+src/js/config/animations.js
+  s_8305d21c167246::t_9ef0ee6c666810 20-21
+openspec/changes/snowballs-and-animals/.openspec.yaml
+  s_8305d21c167246::t_639d903b86edad 1-2
+openspec/changes/snowballs-and-animals/tasks.md
+  s_8305d21c167246::t_0c17064db3b8e7 25
+  s_8305d21c167246::t_8af2a9a503960d 1-8,11-13,16-18,22-24,27-29,33-35,37
+  s_8305d21c167246::t_8c3007e07991f7 9-10
+  s_8305d21c167246::t_e5617b367ba901 30-32
+  s_8305d21c167246::t_03a689b9f1e06e 36
+  s_8305d21c167246::t_175afecc8c534f 19-21
+  s_8305d21c167246::t_f0bf196ee8d456 26
+  s_8305d21c167246::t_5e704e7fadcf30 14-15
+src/js/render/renderer.js
+  s_8305d21c167246::t_253ca1db494b19 21-22,24
+  s_8305d21c167246::t_8ff5691b37ecaa 8-9
+src/js/core/player.js
+  s_8305d21c167246::t_4165a5af75b356 279-283
+  s_8305d21c167246::t_a3b441eeef7f0a 60
+  s_8305d21c167246::t_f5161db79998db 39-40
+  s_8305d21c167246::t_9956ec87d48359 227-229
+  s_8305d21c167246::t_8eca470ffb34f7 114,116,139,153,163,166,177,186,219-220,231,233
+test/core/physics.test.js
+  s_8305d21c167246::t_b3b55ee04d2e6a 125-157
+test/core/player.test.js
+  s_8305d21c167246::t_b3b55ee04d2e6a 352-355,358-362
+  s_8305d21c167246::t_e3f3f5e052494d 356-357
+openspec/changes/snowballs-and-animals/specs/animals/spec.md
+  s_8305d21c167246::t_a257be821240e1 1-79
+src/js/config/rooms/room-1.js
+  s_8305d21c167246::t_c04d33b706180c 20
+  s_8305d21c167246::t_f85c16813953ed 1-6,14-19,21-22
+  s_8305d21c167246::t_cb72a6c12e1a65 7
+openspec/changes/snowballs-and-animals/specs/room-map/spec.md
+  s_8305d21c167246::t_3dc1b1b7c04abd 1-48
+test/core/snowballs.test.js
+  s_8305d21c167246::t_ba9bfe23e90e30 130
+  s_8305d21c167246::t_db9420bf584acf 1-129,131-188
+openspec/changes/snowballs-and-animals/proposal.md
+  s_8305d21c167246::t_e29c11dbb02c03 1-38
+openspec/changes/snowballs-and-animals/specs/score/spec.md
+  s_8305d21c167246::t_4c31d3de878384 1-33
+src/js/core/room.js
+  s_8305d21c167246::t_1778ba5dcf1dae 14-22,24
+  s_8305d21c167246::t_565c5dab0ced12 218-219,228-229
+  s_8305d21c167246::t_9e43de204529d4 110-111
+  s_8305d21c167246::t_29a55f0032c085 140-155
+  s_8305d21c167246::t_ccb219d46c489c 76-78
+  s_8305d21c167246::t_1a3a5b606eb8be 42
+  s_8305d21c167246::t_b2461f39c2b956 91-98
+src/js/render/hud.js
+  s_8305d21c167246::t_c2659d204072b7 1
+  s_8305d21c167246::t_204c7f1e1e40ba 8-10
+  s_8305d21c167246::t_746aa57cbf095c 39-50
+src/js/core/physics.js
+  s_8305d21c167246::t_816b6c1d484e6b 37-43,47-48,60-66,78-82
+  s_8305d21c167246::t_5caccfcaab2764 83-84
+src/js/core/energy.js
+  s_8305d21c167246::t_8ec57bfd0c858f 54
+  s_8305d21c167246::t_bfccb2c208dfb7 35-38
+src/js/core/snowballs.js
+  s_8305d21c167246::t_a8d4528ac272fd 1-125
+src/js/core/animals.js
+  s_8305d21c167246::t_fc52f7144dca4a 1-201
+src/js/render/overlay.js
+  s_8305d21c167246::t_521d67abec0ea3 50-51,53
+README.md
+  s_8305d21c167246::t_fea4ad5dee8a85 14-16,52-56,58
+test/config/room-1.test.js
+  s_8305d21c167246::t_06a7a8a11363fa 76,79-81,83
+  s_8305d21c167246::t_cb72a6c12e1a65 43-49,53-75,78,84-87
+  s_8305d21c167246::t_10c3505cc0d385 77
+test/core/animals.test.js
+  s_8305d21c167246::t_d0ea39e5dff734 1-106,108-254
+  s_8305d21c167246::t_244164f8e60c40 107
+test/core/room.test.js
+  s_8305d21c167246::t_8c3007e07991f7 139-169
+src/index.html
+  s_8305d21c167246::t_6d52c4de76b2a5 45-46,59-60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "255fc19cb8113f3cb3cd52204a50b827fb24327a",
+  "prompts": {},
+  "sessions": {
+    "s_8305d21c167246": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "58e6f587-c1fd-49c2-b41b-69ce379b9044",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Tadej Zel <326005104+dejt4@users.noreply.github.com>"
+    }
+  }
+}
