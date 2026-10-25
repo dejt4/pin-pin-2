@@ -9,6 +9,7 @@
   var gameModule = PinPin.get('core.game', 'core/game.js');
   var screenModule = PinPin.get('platform.screen', 'platform/screen.js');
   var inputModule = PinPin.get('platform.input', 'platform/input.js');
+  var touchModule = PinPin.get('platform.touch', 'platform/touch.js');
   var images = PinPin.get('platform.images', 'platform/images.js');
   var rendererModule = PinPin.get('render.renderer', 'render/renderer.js');
 
@@ -26,8 +27,10 @@
 
   function start() {
     var canvas = document.getElementById('game');
-    var screen = screenModule.createScreen(canvas);
-    var input = inputModule.createInput(window);
+    var panel = document.getElementById('touch-controls');
+    var screen = screenModule.createScreen(canvas, panel);
+    var touch = touchModule.createTouch(panel, screen.resize);
+    var input = inputModule.createInput(window, touch);
     var loading = rendererModule.createRenderer(screen, null);
 
     loading.drawMessage('Nalaganje ...');

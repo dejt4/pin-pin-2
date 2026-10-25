@@ -50,3 +50,10 @@
 - [x] 8.1 Preveri, da `npm run lint` in `npm test` uspeta
 - [ ] 8.2 Ročno preigraj prvo sobo v namiznem brskalniku s tipkovnico in kontrolerjem (če je na voljo): skok čez prepad, lestev gor in dol, konice, padec v prepad in vrnitev, pobiranje rib, utrujenost, cilj
 - [ ] 8.3 Uporabnik preizkusi igro v brskalniku PS4 (tipkovnica in kontroler) in sporoči rezultat; nalogo označi šele po potrditvi uporabnika
+
+## 9. Gumbi na dotik
+
+- [x] 9.1 Dodaj v `core/actions.read` vir akcij z dotika in teste (dotik sam, dotik skupaj s tipkovnico, pritisk in držanje gumba); preveri z `npm test`
+- [x] 9.2 Napiši `platform/touch.js` (gumbi, sledenje prstom, drsenje po križcu, več prstov, prikaz samo na napravah na dotik), dodaj gumbe in postavitev v `index.html` in `style.css` ter poveži v `platform/input.js`; preveri v brskalniku z mobilno velikostjo in umetnimi dotiki
+- [x] 9.3 Prilagodi `platform/screen.js` prostoru `#stage` (pokončno: igra na vrhu, gumbi pod njo; ležeče: igra čez cel zaslon, gumbi prosojno v kotih); preveri v brskalniku pokončno in ležeče ter da na namiznem brskalniku gumbov ni
+- [ ] 9.4 Uporabnik preizkusi igro na telefonu (pokončno in ležeče) in sporoči rezultat; nalogo označi šele po potrditvi uporabnika

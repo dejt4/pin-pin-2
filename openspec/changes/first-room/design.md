@@ -63,6 +63,15 @@ app/     main.js
 ### Vhod
 `platform/keyboard.js` beleži pritisnjene `keyCode` in prepreči privzeto dejanje za puščice. `platform/gamepad.js` vsak korak prebere `navigator.getGamepads()` (če obstaja) po standardni razporeditvi: gumb 0 (×), 2 (□), 12–15 križec, osi 0/1 z mrtvo cono 0,5. `core/actions.js` iz obeh naborov in `config/controls.js` naredi akcije s stanjem `down` in `pressed` (na novo pritisnjeno v tem koraku).
 
+### Gumbi na dotik
+Dodano med implementacijo, da je igro mogoče preizkusiti na telefonu.
+- `platform/touch.js` ustvari gumbe kot elemente HTML (ne riše jih na platno), ker brskalnik sam pove, kateri element je pod prstom (`document.elementFromPoint`), in ker gumbi pri pokončnem telefonu ležijo izven platna. Za vsak prst (`touch.identifier`) se ob `touchstart` in `touchmove` poišče gumb pod njim; aktivne akcije so unija gumbov pod vsemi prsti. Tako drsenje po križcu zamenja smer in več prstov deluje hkrati.
+- `core/actions.read` dobi tretji vir: nabor akcij z dotika (`{ right: true }`), ki se združi s tipkovnico in kontrolerjem. Pritisk in držanje se ločita enako kot pri drugih napravah.
+- Gumbi se pokažejo, ko ima naprava zaslon na dotik (`'ontouchstart' in window` ali `navigator.maxTouchPoints > 0`) ali ob prvem dotiku. Na PS4 in namiznem brskalniku jih ni.
+- Postavitev v CSS: `body.touch` ima pod igro ploščo z gumbi, kadar je okno pokončno (`@media (orientation: portrait)`); ležeče so gumbi prosojni v spodnjih kotih čez igro. `platform/screen.js` platno prilagodi elementu `#stage` (prostor nad ploščo) namesto celemu oknu, pri pokončnem oknu pa ga postavi na vrh.
+- `touch-action: none`, `user-select: none` in `user-scalable=no` preprečijo pomikanje, povečavo in izbiro besedila med igro.
+- Alternativa: gumbi, narisani na platno. Zavrnjeno, ker bi morali sami računati zadetke in ker pri pokončnem telefonu pod igro ni platna.
+
 ### Sličice
 `platform/images.js` naloži vse sličice iz `config/sprites.js` in jih ob nalaganju enkrat pomanjša na velikost izrisa v ločena platna. Risanje velikih slik s pomanjšanjem vsako sličico je na PS4 lahko počasno.
 

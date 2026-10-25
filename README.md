@@ -13,6 +13,10 @@ Ideja in odločitve o igri: [`idea/init.md`](idea/init.md). Navodila za razvoj z
 | skok              | Y          | ×                      |
 | met kepe          | X          | □ (še brez učinka)     |
 
+Na telefonu ali tablici se pokažejo gumbi na zaslonu: križec na desni, Skok in Kepa na levi. Pokončno so pod igro, ležeče prosojno čez igro.
+
+Za preizkus na telefonu v istem omrežju: `npm start`, nato na telefonu odpri `http://<IP računalnika>:8080/` (Windows ob prvem zagonu vpraša za dovoljenje v požarnem zidu).
+
 ## Razvoj
 
 Potrebuješ Node.js (22 ali novejši).

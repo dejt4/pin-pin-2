@@ -2,12 +2,29 @@
 <html lang="sl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Pin-Pin</title>
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <canvas id="game" width="640" height="360"></canvas>
+
+  <!-- gumbi na dotik: vidni samo na napravah z zaslonom na dotik -->
+  <div id="touch-controls">
+    <div class="touch-side touch-left">
+      <div class="touch-btn touch-round touch-jump" data-action="jump">Skok</div>
+      <div class="touch-btn touch-round touch-throw" data-action="throw">Kepa</div>
+    </div>
+    <div class="touch-side touch-right">
+      <div class="touch-dpad">
+        <div class="touch-btn dpad-up" data-action="up">&#9650;</div>
+        <div class="touch-btn dpad-left" data-action="left">&#9664;</div>
+        <div class="touch-btn dpad-right" data-action="right">&#9654;</div>
+        <div class="touch-btn dpad-down" data-action="down">&#9660;</div>
+      </div>
+    </div>
+  </div>
 
   <script src="js/pinpin.js"></script>
 
@@ -29,6 +46,7 @@
 
   <script src="js/platform/keyboard.js"></script>
   <script src="js/platform/gamepad.js"></script>
+  <script src="js/platform/touch.js"></script>
   <script src="js/platform/input.js"></script>
   <script src="js/platform/images.js"></script>
   <script src="js/platform/screen.js"></script>

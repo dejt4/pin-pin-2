@@ -1,4 +1,4 @@
-// Vhod: združi tipkovnico in kontroler v akcije igre za vsak korak.
+// Vhod: združi tipkovnico, kontroler in gumbe na dotik v akcije igre za vsak korak.
 (function (PinPin) {
   'use strict';
 
@@ -7,14 +7,15 @@
   var keyboardModule = PinPin.get('platform.keyboard', 'platform/keyboard.js');
   var gamepad = PinPin.get('platform.gamepad', 'platform/gamepad.js');
 
-  function createInput(target) {
+  // touch: gumbi na dotik (platform/touch.js) ali null
+  function createInput(target, touch) {
     var keyboard = keyboardModule.createKeyboard(target);
     var state = actions.createState();
 
     return {
       // prebere naprave in vrne akcije za naslednji korak pravil
       read: function () {
-        state = actions.read(controls, keyboard.read(), gamepad.read(), state);
+        state = actions.read(controls, keyboard.read(), gamepad.read(), state, touch ? touch.read() : null);
         return state;
       }
     };

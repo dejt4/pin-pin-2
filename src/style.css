@@ -13,3 +13,164 @@ body {
   display: block;
   background: #000;
 }
+
+/* Gumbi na dotik: skriti, dokler naprava nima zaslona na dotik (body.touch). */
+
+#touch-controls {
+  display: none;
+}
+
+body.touch {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+
+body.touch #touch-controls {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* pokončno: top in height nastavi platform/screen.js (prostor pod igro) */
+  background: #1d3557;
+}
+
+.touch-side {
+  position: absolute;
+  top: 50%;
+}
+
+.touch-left {
+  left: 6%;
+}
+
+.touch-right {
+  right: 5%;
+}
+
+.touch-btn {
+  position: absolute;
+  box-sizing: border-box;
+  display: block;
+  text-align: center;
+  font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
+  font-weight: bold;
+  color: #1d3557;
+  background: #e8f4fb;
+  border: 3px solid #9fc3dc;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-btn.active {
+  background: #ffd166;
+  border-color: #f2a516;
+}
+
+/* Skok in Kepa: okrogla gumba drug nad drugim, skok večji in spodaj */
+
+.touch-round {
+  border-radius: 50%;
+}
+
+.touch-jump {
+  width: 26vw;
+  height: 26vw;
+  line-height: 26vw;
+  font-size: 6vw;
+  left: 0;
+  top: 2vw;
+}
+
+.touch-throw {
+  width: 18vw;
+  height: 18vw;
+  line-height: 18vw;
+  font-size: 4.5vw;
+  left: 18vw;
+  top: -22vw;
+}
+
+/* Križec: 3 × 3 celice, sredina in koti prazni */
+
+.touch-dpad {
+  position: absolute;
+  right: 0;
+  width: 54vw;
+  height: 54vw;
+  top: -27vw;
+}
+
+.touch-dpad .touch-btn {
+  width: 18vw;
+  height: 18vw;
+  line-height: 18vw;
+  font-size: 7vw;
+  border-radius: 3vw;
+}
+
+.dpad-up { left: 18vw; top: 0; }
+.dpad-left { left: 0; top: 18vw; }
+.dpad-right { left: 36vw; top: 18vw; }
+.dpad-down { left: 18vw; top: 36vw; }
+
+/* Ležeče: gumbi prosojno čez igro v spodnjih kotih, velikosti glede na višino. */
+
+@media (orientation: landscape) {
+  body.touch #touch-controls {
+    top: auto;
+    height: 50%;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  body.touch .touch-btn {
+    pointer-events: auto;
+    opacity: 0.55;
+  }
+
+  .touch-left {
+    left: 4%;
+  }
+
+  .touch-right {
+    right: 4%;
+  }
+
+  .touch-jump {
+    width: 22vh;
+    height: 22vh;
+    line-height: 22vh;
+    font-size: 5vh;
+    top: 0;
+  }
+
+  .touch-throw {
+    width: 15vh;
+    height: 15vh;
+    line-height: 15vh;
+    font-size: 3.6vh;
+    left: 20vh;
+    top: -14vh;
+  }
+
+  .touch-dpad {
+    width: 42vh;
+    height: 42vh;
+    top: -21vh;
+  }
+
+  .touch-dpad .touch-btn {
+    width: 14vh;
+    height: 14vh;
+    line-height: 14vh;
+    font-size: 5vh;
+    border-radius: 2.5vh;
+  }
+
+  .dpad-up { left: 14vh; top: 0; }
+  .dpad-left { left: 0; top: 14vh; }
+  .dpad-right { left: 28vh; top: 14vh; }
+  .dpad-down { left: 14vh; top: 28vh; }
+}

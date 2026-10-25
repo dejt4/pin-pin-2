@@ -93,6 +93,8 @@ config     src/js/config/    samo podatki: nastavitve, tipke, animacije, mape so
 | skok            | Y (89)                 | × |
 | met kepe        | X (88)                 | □ |
 
+Na napravah na dotik so gumbi na zaslonu (`platform/touch.js`, elementi HTML z `data-action` v `index.html`): križec desno, Skok in Kepa levo; pokončno pod igro, ležeče prosojno čez igro.
+
 ## Delovni tok (OpenSpec)
 
 Vsaka nova funkcionalnost gre skozi OpenSpec change v `openspec/changes/<ime>/`:

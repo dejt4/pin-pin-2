@@ -80,3 +80,32 @@ test('držanje: pressed samo v prvem koraku, nov pritisk po spustu', function ()
   assert.strictEqual(s3.pressed.jump, false);
   assert.strictEqual(s4.pressed.jump, true);
 });
+
+test('dotik: gumbi na zaslonu sprožijo akcije', function () {
+  var s = actions.read(controls, {}, [], null, { right: true, jump: true });
+  assert.strictEqual(s.down.right, true);
+  assert.strictEqual(s.down.jump, true);
+  assert.strictEqual(s.down.left, false);
+});
+
+test('dotik: neznana akcija se prezre', function () {
+  var s = actions.read(controls, {}, [], null, { fly: true });
+  assert.strictEqual(actions.anyPressed(s), false);
+});
+
+test('dotik skupaj s tipkovnico', function () {
+  var s = actions.read(controls, { 37: true }, [], null, { jump: true });
+  assert.strictEqual(s.down.left, true);
+  assert.strictEqual(s.down.jump, true);
+});
+
+test('dotik: držanje gumba Skok ne skače ponovno, nov dotik pa', function () {
+  var s1 = actions.read(controls, {}, [], null, { jump: true });
+  var s2 = actions.read(controls, {}, [], s1, { jump: true });
+  var s3 = actions.read(controls, {}, [], s2, {});
+  var s4 = actions.read(controls, {}, [], s3, { jump: true });
+  assert.strictEqual(s1.pressed.jump, true);
+  assert.strictEqual(s2.pressed.jump, false);
+  assert.strictEqual(s3.down.jump, false);
+  assert.strictEqual(s4.pressed.jump, true);
+});

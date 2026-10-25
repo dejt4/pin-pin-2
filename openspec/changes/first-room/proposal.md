@@ -7,7 +7,7 @@ Projekt ima zaenkrat samo grafike in idejo (`idea/init.md`), igre pa še ni. Prv
 ## What Changes
 
 - **Postavitev projekta**: `package.json` z `npm run lint` (ESLint za ES5 in meje slojev) in `npm test` (`node:test`), `src/index.html`, `src/style.css`, imenski prostor `window.PinPin` s `register`/`get`.
-- **Kontrole**: tipkovnica (puščice, Y skok) in kontroler PS4 (križec/leva palčka, × skok) se prevedeta v akcije. Tipka za kepo (X/□) se rezervira, a še nima učinka.
+- **Kontrole**: tipkovnica (puščice, Y skok), kontroler PS4 (križec/leva palčka, × skok) in gumbi na zaslonu na dotik (križec desno, Skok in Kepa levo; pri pokončnem telefonu pod igro) se prevedejo v akcije. Tipka za kepo (X/□/Kepa) se rezervira, a še nima učinka.
 - **Gibanje pingvina** v stranskem pogledu: hoja levo/desno, skok z gravitacijo, pristajanje na tla in ploščadi, plezanje po lestvi gor in dol, animacije iz obstoječih sličic.
 - **Soba**: mapa iz ploščic, zapisana kot podatki v `config/`, nekaj zaslonov široka, z ledenimi ploščadmi, lestvami, prepadi, ledenimi konicami, ribami in ciljem na koncu. Dokler ni grafike za ploščice, se rišejo kot barvni pravokotniki.
 - **Prepadi in konice**: padec v prepad vrne pingvina na zadnje varno mesto približno en zaslon nazaj in mu vzame nekaj energije; dotik konic vzame nekaj energije in ga odrine.
@@ -20,7 +20,7 @@ Izven obsega: kupi snega, kepe, medved, volk, muha, komarji, točke, več sob, z
 ## Capabilities
 
 ### New Capabilities
-- `game-controls`: prevod tipkovnice in kontrolerja v akcije igre (levo, desno, gor, dol, skok, kepa).
+- `game-controls`: prevod tipkovnice, kontrolerja in gumbov na dotik v akcije igre (levo, desno, gor, dol, skok, kepa).
 - `player-movement`: hoja, skok, gravitacija, trki s ploščicami, plezanje po lestvah in animacije pingvina.
 - `room-map`: zapis sobe iz ploščic, vrste ploščic (tla, ploščad, lestev, prepad, konice), ribe, cilj, varna mesta in vrnitev en zaslon nazaj.
 - `camera-view`: sledenje kamere, robovi sobe, paralaksa ozadja in prilagoditev velikosti zaslonu.

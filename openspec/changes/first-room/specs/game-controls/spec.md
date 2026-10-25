@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Prevede tipkovnico in kontroler PS4 v akcije igre (levo, desno, gor, dol, skok, kepa), da pravila igre ne poznajo naprav in tipk.
+Prevede tipkovnico, kontroler PS4 in gumbe na zaslonu na dotik v akcije igre (levo, desno, gor, dol, skok, kepa), da pravila igre ne poznajo naprav in tipk.
 
 ## ADDED Requirements
 
@@ -42,6 +42,29 @@ Igra SHALL podpirati kontroler s standardno razporeditvijo (PS4): križec in lev
 #### Scenario: Ni kontrolerja
 - **WHEN** kontroler ni priključen
 - **THEN** igra deluje samo s tipkovnico, brez napake
+
+### Requirement: Gumbi na zaslonu za naprave na dotik
+Na napravi z zaslonom na dotik (telefon, tablica) SHALL igra pokazati gumbe na zaslonu: na desni križec s smermi gor, dol, levo in desno, na levi gumba "Skok" in "Kepa". Gumb SHALL sprožiti svojo akcijo (`up`, `down`, `left`, `right`, `jump`, `throw`), dokler se ga prst dotika. Drsenje prsta z ene smeri križca na drugo MUST zamenjati akcijo brez dviga prsta. Več prstov hkrati MUST sprožiti več akcij hkrati. Dotik gumbov MUST NOT premikati ali povečevati strani. Na napravi brez zaslona na dotik gumbi MUST NOT biti vidni.
+
+#### Scenario: Pokončen telefon
+- **WHEN** igra teče na telefonu, ki ga igralec drži pokončno
+- **THEN** je igra na vrhu zaslona v polni širini, pod njo pa so gumbi: križec na desni, skok in kepa na levi
+
+#### Scenario: Ležeč telefon
+- **WHEN** igralec telefon obrne ležeče
+- **THEN** igra zapolni zaslon, gumbi pa so prosojni v spodnjih kotih čez igro (križec desno, skok in kepa levo)
+
+#### Scenario: Hoja in skok z dvema prstoma
+- **WHEN** igralec z enim prstom drži desno na križcu in z drugim pritisne Skok
+- **THEN** sta aktivni akciji `right` in `jump` in pingvin skoči med hojo
+
+#### Scenario: Drsenje po križcu
+- **WHEN** igralec drži levo na križcu in prst brez dviga povleče na desno
+- **THEN** akcija `left` ni več aktivna, aktivna je `right`
+
+#### Scenario: Računalnik brez zaslona na dotik
+- **WHEN** igra teče v namiznem brskalniku ali na PS4
+- **THEN** gumbov na zaslonu ni
 
 ### Requirement: Sočasna uporaba naprav
 Akcija SHALL biti aktivna, če jo sproži katerakoli naprava.
